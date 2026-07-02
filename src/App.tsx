@@ -1,0 +1,21 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import { routes } from "./constants/routes";
+import Login from "./pages/auth/Login";
+import RegisterShelter from "./pages/auth/RegisterShelter";
+import Dashboard from "./pages/dashboard/Dashboard";
+//import CreatePetListing from "./pages/listings/CreatePetListing";
+//import MyListings from "./pages/listings/MyListings";
+
+export default function App() {
+    return (
+        <Routes>
+            <Route path="/" element={<Navigate to={routes.auth.login} replace />} />
+
+            <Route path={routes.auth.login} element={<Login />} />
+            <Route path={routes.auth.registerShelter} element={<RegisterShelter />} />
+
+            <Route path={routes.home.dashboard} element={<Dashboard />} />
+        </Routes>
+    );
+}
