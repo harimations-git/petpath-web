@@ -1,0 +1,54 @@
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.logo-icon {
+  color: var(--color-primary);
+}
+
+.logo-text {
+  color: var(--color-primary-dark);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.logo-tagline {
+  margin: 2px 0 0;
+  color: var(--color-primary);
+  font-size: 13px;
+}
+
+.logo-sm .logo-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.logo-sm .logo-text {
+  font-size: 24px;
+}
+
+.logo-md .logo-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-md .logo-text {
+  font-size: 34px;
+}
+
+.logo-lg .logo-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.logo-lg .logo-text {
+  font-size: 42px;
+}
