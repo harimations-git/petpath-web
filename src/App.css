@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #eef5ec;
+    color: #163d2c;
+}
+
+.auth-page,
+.dashboard-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 430px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 12px 32px rgba(22, 61, 44, 0.12);
+}
+
+h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    color: #075c3b;
+}
+
+p {
+    color: #52645b;
+    line-height: 1.5;
+}
+
+input {
+    width: 100%;
+    height: 46px;
+    margin-top: 12px;
+    padding: 0 14px;
+    border: 1px solid #d7e4d6;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+button,
+.dashboard-actions a {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 46px;
+    margin-top: 16px;
+    border: 0;
+    border-radius: 999px;
+    background: #075c3b;
+    color: white;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dashboard-actions {
+    width: 100%;
+    max-width: 430px;
+}
