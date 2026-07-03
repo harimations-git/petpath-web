@@ -3,7 +3,7 @@ import "./ImageSlideShow.css";
 
 export type Slide = {
   image: string;
-  text: string;
+  text?: string;
   alt?: string;
 };
 
@@ -15,7 +15,7 @@ type ImageSlideshowProps = {
 
 export default function ImageSlideshow({
   slides,
-  intervalMs = 5000,
+  intervalMs =  4500,
   className = "",
 }: ImageSlideshowProps) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -48,7 +48,7 @@ export default function ImageSlideshow({
           key={`${slide.image}-text`}
           className={`slideshow-text ${index === activeIndex ? "active" : ""}`}
         >
-          {slide.text}
+          <span>{slide.text}</span>
         </h2>
       ))}
     </section>

@@ -48,6 +48,13 @@
   align-self: center;
 }
 
+.register-btn {
+  font-size: 24px;
+  width: 350px;
+  height: 70px;
+  align-self: center;
+}
+
 .forgot-link {
   margin-top: -6px;
   color: var(--color-primary-dark);

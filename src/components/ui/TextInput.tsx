@@ -8,6 +8,7 @@ type TextInputProps = {
   type?: "text" | "email" | "password";
   icon?: ReactNode;
   value: string;
+  required?: boolean;
   onChange: (value: string) => void;
 };
 
@@ -17,6 +18,7 @@ export default function TextInput({
   type = "text",
   icon,
   value,
+  required = false,
   onChange,
 }: TextInputProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -35,6 +37,7 @@ export default function TextInput({
           placeholder={placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
+          required={required}
         />
       </label>
 

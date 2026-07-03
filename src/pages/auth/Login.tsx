@@ -12,6 +12,8 @@ import "./Login.css";
 import Spacer from "../../components/layout/Spacer";
 
 import { loginSlideshowContent } from "../../data/imageContent";
+import { routes } from "../../constants/routes";
+import { Link } from "react-router-dom";
 
 export default function ShelterLogin() {
   const [email, setEmail] = useState("");
@@ -57,16 +59,16 @@ export default function ShelterLogin() {
 
             <Spacer height={5}/>
 
-            <a className="forgot-link" href="/forgot-password">
+            <Link className="forgot-link" to={routes.auth.forgotPassword}>
               Forgot password?
-            </a>
+            </Link>
 
             <CustomButton label="Log in" type="submit" fullWidth={false} className="login-btn" />
 
             <p className="register-text">
               Don’t have an account?
               <br />
-              <a href="/register-shelter">Register shelter here</a>
+              <Link to={routes.auth.accountType}>Register shelter here</Link>
             </p>
           </form>
         </Card>
