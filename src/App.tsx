@@ -5,6 +5,7 @@ import Login from "./pages/auth/Login";
 import AccountType from "./pages/auth/AccountType";
 import RegisterShelter from "./pages/auth/RegisterShelter";
 import Dashboard from "./pages/dashboard/Dashboard";
+import VerifyEmail from "./pages/auth/VerifyEmail";
 //import CreatePetListing from "./pages/listings/CreatePetListing";
 //import MyListings from "./pages/listings/MyListings";
 
@@ -16,6 +17,7 @@ export default function App() {
             <Route path={routes.auth.login} element={<Login />} />
             <Route path={routes.auth.accountType} element={<AccountType />} />
             <Route path={routes.auth.registerShelter} element={<RegisterShelter />} />
+            <Route path={routes.auth.verifyEmail} element={<VerifyEmail />} />
 
             <Route path={routes.home.dashboard} element={<Dashboard />} />
         </Routes>
