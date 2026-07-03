@@ -1,0 +1,188 @@
+.register-shelter-page {
+    min-height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 800px 1fr;
+    overflow: hidden;
+}
+
+.register-shelter-left {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-background);
+    min-height: 100vh;
+    padding: 24px 22px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-shelter-left .logo {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 4px;
+}
+
+.register-shelter-card {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 460px);
+    padding: 24px 32px;
+    box-sizing: border-box;
+}
+
+.register-shelter-title {
+    margin: 0 0 6px;
+    color: var(--color-primary-dark);
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 900;
+    text-align: center;
+}
+
+.register-shelter-description {
+    margin: 0 0 18px;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.register-shelter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.register-shelter-checkbox {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
+    align-items: start;
+    cursor: pointer;
+    color: var(--color-text);
+    font-size: 12px;
+    line-height: 1.35;
+    margin-top: 2px;
+    margin-left: 20px;
+}
+
+.register-shelter-checkbox input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.register-shelter-checkbox-box {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--color-primary-dark);
+    border-radius: 3px;
+    background: var(--color-card);
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.register-shelter-checkbox input:checked+.register-shelter-checkbox-box {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.register-shelter-checkbox input:checked+.register-shelter-checkbox-box::after {
+    content: "";
+    display: block;
+    width: 9px;
+    height: 5px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg);
+    margin: 5px 0 0 4px;
+}
+
+.register-shelter-checkbox-text {
+    color: var(--color-primary-dark);
+    margin-top: 7px;
+}
+
+.register-shelter-submit {
+    width: 330px;
+    height: 48px;
+    min-height: 48px;
+    margin-top: 8px;
+    align-self: center;
+    font-size: 20px;
+}
+
+.register-shelter-login-text {
+    margin: 10px 0 0;
+    color: var(--color-text);
+    font-size: 13px;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.register-shelter-login-text a {
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.register-shelter-right {
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.register-shelter-right .image-slideshow {
+    height: 100%;
+    min-height: 100vh;
+}
+
+
+@media (max-height: 760px) {
+    .register-shelter-left {
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    .register-shelter-card {
+        padding: 20px 28px;
+    }
+
+    .register-shelter-title {
+        font-size: 20px;
+    }
+
+    .register-shelter-description {
+        margin-bottom: 12px;
+        font-size: 13px;
+    }
+
+    .register-shelter-form {
+        gap: 8px;
+    }
+
+    .register-shelter-submit {
+        height: 44px;
+        min-height: 44px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 850px) {
+    .register-shelter-page {
+        grid-template-columns: 1fr;
+        overflow: auto;
+    }
+
+    .register-shelter-left {
+        min-height: 100vh;
+        padding: 32px 22px;
+    }
+
+    .register-shelter-right {
+        display: none;
+    }
+}
