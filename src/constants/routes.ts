@@ -3,7 +3,9 @@ export const routes = {
         login: "/login",
         registerShelter: "/register",
         forgotPassword: "/forgot-password",
-        accountType: "/accountType"
+        accountType: "/accountType",
+        verifyEmail: "/verifyEmail",
+        accountReview: "/accountReview"
     },
 
     home: {

@@ -15,6 +15,10 @@ import "./RegisterShelter.css";
 import { Link, useNavigate } from "react-router-dom";
 import { routes } from "../../constants/routes";
 
+import { signUp } from "aws-amplify/auth";
+import { getSignUpErrorMessage } from "../../utils/authErrorMessage";
+import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
+
 export default function RegisterShelter() {
     const navigate = useNavigate();
 
@@ -25,9 +29,72 @@ export default function RegisterShelter() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [formError, setFormError] = useState("");
+
     useEffect(() => {
         document.title = "Register Shelter | PetPath";
     }, []);
+
+    async function handleRegisterShelter(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        setFormError("");
+
+        const normalisedEmail = email.trim().toLowerCase();
+
+        if (password !== confirmPassword) {
+            setFormError("Passwords do not match");
+            return;
+        }
+
+        if (!acceptedTerms) {
+            setFormError("You need to accept the terms before continuing"); //Extra failsafe
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+
+            await signUp({
+                username: normalisedEmail,
+                password,
+                options: {
+                    userAttributes: {
+                        email: normalisedEmail,
+                        name: charityName.trim(),
+                        "custom:charity_id": charityId.trim(),
+                        "custom:charity_name": charityName.trim(),
+                        "custom:account_type": "shelter",
+                    },
+                    autoSignIn: true,
+                },
+            });
+
+            sessionStorage.setItem(
+                "pendingShelterRegistration",
+                JSON.stringify({
+                    charityId: charityId.trim(),
+                    charityName: charityName.trim(),
+                    email: normalisedEmail
+                })
+            );
+
+            sessionStorage.setItem("pendingVerificationEmail", normalisedEmail);
+
+            navigate(routes.auth.verifyEmail, {
+                replace: true,
+                state: {
+                    email: normalisedEmail,
+                    accountType: "shelter",
+                },
+            });
+        } catch (error) {
+            setFormError(getSignUpErrorMessage(error));
+        } finally {
+            setIsLoading(false);
+        }
+
+    }
 
     return (
         <main className="register-shelter-page">
@@ -49,13 +116,21 @@ export default function RegisterShelter() {
                 <Spacer height={8} />
 
                 <Card className="register-shelter-card">
+                    <AuthProgressStepper
+                        currentStep={1}
+                        steps={[
+                            { label: "Account" },
+                            { label: "Verify Email" },
+                            { label: "Review" },
+                        ]}
+                    />
                     <h1 className="register-shelter-title">Register Your Shelter</h1>
 
                     <p className="register-shelter-description">
                         Use your shelter's official charity details to create an authorised PetPath account.
                     </p>
 
-                    <form className="register-shelter-form">
+                    <form className="register-shelter-form" onSubmit={handleRegisterShelter}>
                         <TextInput
                             label="Charity ID"
                             placeholder="Enter your charity ID"
@@ -106,11 +181,18 @@ export default function RegisterShelter() {
                             required
                         />
 
+                        {formError && (
+                            <p className="register-shelter-error">
+                                {formError}
+                            </p>
+                        )}
+
                         <label className="register-shelter-checkbox">
                             <input
                                 type="checkbox"
                                 checked={acceptedTerms}
                                 onChange={(event) => setAcceptedTerms(event.target.checked)}
+                                required
                             />
 
                             <span className="register-shelter-checkbox-box" />
@@ -121,11 +203,11 @@ export default function RegisterShelter() {
                         </label>
 
                         <CustomButton
-                            label="Register account"
+                            label={isLoading ? "Creating account..." : "Register account"}
                             type="submit"
                             fullWidth={false}
                             className="register-shelter-submit"
-                            disabled={!acceptedTerms}
+                            disabled={!acceptedTerms || isLoading}
                         />
 
                         <p className="register-shelter-login-text">

@@ -34,7 +34,7 @@ export default function ImageSlideshow({
     <section className={`image-slideshow ${className}`}>
       {slides.map((slide, index) => (
         <img
-          key={slide.image}
+          key={`${slide.image}-${index}`}
           src={slide.image}
           alt={slide.alt ?? ""}
           className={`slideshow-image ${index === activeIndex ? "active" : ""}`}
@@ -45,7 +45,7 @@ export default function ImageSlideshow({
 
       {slides.map((slide, index) => (
         <h2
-          key={`${slide.image}-text`}
+          key={`${slide.image}-text-${index}`}
           className={`slideshow-text ${index === activeIndex ? "active" : ""}`}
         >
           <span>{slide.text}</span>
