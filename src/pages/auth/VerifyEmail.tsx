@@ -1,27 +1,34 @@
-import { useEffect, useState } from "react";
-import { Mail, Lock, BadgeCheck, Building2, ArrowLeft } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
+import { confirmSignUp, resendSignUpCode, autoSignIn, signIn } from "aws-amplify/auth";
+
+import { ArrowLeft } from "lucide-react";
 
 import Logo from "../../components/ui/Logo";
 import Card from "../../components/ui/Card";
-import TextInput from "../../components/ui/TextInput";
+
 import CustomButton from "../../components/ui/CustomButton";
 import ImageSlideShow from "../../components/ui/ImageSlideShow";
-
 
 import Spacer from "../../components/layout/Spacer";
 import { loginSlideshowContent } from "../../data/imageContent";
 
-import "./RegisterShelter.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./RegisterShelter.css"; //Basically the same css
+import "./VerifyEmail.css";
+
+import { useLocation, useNavigate } from "react-router-dom";
 import { routes } from "../../constants/routes";
 
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
+import verificationImageUrl from "../../assets/EmailVerification.png";
 import VerificationImage from "../../assets/EmailVerification.png";
 import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
+import VerificationCodeInput from "../../components/ui/auth/VerificationCodeInput";
 
 type VerifyEmailState = {
     email?: string;
+    password?: string;
     accountType?: "shelter";
+    fromLogin?: boolean;
 };
 
 export default function VerifyEmail() {
@@ -30,13 +37,132 @@ export default function VerifyEmail() {
 
     const state = (location.state ?? {}) as VerifyEmailState;
     const email = state.email ?? sessionStorage.getItem("pendingVerificationEmail") ?? "";
+    const passwordFromLogin = state.password ?? "";
+    const fromLogin = state.fromLogin ?? false;
 
+    const [verificationCode, setVerificationCode] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isResending, setIsResending] = useState(false);
     const [formError, setFormError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+
+    const codeLength = 6;
 
     useEffect(() => {
         document.title = "Verify Email | PetPath";
+
+        const img = new Image();
+        img.src = verificationImageUrl;
     }, []);
+
+    async function handleVerifyEmail(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        setFormError("");
+        setSuccessMessage("");
+
+        const normalisedEmail = email.trim().toLowerCase();
+
+        if (!normalisedEmail) {
+            setFormError("No email address was found. Please register again.");
+            return;
+        }
+
+        if (verificationCode.length !== codeLength) {
+            setFormError("Please enter the 6-digit verification code.");
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+
+            await confirmSignUp({
+                username: normalisedEmail,
+                confirmationCode: verificationCode,
+            });
+
+            sessionStorage.removeItem("pendingVerificationEmail");
+
+            if (fromLogin && passwordFromLogin) {
+                await signIn({
+                    username: normalisedEmail,
+                    password: passwordFromLogin,
+                });
+
+                navigate(routes.auth.accountReview, {
+                    replace: true,
+                    state: {
+                        message: "Email verified. Your shelter account is now pending manual review.",
+                        accountType: "shelter",
+                    },
+                });
+
+                return;
+            }
+
+            try {
+                await autoSignIn();
+
+                navigate(routes.auth.accountReview, {
+                    replace: true,
+                    state: {
+                        message: "Email verified. Your shelter account is now pending manual review.",
+                        accountType: "shelter",
+                    },
+                });
+            } catch (autoSignInError) {
+                console.log("Auto sign-in unavailable:", autoSignInError);
+
+                navigate(routes.auth.login, {
+                    replace: true,
+                    state: {
+                        message: "Email verified. Please log in to continue.",
+                        accountType: "shelter",
+                    },
+                });
+            }
+        } catch (error) {
+            console.log("Verify email error:", error);
+
+            if (error instanceof Error) {
+                setFormError(error.message);
+            } else {
+                setFormError("Unable to verify your email. Please try again.");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }
+    
+    async function handleResendCode() {
+        setFormError("");
+        setSuccessMessage("");
+
+        if (!email) {
+            setFormError("No email address was found. Please register again.");
+            return;
+        }
+
+        try {
+            setIsResending(true);
+
+            await resendSignUpCode({
+                username: email.trim().toLowerCase(),
+            });
+
+            setSuccessMessage("A new verification code has been sent to your email.");
+        } catch (error) {
+            console.log("Resend code error:", error);
+
+            if (error instanceof Error) {
+                setFormError(error.message);
+            } else {
+                setFormError("Unable to resend the code. Please try again.");
+            }
+        } finally {
+            setIsResending(false);
+        }
+    }
 
     return (
         <main className="register-shelter-page">
@@ -47,7 +173,7 @@ export default function VerifyEmail() {
                 <button
                     type="button"
                     className="account-type-back"
-                    onClick={() => navigate(-1)}
+                    onClick={() => { navigate(routes.auth.login) }}
                     aria-label="Go back"
                 >
                     <ArrowLeft size={22} />
@@ -73,8 +199,24 @@ export default function VerifyEmail() {
                     </p>
 
 
-                    <form className="register-shelter-form">
-                        <img src={VerificationImage}
+                    <form className="register-shelter-form" onSubmit={handleVerifyEmail}>
+                        <div className="verify-email-image-wrapper">
+                            <img
+                                className="verify-email-image"
+                                src={VerificationImage}
+                                alt="Email verification"
+                                loading="eager"
+                                decoding="sync"
+                                onError={() => console.log("Verification image failed to load:", VerificationImage)}
+                            />
+                        </div>
+
+                        <VerificationCodeInput
+                            value={verificationCode}
+                            onChangeText={setVerificationCode}
+                            length={codeLength}
+                            autoFocus
+                            disabled={isLoading}
                         />
 
 
@@ -84,19 +226,32 @@ export default function VerifyEmail() {
                             </p>
                         )}
 
-                       
+                        {successMessage && (
+                            <p className="register-shelter-success">
+                                {successMessage}
+                            </p>
+                        )}
+
 
                         <CustomButton
                             label={isLoading ? "Verifying..." : "Verify your email"}
                             type="submit"
                             fullWidth={false}
                             className="register-shelter-submit"
+                            disabled={isLoading || verificationCode.length !== codeLength}
                         />
 
-                        <p className="register-shelter-login-text">
-                            Didn't receive an email? Check your spam or
-                            <br />
-                            <Link to={routes.auth.login}>resend the code</Link>
+                        <p className="verify-email-resend-code-text">
+                            <span>Didn't receive an email? Check your spam or</span>
+
+                            <button
+                                type="button"
+                                className="verify-email-resend-button"
+                                onClick={handleResendCode}
+                                disabled={isResending}
+                            >
+                                {isResending ? "Sending..." : "Resend the code"}
+                            </button>
                         </p>
                     </form>
                 </Card>

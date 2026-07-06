@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { routes } from "../../constants/routes";
 
 import { signUp } from "aws-amplify/auth";
+import { getSignUpErrorMessage } from "../../utils/authErrorMessage";
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
 
 export default function RegisterShelter() {
@@ -60,8 +61,12 @@ export default function RegisterShelter() {
                 options: {
                     userAttributes: {
                         email: normalisedEmail,
-                        name: charityName.trim()
+                        name: charityName.trim(),
+                        "custom:charity_id": charityId.trim(),
+                        "custom:charity_name": charityName.trim(),
+                        "custom:account_type": "shelter",
                     },
+                    autoSignIn: true,
                 },
             });
 
@@ -77,19 +82,14 @@ export default function RegisterShelter() {
             sessionStorage.setItem("pendingVerificationEmail", normalisedEmail);
 
             navigate(routes.auth.verifyEmail, {
+                replace: true,
                 state: {
                     email: normalisedEmail,
-                    accountType: "shelter"
+                    accountType: "shelter",
                 },
             });
         } catch (error) {
-            console.log("Register shelter error: ", error)
-
-            if (error instanceof Error) {
-                setFormError(error.message);
-            } else {
-                setFormError("Unable to create account. Please try again.")
-            }
+            setFormError(getSignUpErrorMessage(error));
         } finally {
             setIsLoading(false);
         }

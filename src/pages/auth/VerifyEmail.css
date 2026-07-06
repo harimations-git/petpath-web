@@ -1,0 +1,60 @@
+.verify-email-image-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.verify-email-image {
+  width: min(400px, 60%);
+  max-height: 400px;
+  object-fit: contain;
+  display: block;
+}
+
+.register-shelter-success {
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.verify-email-resend-code-text {
+  margin: 8px 0 0;
+  color: var(--color-text);
+  font-size: 13px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  line-height: 0;
+}
+
+.verify-email-resend-code-text span {
+  white-space: nowrap;
+}
+
+.verify-email-resend-button {
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+  color: var(--color-primary-dark);
+
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.verify-email-resend-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
