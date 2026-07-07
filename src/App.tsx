@@ -7,6 +7,7 @@ import RegisterShelter from "./pages/auth/RegisterShelter";
 import Dashboard from "./pages/dashboard/Dashboard";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import AccountReview from "./pages/auth/AccountReview";
+import OrganisationProfileSetup from "./pages/profile/ProfileSetup";
 //import CreatePetListing from "./pages/listings/CreatePetListing";
 //import MyListings from "./pages/listings/MyListings";
 
@@ -20,7 +21,9 @@ export default function App() {
             <Route path={routes.auth.registerShelter} element={<RegisterShelter />} />
             <Route path={routes.auth.verifyEmail} element={<VerifyEmail />} />
             <Route path={routes.auth.accountReview} element={<AccountReview />} />
+            
             <Route path={routes.home.dashboard} element={<Dashboard />} />
+            <Route path={routes.home.profileSetup} element={<OrganisationProfileSetup />} />
         </Routes>
     );
 }

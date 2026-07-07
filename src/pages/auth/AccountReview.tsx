@@ -19,7 +19,7 @@ import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
 import { routes } from "../../constants/routes";
 import { useBackButtonRedirect } from "../../hooks/useBackButtonRedirect";
 import { getCurrentOrganisationProfile } from "../../services/organisation/organisationService";
-import { getRouteForOrganisationStatus } from "../../services/organisation/organisationRedirect";
+import { getRouteForOrganisation } from "../../services/organisation/organisationRedirect";
 
 export default function AccountReview() {
     useBackButtonRedirect(routes.auth.login);
@@ -43,8 +43,8 @@ export default function AccountReview() {
                     return;
                 }
 
-                const nextRoute = getRouteForOrganisationStatus(
-                    organisationProfile.accountStatus
+                const nextRoute = getRouteForOrganisation(
+                    organisationProfile
                 );
 
                 navigate(nextRoute, { replace: true });

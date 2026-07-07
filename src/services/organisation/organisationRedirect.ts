@@ -1,20 +1,23 @@
 import { routes } from "../../constants/routes";
-import type { OrganisationStatus } from "./organisationService";
 
-export function getRouteForOrganisationStatus(status: OrganisationStatus) {
-  switch (status) {
+import type {
+  OrganisationProfile,
+} from "./organisationService";
+
+export function getRouteForOrganisation(
+  profile: OrganisationProfile
+) {
+  switch (profile.accountStatus) {
     case "pending":
       return routes.auth.accountReview;
 
     case "approved":
-      return routes.home.dashboard;
+      return profile.profileComplete
+        ? routes.home.dashboard
+        : routes.home.profileSetup;
 
     case "rejected":
-      return routes.auth.login;
-
     case "suspended":
-      return routes.auth.login;
-
     default:
       return routes.auth.login;
   }

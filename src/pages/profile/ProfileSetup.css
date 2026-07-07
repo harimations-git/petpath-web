@@ -1,0 +1,464 @@
+.organisation-profile-setup-page {
+    position: relative;
+    min-height: 100vh;
+    padding: 32px;
+    overflow: hidden;
+    background: var(--color-background);
+    box-sizing: border-box;
+}
+
+.organisation-profile-setup-header {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 1120px);
+    margin: 0 auto 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 36px;
+}
+
+.organisation-profile-setup-header .logo {
+    flex-shrink: 0;
+}
+
+.organisation-profile-setup-header span {
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.organisation-profile-setup-header h1 {
+    margin: 4px 0;
+    color: var(--color-primary-dark);
+    font-size: 30px;
+    line-height: 1.15;
+    font-weight: 900;
+}
+
+.organisation-profile-setup-header p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.organisation-profile-setup-card {
+    position: relative;
+    z-index: 1;
+
+    width: min(100%, 1120px);
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+}
+
+.organisation-profile-setup-form {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+}
+
+.organisation-profile-sidebar {
+    padding: 32px;
+    background: var(--color-pale-green);
+    border-right: 1px solid var(--color-border);
+}
+
+.organisation-profile-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.organisation-profile-image-preview {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+
+    border: 5px solid var(--color-card);
+    border-radius: 50%;
+    background: var(--color-card);
+    color: var(--color-primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: var(--shadow-card);
+}
+
+.organisation-profile-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.organisation-profile-image-button {
+    margin-top: 16px;
+    padding: 10px 16px;
+
+    border-radius: var(--radius-pill);
+    background: var(--color-primary);
+    color: white;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.organisation-profile-image-button input {
+    display: none;
+}
+
+.organisation-profile-image-section>p {
+    margin: 8px 0 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.organisation-locked-details {
+    margin-top: 32px;
+}
+
+.organisation-locked-details h2 {
+    margin: 0 0 14px;
+    color: var(--color-primary-dark);
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.organisation-locked-detail {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(15, 90, 59, 0.14);
+
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.organisation-locked-detail svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--color-primary-dark);
+}
+
+.organisation-locked-detail div {
+    min-width: 0;
+}
+
+.organisation-locked-detail span {
+    display: block;
+    color: var(--color-muted);
+    font-size: 11px;
+}
+
+.organisation-locked-detail strong {
+    display: block;
+    margin-top: 2px;
+    color: var(--color-text);
+    font-size: 13px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.organisation-locked-help {
+    margin: 14px 0 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.organisation-profile-fields {
+    padding: 32px;
+}
+
+.organisation-form-section-heading {
+    margin: 4px 0 16px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.organisation-form-section-heading:not(:first-child) {
+    margin-top: 30px;
+}
+
+.organisation-form-section-heading svg {
+    flex-shrink: 0;
+    color: var(--color-primary-dark);
+}
+
+.organisation-form-section-heading h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.organisation-form-section-heading p {
+    margin: 2px 0 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.organisation-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.organisation-standard-field {
+    min-height: 64px;
+    padding: 9px 16px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    box-sizing: border-box;
+}
+
+.organisation-standard-field>span,
+.organisation-description-field>span {
+    color: var(--color-primary-dark);
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.organisation-standard-field input,
+.organisation-standard-field select {
+    width: 100%;
+    margin-top: 4px;
+    padding: 0;
+
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--color-text);
+
+    font: inherit;
+    font-size: 14px;
+}
+
+.organisation-standard-field input[readonly] {
+    color: var(--color-muted);
+}
+
+.organisation-standard-field small {
+    margin-top: 3px;
+    color: var(--color-muted);
+    font-size: 10px;
+}
+
+.organisation-description-field {
+    display: block;
+}
+
+.organisation-description-field textarea {
+    width: 100%;
+    min-height: 140px;
+    margin-top: 8px;
+    padding: 14px;
+
+    resize: vertical;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    outline: none;
+    background: var(--color-card);
+    color: var(--color-text);
+
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+.organisation-description-field textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(47, 118, 85, 0.12);
+}
+
+.organisation-description-field small {
+    display: block;
+    margin-top: 4px;
+    color: var(--color-muted);
+    font-size: 11px;
+    text-align: right;
+}
+
+.organisation-address-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.organisation-address-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.organisation-address-field-wide {
+    grid-column: 1 / -1;
+}
+
+.organisation-address-field>span {
+    color: var(--color-primary-dark);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.organisation-address-field>span strong {
+    color: var(--color-error);
+}
+
+.organisation-address-field input,
+.organisation-address-field select {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 14px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    background: var(--color-card);
+    color: var(--color-text);
+
+    font: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.organisation-address-field input::placeholder {
+    color: #9db4aa;
+}
+
+.organisation-address-field input:focus,
+.organisation-address-field select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(47, 118, 85, 0.12);
+}
+
+.organisation-address-field select {
+    cursor: pointer;
+}
+
+
+
+.organisation-profile-error {
+    margin: 20px 0 0;
+    padding: 12px 16px;
+
+    border-radius: var(--radius-sm);
+    background: rgba(217, 106, 106, 0.1);
+    color: var(--color-error);
+
+    font-size: 13px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.organisation-profile-submit-row {
+    width: 100%;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.organisation-profile-submit-row p {
+    max-width: 430px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.organisation-profile-submit {
+    width: min(100%, 380px);
+    min-height: 50px;
+    font-size: 18px;
+}
+
+@media (max-width: 900px) {
+    .organisation-profile-setup-form {
+        grid-template-columns: 1fr;
+    }
+
+    .organisation-profile-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .organisation-profile-setup-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+}
+
+@media (max-width: 650px) {
+    .organisation-profile-setup-page {
+        padding: 20px 14px;
+    }
+
+    .organisation-profile-setup-header h1 {
+        font-size: 25px;
+    }
+
+    .organisation-profile-sidebar,
+    .organisation-profile-fields {
+        padding: 22px;
+    }
+
+    .organisation-fields-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .organisation-profile-submit-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .organisation-profile-submit {
+        width: 100%;
+    }
+
+    .organisation-address-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .organisation-address-field-wide {
+        grid-column: auto;
+    }
+
+    .organisation-profile-submit {
+        width: 100%;
+    }
+}
