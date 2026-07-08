@@ -10,6 +10,7 @@ export const routes = {
 
     home: {
         dashboard: "/dashboard",
+        profileSetup: "/profile/setup",
     },
 
     listings: {

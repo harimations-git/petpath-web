@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn, signOut, resendSignUpCode } from "aws-amplify/auth";
 import { getCurrentOrganisationProfile } from "../../services/organisation/organisationService";
-import { getRouteForOrganisationStatus } from "../../services/organisation/organisationRedirect";
+import { getRouteForOrganisation } from "../../services/organisation/organisationRedirect";
 
 import { Mail, Lock } from "lucide-react";
 import Logo from "../../components/ui/Logo";
@@ -85,9 +85,7 @@ export default function ShelterLogin() {
 
       const organisationProfile = await getCurrentOrganisationProfile();
 
-      const nextRoute = getRouteForOrganisationStatus(
-        organisationProfile.accountStatus
-      );
+      const nextRoute = getRouteForOrganisation(organisationProfile);
 
       navigate(nextRoute, { replace: true });
     } catch (error) {
@@ -113,7 +111,9 @@ export default function ShelterLogin() {
           replace: true,
           state: {
             email: normalisedEmail,
+            password,
             accountType: "shelter",
+            fromLogin: true,
           },
         });
 
@@ -164,7 +164,7 @@ export default function ShelterLogin() {
               onChange={setPassword}
             />
 
-            <Spacer height={5}/>
+            <Spacer height={5} />
 
             <Link className="forgot-link" to={routes.auth.forgotPassword}>
               Forgot password?

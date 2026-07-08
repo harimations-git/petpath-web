@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { confirmSignUp, resendSignUpCode, autoSignIn, signIn } from "aws-amplify/auth";
+import { confirmSignUp, resendSignUpCode, autoSignIn, signIn, getCurrentUser } from "aws-amplify/auth";
 
 import { ArrowLeft } from "lucide-react";
 
@@ -73,54 +73,106 @@ export default function VerifyEmail() {
             return;
         }
 
+        function goToAccountReview() {
+            sessionStorage.removeItem("pendingVerificationEmail");
+
+            navigate(routes.auth.accountReview, {
+                replace: true,
+                state: {
+                    message:
+                        "Email verified. Your shelter account is now pending manual review.",
+                    accountType: "shelter",
+                },
+            });
+        }
+
         try {
             setIsLoading(true);
 
-            await confirmSignUp({
+            const confirmResult = await confirmSignUp({
                 username: normalisedEmail,
                 confirmationCode: verificationCode,
             });
 
-            sessionStorage.removeItem("pendingVerificationEmail");
+            console.log("Confirm sign-up result:", confirmResult);
 
+            /*
+             * The user may already be authenticated.
+             * In that case, do not call autoSignIn or signIn again.
+             */
+            try {
+                await getCurrentUser();
+                goToAccountReview();
+                return;
+            } catch {
+                // No existing session, continue with sign-in flow.
+            }
+
+            /*
+             * User arrived from the login page.
+             * Confirm the email and then sign in using the password
+             * they entered on the login page.
+             */
             if (fromLogin && passwordFromLogin) {
-                await signIn({
+                const signInResult = await signIn({
                     username: normalisedEmail,
                     password: passwordFromLogin,
                 });
 
-                navigate(routes.auth.accountReview, {
-                    replace: true,
-                    state: {
-                        message: "Email verified. Your shelter account is now pending manual review.",
-                        accountType: "shelter",
-                    },
-                });
+                if (!signInResult.isSignedIn) {
+                    throw new Error("Your email was verified, but sign-in was not completed.");
+                }
 
+                goToAccountReview();
                 return;
             }
 
-            try {
-                await autoSignIn();
+            /*
+             * User arrived directly from registration.
+             * Only call autoSignIn when Cognito explicitly requests it.
+             */
+            if (
+                confirmResult.nextStep.signUpStep === "COMPLETE_AUTO_SIGN_IN"
+            ) {
+                try {
+                    const autoSignInResult = await autoSignIn();
 
-                navigate(routes.auth.accountReview, {
-                    replace: true,
-                    state: {
-                        message: "Email verified. Your shelter account is now pending manual review.",
-                        accountType: "shelter",
-                    },
-                });
-            } catch (autoSignInError) {
-                console.log("Auto sign-in unavailable:", autoSignInError);
+                    if (!autoSignInResult.isSignedIn) {
+                        throw new Error("Automatic sign-in was not completed.");
+                    }
 
-                navigate(routes.auth.login, {
-                    replace: true,
-                    state: {
-                        message: "Email verified. Please log in to continue.",
-                        accountType: "shelter",
-                    },
-                });
+                    goToAccountReview();
+                    return;
+                } catch (error) {
+                    const errorName =
+                        error instanceof Error ? error.name : "";
+
+                    /*
+                     * This means the user is already signed in,
+                     * so they can continue to the review page.
+                     */
+                    if (errorName === "UserAlreadyAuthenticatedException") {
+                        goToAccountReview();
+                        return;
+                    }
+
+                    throw error;
+                }
             }
+
+            /*
+             * Email was confirmed, but there is no active sign-in flow.
+             * Send the user to login.
+             */
+            sessionStorage.removeItem("pendingVerificationEmail");
+
+            navigate(routes.auth.login, {
+                replace: true,
+                state: {
+                    message: "Email verified. Please log in to continue.",
+                    accountType: "shelter",
+                },
+            });
         } catch (error) {
             console.log("Verify email error:", error);
 
@@ -133,7 +185,7 @@ export default function VerifyEmail() {
             setIsLoading(false);
         }
     }
-    
+
     async function handleResendCode() {
         setFormError("");
         setSuccessMessage("");
