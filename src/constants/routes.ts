@@ -2,7 +2,7 @@ export const routes = {
     auth: {
         login: "/login",
         registerShelter: "/register",
-        forgotPassword: "/forgot-password",
+        forgotPassword: "/forgot-password", //dont forget this!!!!
         accountType: "/accountType",
         verifyEmail: "/verifyEmail",
         accountReview: "/accountReview"
@@ -10,6 +10,9 @@ export const routes = {
 
     home: {
         dashboard: "/dashboard",
+        myListings: "/myListings",
+        createListing: "/createListing",
+        settings: "/settings",
         profileSetup: "/profile/setup",
     },
 

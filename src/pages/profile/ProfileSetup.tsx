@@ -325,7 +325,7 @@ export default function ProfileSetup() {
 
                 <div>
                     <span>Organisation onboarding</span>
-                    <h1>Complete your organisation profile</h1>
+                    <h1>Complete your profile</h1>
                     <p>
                         This information will help adopters understand who you
                         are and where your organisation is based.

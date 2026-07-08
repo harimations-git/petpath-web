@@ -46,7 +46,6 @@ export default function TextInput({
           type="button"
           className="password-toggle"
           onClick={() => setIsPasswordVisible((current) => !current)}
-          aria-label={isPasswordVisible ? "Hide password" : "Show password"}
         >
           {isPasswordVisible ? <Eye size={22} /> : <EyeOff size={22} />}
         </button>

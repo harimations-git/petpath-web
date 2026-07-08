@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Building2 } from "lucide-react";
+import { Building2, Heart, Home, List, PawPrint, Plus, ShieldCheck } from "lucide-react";
 
 import InfoModal from "../../components/ui/InfoModal";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+
+import "./Dashboard.css"
 
 import {
     getCurrentOrganisationProfile,
     type OrganisationProfile,
 } from "../../services/organisation/organisationService";
 
+
 import { routes } from "../../constants/routes";
 import { useBackButtonRedirect } from "../../hooks/useBackButtonRedirect";
+import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAccountMenu";
 
 export default function Dashboard() {
     useBackButtonRedirect(routes.home.dashboard);
@@ -105,43 +109,142 @@ export default function Dashboard() {
 
     return (
         <main className="dashboard-page">
-            <h1>Shelter Dashboard</h1>
+            <header className="dashboard-header">
+                <div className="dashboard-heading">
+                    <h1>Shelter Dashboard</h1>
+                    <p>Manage your PetPath listings.</p>
+                </div>
 
-            <p>
-                Manage your PetPath listings.
-            </p>
+                <div className="dashboard-account-menu">
+                    <OrganisationAccountMenu />
+                </div>
+            </header>
 
-            <div className="dashboard-actions">
-                <Link
-                    to="/listings/new"
-                    aria-disabled={needsProfileSetup}
-                    onClick={(event) => {
-                        if (needsProfileSetup) {
-                            event.preventDefault();
-                        }
-                    }}
-                >
-                    Create pet listing
-                </Link>
+            <section
+                className="dashboard-statistics"
+            >
+                <article className="dashboard-stat-card">
+                    <span className="dashboard-stat-icon">
+                        <Home size={22} />
+                    </span>
 
-                <Link
-                    to="/listings"
-                    aria-disabled={needsProfileSetup}
-                    onClick={(event) => {
-                        if (needsProfileSetup) {
-                            event.preventDefault();
-                        }
-                    }}
-                >
-                    View my listings
-                </Link>
-            </div>
+                    <div>
+                        <span>Active listings</span>
+                        <strong>24</strong> {/*Will get the users real stats!!*/}
+                    </div>
+                </article>
+
+                <article className="dashboard-stat-card">
+                    <span className="dashboard-stat-icon">
+                        <ShieldCheck size={22} />
+                    </span>
+
+                    <div>
+                        <span>Pending review</span>
+                        <strong>6</strong> {/*Will get the users real stats!!*/}
+                    </div>
+                </article>
+
+                <article className="dashboard-stat-card">
+                    <span className="dashboard-stat-icon">
+                        <Heart size={22} /> {/*Will get the users real stats!!*/}
+                    </span>
+
+                    <div>
+                        <span>Reserved pets</span>
+                        <strong>5</strong> {/*Will get the users real stats!!*/}
+                    </div>
+                </article>
+
+                <article className="dashboard-stat-card">
+                    <span className="dashboard-stat-icon">
+                        <PawPrint size={22} />
+                    </span>
+
+                    <div>
+                        <span>Re-homed this month</span>
+                        <strong>8</strong> {/*Will get the users real stats!!*/}
+                    </div>
+                </article>
+            </section>
+
+            <section className="dashboard-content-grid">
+                <article className="dashboard-summary-card">
+                    <h2>Listing status summary</h2>
+
+                    <div
+                        className="dashboard-pie-chart"
+                        role="img"
+                    />
+
+                    <div className="dashboard-chart-legend">
+                        <span>
+                            <i className="dashboard-legend-active" />
+                            Active
+                        </span>
+
+                        <span>
+                            <i className="dashboard-legend-pending" />
+                            Pending
+                        </span>
+
+                        <span>
+                            <i className="dashboard-legend-reserved" />
+                            Reserved
+                        </span>
+                    </div>
+                </article>
+
+                <article className="dashboard-quick-actions">
+                    <h2>Quick actions</h2>
+
+                    <div className="dashboard-quick-actions-links">
+                        <Link
+                            to={routes.home.createListing}
+                            aria-disabled={needsProfileSetup}
+                            onClick={(event) => {
+                                if (needsProfileSetup) {
+                                    event.preventDefault();
+                                }
+                            }}
+                        >
+                            <span className="dashboard-action-icon">
+                                <Plus size={27} />
+                            </span>
+
+                            <strong>Create new listing</strong>
+                        </Link>
+
+                        <Link
+                            to={routes.home.myListings}
+                            aria-disabled={needsProfileSetup}
+                            onClick={(event) => {
+                                if (needsProfileSetup) {
+                                    event.preventDefault();
+                                }
+                            }}
+                        >
+                            <span className="dashboard-action-icon">
+                                <List size={27} />
+                            </span>
+
+                            <strong>View all listings</strong>
+                        </Link>
+                    </div>
+                </article>
+            </section>
+
+            <img
+                className="dashboard-corner-image"
+                src="/images/Dashboard-Animals.png"
+                alt=""
+                aria-hidden="true"
+            />
 
             <InfoModal
                 visible={needsProfileSetup}
                 icon={Building2}
-                title={`Welcome, ${organisationProfile?.charityName ??
-                    "to PetPath"
+                title={`Welcome, ${organisationProfile?.charityName ?? "to PetPath"
                     }`}
                 message="Before you can start listing pets, you must complete your profile setup. This helps adopters understand who you are and how to contact you."
                 buttonText="Complete profile"

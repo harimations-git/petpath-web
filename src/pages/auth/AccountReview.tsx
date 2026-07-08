@@ -76,7 +76,7 @@ export default function AccountReview() {
                     type="button"
                     className="account-type-back"
                     onClick={() => { navigate(routes.auth.login) }}
-                    aria-label="Go back"
+
                 >
                     <ArrowLeft size={22} />
                 </button>

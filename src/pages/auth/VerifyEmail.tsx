@@ -226,7 +226,6 @@ export default function VerifyEmail() {
                     type="button"
                     className="account-type-back"
                     onClick={() => { navigate(routes.auth.login) }}
-                    aria-label="Go back"
                 >
                     <ArrowLeft size={22} />
                 </button>
