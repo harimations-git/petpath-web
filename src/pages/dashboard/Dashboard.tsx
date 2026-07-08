@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Building2, Heart, Home, List, PawPrint, Plus, ShieldCheck } from "lucide-react";
 
@@ -8,10 +8,8 @@ import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import "./Dashboard.css"
 
 import {
-    getCurrentOrganisationProfile,
-    type OrganisationProfile,
-} from "../../services/organisation/organisationService";
-
+    useOrganisationProfile,
+} from "../../context/OrganisationProfileContext";
 
 import { routes } from "../../constants/routes";
 import { useBackButtonRedirect } from "../../hooks/useBackButtonRedirect";
@@ -21,70 +19,33 @@ export default function Dashboard() {
     useBackButtonRedirect(routes.home.dashboard);
     const navigate = useNavigate();
 
-    const [organisationProfile, setOrganisationProfile] =
-        useState<OrganisationProfile | null>(null);
-
-    const [isCheckingProfile, setIsCheckingProfile] =
-        useState(true);
-
-    const [profileError, setProfileError] =
-        useState("");
+    const { organisationProfile, isLoadingProfile, profileError } = useOrganisationProfile();
 
     useEffect(() => {
         document.title = "Shelter Dashboard | PetPath";
 
-        let isMounted = true;
-
-        async function loadOrganisationProfile() {
-            try {
-                const profile =
-                    await getCurrentOrganisationProfile();
-
-                if (!isMounted) return;
-
-                if (profile.accountStatus === "pending") {
-                    navigate(routes.auth.accountReview, {
-                        replace: true,
-                    });
-
-                    return;
-                }
-
-                if (profile.accountStatus !== "approved") {
-                    navigate(routes.auth.login, {
-                        replace: true,
-                    });
-
-                    return;
-                }
-
-                setOrganisationProfile(profile);
-            } catch (error) {
-                console.error(
-                    "Unable to load organisation profile:",
-                    error
-                );
-
-                if (!isMounted) return;
-
-                setProfileError(
-                    "We couldn't load your organisation profile."
-                );
-            } finally {
-                if (isMounted) {
-                    setIsCheckingProfile(false);
-                }
-            }
+        if (!organisationProfile) {
+            return;
         }
 
-        loadOrganisationProfile();
+        if (organisationProfile.accountStatus === "pending") {
+            navigate(routes.auth.accountReview, {
+                replace: true,
+            });
 
-        return () => {
-            isMounted = false;
-        };
-    }, [navigate]);
+            return;
+        }
 
-    if (isCheckingProfile) {
+        if (
+            organisationProfile.accountStatus !== "approved"
+        ) {
+            navigate(routes.auth.login, {
+                replace: true,
+            });
+        }
+    }, [organisationProfile, navigate]);
+
+    if (isLoadingProfile) {
         return (
             <LoadingSpinner
                 size="xl"
@@ -93,6 +54,7 @@ export default function Dashboard() {
             />
         );
     }
+
 
     if (profileError) {
         return (

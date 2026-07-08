@@ -1,72 +1,121 @@
-import { useEffect, useRef, useState } from "react";
-import { ChevronDown, LogOut, Settings } from "lucide-react";
+import {
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+
+import {
+    ChevronDown,
+    LogOut,
+    Settings,
+} from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
 import { signOut } from "aws-amplify/auth";
-import { getCurrentOrganisationProfile, type OrganisationProfile } from "../../../services/organisation/organisationService";
+
 import { routes } from "../../../constants/routes";
+
+import {
+    useOrganisationProfile,
+} from "../../../context/OrganisationProfileContext";
 
 import "./OrganisationAccountMenu.css";
 
 export default function OrganisationAccountMenu() {
     const navigate = useNavigate();
 
-    const menuRef = useRef<HTMLDivElement | null>(null);
-    const [profile, setProfile] = useState<OrganisationProfile | null>(null);
+    const {
+        organisationProfile: profile,
+        isLoadingProfile: isLoading,
+        clearCachedOrganisationProfile,
+    } = useOrganisationProfile();
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [imageFailed, setImageFailed] = useState(false);
+    const menuRef =
+        useRef<HTMLDivElement | null>(null);
 
+    const [isMenuOpen, setIsMenuOpen] =
+        useState(false);
+
+    const [imageFailed, setImageFailed] =
+        useState(false);
+
+    /*
+     * Reset the image error state whenever the profile image URL changes.
+     */
     useEffect(() => {
-        let isMounted = true;
+        setImageFailed(false);
+    }, [profile?.profileImageUrl]);
 
-        async function loadProfile() {
-            try {
-                const organisationProfile = await getCurrentOrganisationProfile();
-
-                if (!isMounted) return;
-
-                setProfile(organisationProfile);
-            } catch (error) {
-                console.error("Unable to load account menu profile");
-            } finally {
-                if (isMounted) {
-                    setIsLoading(false);
-                }
-            }
-        }
-
-        loadProfile();
-
-        return () => {
-            isMounted = false;
-        };
-    }, []);
-
+    /*
+     * Close the account dropdown when the user clicks
+     * anywhere outside the account menu.
+     */
     useEffect(() => {
         function handleOutsideClick(
             event: MouseEvent
         ) {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setIsMenuOpen(false)
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(
+                    event.target as Node
+                )
+            ) {
+                setIsMenuOpen(false);
             }
         }
 
-        document.addEventListener("mousedown", handleOutsideClick);
+        document.addEventListener(
+            "mousedown",
+            handleOutsideClick
+        );
 
         return () => {
-            document.removeEventListener("mousedown", handleOutsideClick);
-        }
+            document.removeEventListener(
+                "mousedown",
+                handleOutsideClick
+            );
+        };
     }, []);
+
+    /*
+     * Creates initials to display when the profile image
+     * is unavailable or fails to load.
+     */
+    function getInitials(name: string) {
+        const words = name
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean);
+
+        if (words.length === 0) {
+            return "PP";
+        }
+
+        if (words.length === 1) {
+            return words[0]
+                .slice(0, 2)
+                .toUpperCase();
+        }
+
+        return `${words[0][0]}${words[1][0]}`
+            .toUpperCase();
+    }
 
     async function handleLogout() {
         try {
             await signOut();
 
-            navigate(routes.auth.login, { replace: true });
+            //clear profile cache
+            clearCachedOrganisationProfile();
+
+            navigate(routes.auth.login, {
+                replace: true,
+            });
         } catch (error) {
-            console.error("Unable to log out: ", error);
+            console.error(
+                "Unable to log out:",
+                error
+            );
         }
     }
 
@@ -83,9 +132,12 @@ export default function OrganisationAccountMenu() {
         );
     }
 
-    const organisationName = profile?.charityName || "Account details"
+    const organisationName =
+        profile?.charityName || "Account details";
 
-    const shouldShowImage = Boolean(profile?.profileImageUrl) && !imageFailed;
+    const shouldShowImage =
+        Boolean(profile?.profileImageUrl) &&
+        !imageFailed;
 
     return (
         <div
@@ -96,13 +148,16 @@ export default function OrganisationAccountMenu() {
                 type="button"
                 className="organisation-account-trigger"
                 onClick={() =>
-                    setIsMenuOpen((current) => !current)
+                    setIsMenuOpen(
+                        (current) => !current
+                    )
                 }
                 aria-expanded={isMenuOpen}
                 aria-haspopup="menu"
+                aria-controls="organisation-account-dropdown"
             >
                 <div className="organisation-account-avatar">
-                    {shouldShowImage && (
+                    {shouldShowImage ? (
                         <img
                             src={profile?.profileImageUrl}
                             alt={`${organisationName} profile`}
@@ -110,6 +165,12 @@ export default function OrganisationAccountMenu() {
                                 setImageFailed(true)
                             }
                         />
+                    ) : (
+                        <span>
+                            {getInitials(
+                                organisationName
+                            )}
+                        </span>
                     )}
                 </div>
 
@@ -118,22 +179,22 @@ export default function OrganisationAccountMenu() {
                         {organisationName}
                     </strong>
 
-                    <span>
-                        Shelter account
-                    </span>
+                    <span>Shelter account</span>
                 </div>
 
                 <ChevronDown
-                    className={`organisation-account-chevron ${isMenuOpen
-                        ? "organisation-account-chevron-open"
-                        : ""
-                        }`}
+                    className={`organisation-account-chevron ${
+                        isMenuOpen
+                            ? "organisation-account-chevron-open"
+                            : ""
+                    }`}
                     size={18}
                 />
             </button>
 
             {isMenuOpen && (
                 <div
+                    id="organisation-account-dropdown"
                     className="organisation-account-dropdown"
                     role="menu"
                 >
@@ -142,6 +203,7 @@ export default function OrganisationAccountMenu() {
                         role="menuitem"
                         onClick={() => {
                             setIsMenuOpen(false);
+
                             navigate(
                                 routes.home.settings
                             );
