@@ -8,7 +8,7 @@ import ImageSlideShow from "../../components/ui/ImageSlideShow";
 import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
 import InfoModal from "../../components/ui/InfoModal";
 
-import { loginSlideshowContent } from "../../data/imageContent";
+import { loginSlideshowContent } from "../../constants/imageContent";
 
 import "./AccountType.css";
 import { routes } from "../../constants/routes";

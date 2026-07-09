@@ -12,6 +12,7 @@ export const routes = {
         dashboard: "/dashboard",
         myListings: "/myListings",
         createListing: "/createListing",
+        status:"/status",
         settings: "/settings",
         profileSetup: "/profile/setup",
     },

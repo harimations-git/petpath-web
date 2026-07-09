@@ -8,12 +8,12 @@ import RegisterShelter from "./pages/auth/RegisterShelter";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import AccountReview from "./pages/auth/AccountReview";
 
-import Dashboard from "./pages/dashboard/Dashboard";
-import OrganisationProfileSetup from "./pages/profile/ProfileSetup";
 import ShelterLayout from "./layouts/ShelterLayout";
 
-//import CreatePetListing from "./pages/listings/CreatePetListing";
-//import MyListings from "./pages/listings/MyListings";
+import Dashboard from "./pages/dashboard/Dashboard";
+import OrganisationProfileSetup from "./pages/profile/ProfileSetup";
+import MyListings from "./pages/dashboard/MyListings";
+import CreateListing from "./pages/dashboard/CreateListing";
 
 export default function App() {
     return (
@@ -33,6 +33,16 @@ export default function App() {
                 <Route
                     path={routes.home.dashboard}
                     element={<Dashboard />}
+                />
+
+                <Route
+                    path={routes.home.myListings}
+                    element={<MyListings />}
+                />
+
+                <Route
+                    path={routes.home.createListing}
+                    element={<CreateListing />}
                 />
             </Route>
 

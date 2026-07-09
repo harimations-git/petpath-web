@@ -109,7 +109,7 @@ export default function Dashboard() {
 
                 <article className="dashboard-stat-card">
                     <span className="dashboard-stat-icon">
-                        <Heart size={22} /> {/*Will get the users real stats!!*/}
+                        <Heart size={22} /> 
                     </span>
 
                     <div>
@@ -198,8 +198,7 @@ export default function Dashboard() {
 
             <img
                 className="dashboard-corner-image"
-                src="/images/Dashboard-Animals.png"
-                alt=""
+                src="/images/Dashboard-Animals.webp"
                 aria-hidden="true"
             />
 

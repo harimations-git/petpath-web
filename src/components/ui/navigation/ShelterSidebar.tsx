@@ -42,7 +42,7 @@ const sidebarItems: SidebarItem[] = [
     },
     {
         label: "Status Updates",
-        route: routes.home.createListing,
+        route: routes.home.status,
         icon: <Bell size={20} />,
     },
     {

@@ -15,7 +15,7 @@ import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
 import "./Login.css";
 import Spacer from "../../components/layout/Spacer";
 
-import { loginSlideshowContent } from "../../data/imageContent";
+import { loginSlideshowContent } from "../../constants/imageContent";
 import { routes } from "../../constants/routes";
 import { Link } from "react-router-dom";
 

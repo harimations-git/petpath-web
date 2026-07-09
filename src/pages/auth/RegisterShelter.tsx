@@ -9,7 +9,7 @@ import ImageSlideShow from "../../components/ui/ImageSlideShow";
 import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
 
 import Spacer from "../../components/layout/Spacer";
-import { loginSlideshowContent } from "../../data/imageContent";
+import { loginSlideshowContent } from "../../constants/imageContent";
 
 import "./RegisterShelter.css";
 import { Link, useNavigate } from "react-router-dom";
