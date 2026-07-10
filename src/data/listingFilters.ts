@@ -1,6 +1,6 @@
 import type {
     FilterOption,
-} from "../components/ui//filters/FilterDropdown";
+} from "../components/ui/filters/FilterDropdown";
 
 export const speciesFilterOptions: FilterOption[] = [
     {

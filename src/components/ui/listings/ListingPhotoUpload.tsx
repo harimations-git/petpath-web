@@ -260,8 +260,8 @@ export default function ListingPhotoUpload({
                 <button
                     type="button"
                     className={`listing-photo-dropzone ${isDragging
-                            ? "listing-photo-dropzone-active"
-                            : ""
+                        ? "listing-photo-dropzone-active"
+                        : ""
                         }`}
                     onClick={openFilePicker}
                     onDragOver={
@@ -367,8 +367,11 @@ export default function ListingPhotoUpload({
                         <span>Add photo</span>
 
                         <small>
-                            Optional
+                            {photos.length === 0 && index === 0
+                                ? "Required"
+                                : "Optional"}
                         </small>
+
                     </button>
                 ))}
             </div>

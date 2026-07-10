@@ -11,7 +11,7 @@
 }
 
 .info-modal {
-  width: min(100%, 430px);
+  width: min(100%, 500px);
   padding: var(--spacing-xl);
   border-radius: 22px;
   background: var(--color-background);

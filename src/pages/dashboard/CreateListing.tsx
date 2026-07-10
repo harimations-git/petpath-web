@@ -5,7 +5,11 @@ import {
 } from "react";
 
 import {
+    Heart,
     Lock,
+    Send,
+    Shield,
+    ShieldAlertIcon,
     UserRound,
     UsersRound,
 } from "lucide-react";
@@ -18,7 +22,7 @@ import {
     animalSexOptions,
     individualAnimalTypeOptions,
     listingAnimalTypeOptions,
-} from "../../constants/listingOptions";
+} from "../../data/listingOptions";
 
 import type {
     AnimalSex,
@@ -29,11 +33,23 @@ import type {
     ListingType,
 } from "../../types/listing";
 
+
+
 import type { VaccinationStatus, MicrochipStatus, NeuteredStatus } from "../../types/vetInformation";
 
 import "./CreateListing.css";
 import ListingPhotoUpload from "../../components/ui/listings/ListingPhotoUpload";
 import VeterinaryDocumentUpload from "../../components/ui/listings/VeterinaryDocumentUpload";
+
+import type {
+    MatchingProfileForm,
+} from "../../types/matchingProfile";
+
+import MatchingProfileSection from "../../components/ui/listings/MatchingProfileSelection";
+import CustomButton from "../../components/ui/CustomButton";
+import InfoModal from "../../components/ui/InfoModal";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../constants/routes";
 
 function createEmptyAnimal(): ListingAnimalForm {
     return {
@@ -48,6 +64,11 @@ function createEmptyAnimal(): ListingAnimalForm {
 }
 
 export default function CreateListing() {
+
+    const navigate = useNavigate();
+
+    const [showModal, setShowModal] = useState(false);
+
     const {
         organisationProfile,
     } = useOrganisationProfile();
@@ -118,6 +139,33 @@ export default function CreateListing() {
         setVeterinaryDocuments,
     ] = useState<File[]>([]);
 
+    const [
+        matchingProfile,
+        setMatchingProfile,
+    ] = useState<MatchingProfileForm>({
+        petCost: "",
+        spaceNeeded: "",
+        experienceNeeded: "",
+        activityNeeded: "",
+        attentionNeeded: "",
+        homeType: "",
+    });
+
+    //Validation
+
+    const healthProfileComplete =
+        vaccinationStatus &&
+        microchipStatus &&
+        neuteredStatus &&
+        veterinaryDocuments;
+
+    const matchingProfileComplete =
+        matchingProfile.petCost &&
+        matchingProfile.spaceNeeded &&
+        matchingProfile.experienceNeeded &&
+        matchingProfile.activityNeeded &&
+        matchingProfile.attentionNeeded &&
+        matchingProfile.homeType;
 
     function getDomainFromUrl(value: string) {
         if (!value.trim()) {
@@ -296,6 +344,14 @@ export default function CreateListing() {
             return "Please upload at least one listing photo.";
         }
 
+        if (!matchingProfileComplete) {
+            return "Please complete every matching profile field.";
+        }
+
+        if (!healthProfileComplete) {
+            return "Please complete every question in the Health & Care section.";
+        }
+
         const incompleteAnimal =
             animals.find((animal) => {
                 return (
@@ -312,6 +368,12 @@ export default function CreateListing() {
 
         return "";
     }
+
+    /**
+     * Handle submit validates all entries and stores all information in the listingInput object
+     * @param event 
+     * @returns 
+     */
 
     function handleSubmit(
         event: SubmitEvent<HTMLFormElement>
@@ -348,6 +410,23 @@ export default function CreateListing() {
                 organisationProfile?.townCity ??
                 "",
 
+            vaccinationStatus,
+            microchipStatus,
+            neuteredStatus,
+            healthNotes: healthNotes.trim(),
+
+            matchingProfile: {
+                petCost: matchingProfile.petCost,
+                spaceNeeded: matchingProfile.spaceNeeded,
+                experienceNeeded:
+                    matchingProfile.experienceNeeded,
+                activityNeeded:
+                    matchingProfile.activityNeeded,
+                attentionNeeded:
+                    matchingProfile.attentionNeeded,
+                homeType: matchingProfile.homeType,
+            },
+
             animals: animals.map((animal) => ({
                 ...animal,
 
@@ -374,6 +453,8 @@ export default function CreateListing() {
          * for example: 
          * await createPetListing(listingInput);
          */
+
+        setShowModal(true);
     }
 
     return (
@@ -392,7 +473,7 @@ export default function CreateListing() {
                 onSubmit={handleSubmit}
             >
                 <section className="create-listing-section">
-                    <h2>1. Listing basics</h2>
+                    <h2>1. Listing basics </h2>
 
                     <div className="listing-basics-grid">
                         <label className="create-listing-field">
@@ -900,8 +981,14 @@ export default function CreateListing() {
                     </div>
                 </section>
 
+                <MatchingProfileSection
+                    value={matchingProfile}
+                    onChange={setMatchingProfile}
+                    sectionNumber={4}
+                />
+
                 <section className="create-listing-section">
-                    <h2>4. Health & care</h2>
+                    <h2>5. Health & care</h2>
 
                     <div className="health-care-grid">
                         <label className="create-listing-field">
@@ -1029,13 +1116,33 @@ export default function CreateListing() {
                     </p>
                 )}
 
-                <button
+                <CustomButton
+                    label="Submit for review"
+                    icon={<Send size={22} />}
                     type="submit"
                     className="create-listing-continue"
-                >
-                    Continue
-                </button>
+                />
             </form>
+            <InfoModal
+                visible={showModal}
+                title="Review"
+                message="Your listing will now be reviewed by our team before it goes live. This helps us ensure that every listing is genuine and safe for our users."
+                warning="Note: You will be notified when a decision has been made!"
+                icon={Shield}
+                buttonText="Continue"
+                onClose={() => {
+                    setShowModal(false);
+                    navigate(
+                        routes.home.myListings
+                    );
+                }}
+                onConfirm={() => {
+                    setShowModal(false);
+                    navigate(
+                        routes.home.myListings
+                    );
+                }}
+            />
         </main>
     );
 }

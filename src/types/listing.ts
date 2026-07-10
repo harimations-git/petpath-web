@@ -1,3 +1,5 @@
+import type { MatchingProfileForm } from "./matchingProfile";
+
 export type ListingType =
     | "individual"
     | "group";
@@ -46,5 +48,13 @@ export type CreateListingInput = {
     description: string;
     locationTown: string;
     listingUrl: string;
+
+    vaccinationStatus: string;
+    microchipStatus: string;
+    neuteredStatus: string;
+    healthNotes: string;
+
+    matchingProfile: MatchingProfileForm;
+    
     animals: ListingAnimalForm[];
 };

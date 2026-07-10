@@ -10,7 +10,7 @@ import CustomButton from "../../components/ui/CustomButton";
 import ImageSlideShow from "../../components/ui/ImageSlideShow";
 
 import Spacer from "../../components/layout/Spacer";
-import { loginSlideshowContent } from "../../constants/imageContent";
+import { loginSlideshowContent } from "../../data/imageContent";
 
 import "./RegisterShelter.css"; //Basically the same css
 import "./VerifyEmail.css";

@@ -15,7 +15,7 @@ import {
     sortFilterOptions,
     speciesFilterOptions,
     statusFilterOptions,
-} from "../../constants/listingFilters";
+} from "../../data/listingFilters";
 
 import "./MyListings.css";
 import NavigationButton from "../../components/ui/navigation/NavigationButton";

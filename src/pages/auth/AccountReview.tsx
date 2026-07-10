@@ -7,7 +7,7 @@ import ImageSlideShow from "../../components/ui/ImageSlideShow";
 import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
 
 import Spacer from "../../components/layout/Spacer";
-import { loginSlideshowContent } from "../../constants/imageContent";
+import { loginSlideshowContent } from "../../data/imageContent";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 import "./RegisterShelter.css";
