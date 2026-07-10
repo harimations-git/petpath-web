@@ -1,0 +1,294 @@
+.vet-document-upload {
+    width: 100%;
+    margin-top: 18px;
+}
+
+.vet-document-upload-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+
+    margin-bottom: 10px;
+}
+
+.vet-document-upload-label {
+    display: block;
+
+    color: var(--color-primary-dark);
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.vet-document-upload-label strong {
+    margin-left: 3px;
+    color: var(--color-error);
+}
+
+.vet-document-upload-header p {
+    margin: 3px 0 0;
+
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.vet-document-required {
+    flex-shrink: 0;
+
+    padding: 4px 9px;
+
+    border-radius: var(--radius-pill);
+
+    background: rgba(217, 106, 106, 0.14);
+    color: var(--color-error);
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.vet-document-input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.vet-document-content {
+    display: grid;
+    grid-template-columns:
+        minmax(210px, 0.8fr)
+        minmax(260px, 1.2fr);
+
+    align-items: start;
+    gap: 14px;
+}
+
+.vet-document-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    min-height: 145px;
+    padding: 16px;
+
+    border: 1px dashed var(--color-primary);
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    color: var(--color-muted);
+
+    font: inherit;
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease;
+}
+
+.vet-document-dropzone svg {
+    color: var(--color-primary-dark);
+}
+
+.vet-document-dropzone strong {
+    color: var(--color-text);
+    font-size: 12px;
+}
+
+.vet-document-dropzone span {
+    color: var(--color-primary-dark);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.vet-document-dropzone small {
+    margin-top: 3px;
+
+    color: var(--color-muted);
+    font-size: 10px;
+}
+
+.vet-document-dropzone:hover,
+.vet-document-dropzone-active {
+    border-color: var(--color-primary-dark);
+    background: var(--color-pale-green);
+}
+
+.vet-document-dropzone:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.vet-document-list-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    min-width: 0;
+}
+
+.vet-document-list-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    color: var(--color-text);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.vet-document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.vet-document-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 9px;
+
+    min-height: 58px;
+    padding: 8px 9px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-card);
+}
+
+.vet-document-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: var(--radius-sm);
+
+    background: rgba(217, 106, 106, 0.14);
+    color: var(--color-error);
+}
+
+.vet-document-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    min-width: 0;
+}
+
+.vet-document-details strong {
+    overflow: hidden;
+
+    color: var(--color-text);
+    font-size: 11px;
+    font-weight: 800;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.vet-document-details small {
+    color: var(--color-muted);
+    font-size: 10px;
+}
+
+.vet-document-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: var(--color-muted);
+
+    cursor: pointer;
+}
+
+.vet-document-remove:hover {
+    background: rgba(217, 106, 106, 0.14);
+    color: var(--color-error);
+}
+
+.vet-document-hidden-count,
+.vet-document-collapse {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    width: 100%;
+    padding: 8px 10px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-background);
+    color: var(--color-primary-dark);
+
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.vet-document-collapse {
+    justify-content: center;
+
+    border: none;
+    background: transparent;
+}
+
+.vet-document-hidden-count:hover,
+.vet-document-collapse:hover {
+    background: var(--color-pale-green);
+}
+
+.vet-document-empty {
+    padding: 20px 12px;
+
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-sm);
+
+    color: var(--color-muted);
+    font-size: 11px;
+    text-align: center;
+}
+
+.vet-document-error {
+    margin: 10px 0 0;
+
+    color: var(--color-error);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+@media (max-width: 750px) {
+    .vet-document-content {
+        grid-template-columns: 1fr;
+    }
+
+    .vet-document-dropzone {
+        min-height: 130px;
+    }
+}

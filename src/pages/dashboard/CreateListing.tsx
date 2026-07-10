@@ -29,8 +29,11 @@ import type {
     ListingType,
 } from "../../types/listing";
 
+import type { VaccinationStatus, MicrochipStatus, NeuteredStatus } from "../../types/vetInformation";
+
 import "./CreateListing.css";
 import ListingPhotoUpload from "../../components/ui/listings/ListingPhotoUpload";
+import VeterinaryDocumentUpload from "../../components/ui/listings/VeterinaryDocumentUpload";
 
 function createEmptyAnimal(): ListingAnimalForm {
     return {
@@ -92,6 +95,30 @@ export default function CreateListing() {
 
     const [listingUrl, setListingUrl] = useState("");
 
+    const [
+        vaccinationStatus,
+        setVaccinationStatus,
+    ] = useState<VaccinationStatus>("");
+
+    const [
+        microchipStatus,
+        setMicrochipStatus,
+    ] = useState<MicrochipStatus>("");
+
+    const [
+        neuteredStatus,
+        setNeuteredStatus,
+    ] = useState<NeuteredStatus>("");
+
+    const [healthNotes, setHealthNotes] =
+        useState("");
+
+    const [
+        veterinaryDocuments,
+        setVeterinaryDocuments,
+    ] = useState<File[]>([]);
+
+
     function getDomainFromUrl(value: string) {
         if (!value.trim()) {
             return "";
@@ -133,6 +160,7 @@ export default function CreateListing() {
             listingUrl.trim().startsWith("https://")
             ? listingUrl.trim()
             : `https://${listingUrl.trim()}`;
+
 
     function handleListingTypeChange(
         newListingType: ListingType
@@ -622,7 +650,7 @@ export default function CreateListing() {
                     <div className="animal-section-heading">
                         <div>
                             <h2>
-                                2.{" "}
+                                3.{" "}
                                 {listingType === "group"
                                     ? "Animals in this group"
                                     : "Animal details"}
@@ -870,6 +898,129 @@ export default function CreateListing() {
                             )
                         )}
                     </div>
+                </section>
+
+                <section className="create-listing-section">
+                    <h2>4. Health & care</h2>
+
+                    <div className="health-care-grid">
+                        <label className="create-listing-field">
+                            <span>
+                                Vaccination status
+                                <strong>*</strong>
+                            </span>
+
+                            <select
+                                value={vaccinationStatus}
+                                onChange={(event) =>
+                                    setVaccinationStatus(
+                                        event.target.value as VaccinationStatus
+                                    )
+                                }
+                                required
+                            >
+                                <option value="">
+                                    Select status
+                                </option>
+
+                                <option value="up_to_date">
+                                    Up to date
+                                </option>
+
+                                <option value="partially_vaccinated">
+                                    Partially vaccinated
+                                </option>
+
+                                <option value="not_vaccinated">
+                                    Not vaccinated
+                                </option>
+
+                            </select>
+                        </label>
+
+                        <label className="create-listing-field">
+                            <span>
+                                Microchip status
+                                <strong>*</strong>
+                            </span>
+
+                            <select
+                                value={microchipStatus}
+                                onChange={(event) =>
+                                    setMicrochipStatus(
+                                        event.target.value as MicrochipStatus
+                                    )
+                                }
+                                required
+                            >
+                                <option value="">
+                                    Select status
+                                </option>
+
+                                <option value="microchipped">
+                                    Microchipped
+                                </option>
+
+                                <option value="not_microchipped">
+                                    Not microchipped
+                                </option>
+                            </select>
+                        </label>
+
+                        <label className="create-listing-field">
+                            <span>
+                                Neutered status
+                                <strong>*</strong>
+                            </span>
+
+                            <select
+                                value={neuteredStatus}
+                                onChange={(event) =>
+                                    setNeuteredStatus(
+                                        event.target.value as NeuteredStatus
+                                    )
+                                }
+                                required
+                            >
+                                <option value="">
+                                    Select status
+                                </option>
+
+                                <option value="neutered">
+                                    Neutered or spayed
+                                </option>
+
+                                <option value="not_neutered">
+                                    Not neutered
+                                </option>
+                            </select>
+                        </label>
+
+                        <label className="create-listing-field health-notes-field">
+                            <span>Health notes</span>
+
+                            <textarea
+                                value={healthNotes}
+                                onChange={(event) =>
+                                    setHealthNotes(event.target.value)
+                                }
+                                placeholder="Add any known conditions, medication or ongoing care requirements..."
+                                maxLength={1000}
+                            />
+
+                            <small>
+                                {healthNotes.length}/1000 characters
+                            </small>
+                        </label>
+                    </div>
+
+                    <VeterinaryDocumentUpload
+                        documents={veterinaryDocuments}
+                        onChange={setVeterinaryDocuments}
+                        maxFiles={10}
+                        maxFileSizeMb={10}
+                        required
+                    />
                 </section>
 
                 {formError && (

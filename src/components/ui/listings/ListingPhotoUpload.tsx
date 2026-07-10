@@ -15,6 +15,9 @@ import {
 
 import "./ListingPhotoUpload.css";
 
+import {
+    getFileKey,
+} from "../../../utils/fileUtils";
 
 type ListingPhotoUploadProps = {
     photos: File[];
@@ -29,14 +32,6 @@ const allowedImageTypes = [
     "image/png",
     "image/webp", //I think these work on mobile
 ];
-
-function getFileKey(file: File) {
-    return [
-        file.name,
-        file.size,
-        file.lastModified,
-    ].join("-");
-}
 
 export default function ListingPhotoUpload({
     photos,
