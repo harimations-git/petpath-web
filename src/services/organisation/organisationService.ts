@@ -47,7 +47,7 @@ export type CompleteOrganisationProfileInput = {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-async function getAuthToken() {
+export async function getAuthToken() {
   const session = await fetchAuthSession({ forceRefresh: true });
 
   const accessToken = session.tokens?.accessToken?.toString();

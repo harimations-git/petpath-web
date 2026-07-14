@@ -18,6 +18,7 @@ import {
 } from "../../data/listingFilters";
 
 import "./MyListings.css";
+import "./PageHeading.css";
 
 export default function StatusUpdates() {
 
@@ -80,9 +81,9 @@ export default function StatusUpdates() {
     }
 
     return (
-        <main className="my-listings-page">
-            <header className="my-listings-header">
-                <div className="my-listings-heading">
+        <main className="page-body">
+            <header className="page-header">
+                <div className="page-heading">
                     <h1>Status Updates</h1>
 
                     <p>
@@ -90,7 +91,7 @@ export default function StatusUpdates() {
                     </p>
                 </div>
 
-                <div className="my-listings-account-menu">
+                <div className="page-account-menu">
                     <OrganisationAccountMenu />
                 </div>
             </header>

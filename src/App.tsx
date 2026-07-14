@@ -17,6 +17,7 @@ import CreateListing from "./pages/dashboard/CreateListing";
 import StatusUpdates from "./pages/dashboard/StatusUpdates";
 import Settings from "./pages/dashboard/Settings";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import Support from "./pages/dashboard/Support";
 
 export default function App() {
     return (
@@ -58,6 +59,12 @@ export default function App() {
                     path={routes.home.settings}
                     element={<Settings />}
                 />
+
+                <Route
+                    path={routes.home.support}
+                    element={<Support />}
+                />
+
             </Route>
 
             {/*Unkown route fallback*/}

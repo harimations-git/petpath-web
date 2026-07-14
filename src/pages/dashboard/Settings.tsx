@@ -8,18 +8,12 @@ import { routes } from "../../constants/routes";
 import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
-
-
-import {
-    Building2,
-    Mail,
-    Pencil,
-    ShieldCheck,
-} from "lucide-react";
-import Card from "../../components/ui/Card";
+import { Building2, Mail, Pencil, ShieldCheck } from "lucide-react";
 
 import "./MyListings.css";
 import "./Settings.css";
+
+import Card from "../../components/ui/Card";
 import ProfilePictureCard from "../../components/ui/profile/ProfilePictureCard";
 import Spacer from "../../components/layout/Spacer";
 
@@ -185,9 +179,9 @@ export default function Settings() {
     }
 
     return (
-        <main className="settings-page">
-            <header className="settings-header">
-                <div className="settings-heading">
+        <main className="page-body">
+            <header className="page-header">
+                <div className="page-heading">
                     <h1>Settings</h1>
 
                     <p>

@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 
 import {
     Bell,
+    HelpCircleIcon,
     Home,
     List,
     Menu,
@@ -50,6 +51,12 @@ const sidebarItems: SidebarItem[] = [
         route: routes.home.settings,
         icon: <Settings size={20} />,
     },
+
+    {
+        label: "Help Centre",
+        route: routes.home.support,
+        icon: <HelpCircleIcon size={20} />,
+    },
 ];
 
 export default function ShelterSidebar() {
@@ -61,9 +68,8 @@ export default function ShelterSidebar() {
 
     return (
         <aside
-            className={`shelter-sidebar ${
-                isMenuOpen ? "shelter-sidebar-open" : ""
-            }`}
+            className={`shelter-sidebar ${isMenuOpen ? "shelter-sidebar-open" : ""
+                }`}
         >
             <div className="shelter-sidebar-decoration">
                 <DecorativeLeaf
@@ -115,11 +121,15 @@ export default function ShelterSidebar() {
                         end={item.route === routes.home.dashboard}
                         onClick={closeMenu}
                         className={({ isActive }) =>
-                            `shelter-sidebar-link ${
-                                isActive
-                                    ? "shelter-sidebar-link-active"
-                                    : ""
-                            }`
+                            [
+                                "shelter-sidebar-link",
+                                isActive ? "shelter-sidebar-link-active" : "",
+                                item.label === "Status Updates"
+                                    ? "shelter-sidebar-link-divider"
+                                    : "",
+                            ]
+                                .filter(Boolean)
+                                .join(" ")
                         }
                     >
                         <span className="shelter-sidebar-icon">

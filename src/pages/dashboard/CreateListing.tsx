@@ -26,17 +26,24 @@ import {
 import type {
     AnimalSex,
     AnimalType,
-    CreateListingInput,
+    CreatePetListingRequest,
     ListingAnimalCategory,
     ListingAnimalForm,
     ListingType,
 } from "../../types/listing";
 
-
+import {
+    createFileMetadata,
+    createPetListing,
+    prepareListingUploads,
+    uploadPreparedListingFiles,
+} from "../../services/listings/listingService";
 
 import type { VaccinationStatus, MicrochipStatus, NeuteredStatus } from "../../types/vetInformation";
 
 import "./CreateListing.css";
+import "./PageHeading.css";
+
 import ListingPhotoUpload from "../../components/ui/listings/ListingPhotoUpload";
 import VeterinaryDocumentUpload from "../../components/ui/listings/VeterinaryDocumentUpload";
 
@@ -49,6 +56,8 @@ import CustomButton from "../../components/ui/CustomButton";
 import InfoModal from "../../components/ui/InfoModal";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../constants/routes";
+import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAccountMenu";
+import { useOrganisationListings } from "../../context/OrganisationListingsContext";
 
 function createEmptyAnimal(): ListingAnimalForm {
     return {
@@ -67,10 +76,13 @@ export default function CreateListing() {
     const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const {
         organisationProfile,
     } = useOrganisationProfile();
+
+    const { refreshListings } = useOrganisationListings();
 
     const [listingTitle, setListingTitle] =
         useState("");
@@ -114,6 +126,8 @@ export default function CreateListing() {
     }, [organisationProfile]);
 
     const [listingUrl, setListingUrl] = useState("");
+
+    const [adoptionFee, setAdoptionFee] = useState("");
 
     const [
         vaccinationStatus,
@@ -331,6 +345,17 @@ export default function CreateListing() {
             return "Please enter the listing URL.";
         }
 
+        const fee = Number(adoptionFee);
+
+        if (
+            adoptionFee.trim() === "" ||
+            Number.isNaN(fee) ||
+            fee < 0 ||
+            fee > 999
+        ) {
+            return "Please enter an adoption fee between £0 and £999.";
+        }
+
         if (!listingUrlMatchesOrganisation) {
             return `The listing URL must use ${organisationDomain}.`;
         }
@@ -374,7 +399,7 @@ export default function CreateListing() {
      * @returns 
      */
 
-    function handleSubmit(
+    async function handleSubmit(
         event: SubmitEvent<HTMLFormElement>
     ) {
         event.preventDefault();
@@ -388,75 +413,171 @@ export default function CreateListing() {
         }
 
         setFormError("");
+        setIsSubmitting(true);
 
-        const listingInput: CreateListingInput = {
-            title: listingTitle.trim(),
+        try {
+            /*
+             * Ask the backend for the listing ID and
+             * temporary S3 upload URLs.
+             */
+            const preparedUploads =
+                await prepareListingUploads({
+                    photos:
+                        createFileMetadata(
+                            listingPhotos
+                        ),
 
-            listingType,
+                    documents:
+                        createFileMetadata(
+                            veterinaryDocuments
+                        ),
+                });
 
-            animalType: listingAnimalType,
+            /*
+             * Upload the actual photos and PDFs
+             * directly to S3.
+             */
+            await uploadPreparedListingFiles({
+                listingPhotos,
+                veterinaryDocuments,
+                preparedUploads,
+            });
 
-            numberOfAnimals:
-                listingType === "group"
-                    ? numberOfAnimals
-                    : 1,
+            /*
+             * Build the final request containing the
+             * listing details and uploaded S3 keys.
+             */
+            const listingRequest:
+                CreatePetListingRequest = {
+                listingId:
+                    preparedUploads.listingId,
 
-            description: description.trim(),
+                title:
+                    listingTitle.trim(),
 
-            listingUrl: normalisedListingUrl,
+                listingType,
 
-            locationTown:
-                organisationProfile?.townCity ??
-                "",
+                animalType:
+                    listingAnimalType,
 
-            vaccinationStatus,
-            microchipStatus,
-            neuteredStatus,
-            healthNotes: healthNotes.trim(),
+                numberOfAnimals:
+                    listingType === "group"
+                        ? numberOfAnimals
+                        : 1,
 
-            matchingProfile: {
-                petCost: matchingProfile.petCost,
-                spaceNeeded: matchingProfile.spaceNeeded,
-                experienceNeeded:
-                    matchingProfile.experienceNeeded,
-                activityNeeded:
-                    matchingProfile.activityNeeded,
-                attentionNeeded:
-                    matchingProfile.attentionNeeded,
-                homeType: matchingProfile.homeType,
-            },
+                description:
+                    description.trim(),
 
-            animals: animals.map((animal) => ({
-                ...animal,
+                enquiryUrl:
+                    normalisedListingUrl,
 
-                name: animal.name.trim(),
+                adoptionFee:
+                    Number(adoptionFee),
 
-                breedSpecies:
-                    animal.breedSpecies.trim(),
+                vaccinationStatus,
+                microchipStatus,
+                neuteredStatus,
 
-                ageText:
-                    animal.ageText.trim(),
+                healthNotes:
+                    healthNotes.trim(),
 
-                temperament:
-                    animal.temperament.trim(),
-            })),
-        };
+                photos:
+                    preparedUploads.photos.map(
+                        (photo, index) => ({
+                            key: photo.key,
 
-        console.log(
-            "Listing ready to submit:",
-            listingInput
-        );
+                            fileName:
+                                photo.fileName,
 
-        /*
-         * will eventually submit this to dynamoDB
-         * for example: 
-         * await createPetListing(listingInput);
-         */
+                            contentType:
+                                photo.contentType,
 
-        setShowModal(true);
+                            sizeBytes:
+                                photo.sizeBytes,
+
+                            photoOrder:
+                                index + 1,
+                        })
+                    ),
+
+                veterinaryDocuments:
+                    preparedUploads.documents.map(
+                        (document) => ({
+                            key: document.key,
+
+                            fileName:
+                                document.fileName,
+
+                            contentType:
+                                document.contentType,
+
+                            sizeBytes:
+                                document.sizeBytes,
+                        })
+                    ),
+
+                matchingProfile: {
+                    ...matchingProfile,
+                },
+
+                animals:
+                    animals.map(
+                        (animal, index) => ({
+                            animalId:
+                                animal.id,
+
+                            name:
+                                animal.name.trim(),
+
+                            animalType:
+                                animal.animalType as AnimalType,
+
+                            breedSpecies:
+                                animal.breedSpecies.trim(),
+
+                            sex:
+                                animal.sex as AnimalSex,
+
+                            ageText:
+                                animal.ageText.trim(),
+
+                            temperament:
+                                animal.temperament.trim(),
+
+                            animalOrder:
+                                index + 1,
+                        })
+                    ),
+            };
+
+            /*
+             * Create the DynamoDB listing, matching
+             * profile and animal records.
+             */
+            await createPetListing(
+                listingRequest
+            );
+
+            await refreshListings();
+
+            setShowModal(true);
+        } catch (error) {
+            console.error(
+                "Unable to create pet listing:",
+                error
+            );
+
+            setFormError(
+                error instanceof Error
+                    ? error.message
+                    : "Unable to create the pet listing."
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
-    useEffect(() =>{
+    useEffect(() => {
         document.title = "Create Listing | PetPath";
 
         if (!organisationProfile) {
@@ -481,14 +602,20 @@ export default function CreateListing() {
     }, [organisationProfile, navigate]);
 
     return (
-        <main className="create-listing-page">
-            <header className="create-listing-header">
-                <h1>Create Listing</h1>
+        <main className="page-body">
+            <header className="page-header">
+                <div className="page-heading">
+                    <h1>Create Listing</h1>
 
-                <p>
-                    Add a new pet listing for adopters
-                    to discover.
-                </p>
+                    <p>
+                        Add a new pet listing for adopters
+                        to discover.
+                    </p>
+                </div>
+
+                <div className="page-account-menu">
+                    <OrganisationAccountMenu />
+                </div>
             </header>
 
             <form
@@ -680,31 +807,9 @@ export default function CreateListing() {
                             </small>
                         </label>
 
-                        <label className="create-listing-field listing-location-field">
-                            <span>
-                                Location
-                            </span>
 
-
-
-                            <div className="listing-readonly-input">
-                                <input
-                                    type="text"
-                                    value={
-                                        organisationLocation ||
-                                        "No location available"
-                                    }
-                                    disabled
-                                    readOnly
-                                />
-
-                                <Lock
-                                    size={16}
-                                />
-                            </div>
-
-
-                        </label>
+                    </div>
+                    <div className="listing-basics-grid">
 
                         <label className="create-listing-field listing-url-field">
                             <span>
@@ -734,7 +839,71 @@ export default function CreateListing() {
                                     </small>
                                 )}
                         </label>
+
+                        <label className="create-listing-field adoption-fee-field">
+                            <span>
+                                Adoption fee (£)
+                                <strong>*</strong>
+                            </span>
+
+                            <div className="adoption-fee-input">
+
+
+                                <input
+                                    type="number"
+                                    min={0}
+                                    max={999}
+                                    step="10"
+                                    inputMode="decimal"
+                                    value={adoptionFee}
+                                    onChange={(event) => {
+                                        const numbersOnly = event.target.value
+                                            .replace(/\D/g, "")
+                                            .slice(0, 3);
+
+                                        setAdoptionFee(numbersOnly);
+                                    }}
+                                    placeholder="e.g. 150"
+                                    required
+                                />
+                            </div>
+
+                            <small>
+                                {listingType === "group"
+                                    ? "Enter the total adoption fee for the group."
+                                    : "Enter the adoption fee for this animal."}
+                            </small>
+                        </label>
+
+
+                        <label className="create-listing-field listing-location-field">
+                            <span>
+                                Location
+                            </span>
+
+
+
+                            <div className="listing-readonly-input">
+                                <input
+                                    type="text"
+                                    value={
+                                        organisationLocation ||
+                                        "No location available"
+                                    }
+                                    disabled
+                                    readOnly
+                                />
+
+                                <Lock
+                                    size={16}
+                                />
+                            </div>
+
+
+                        </label>
                     </div>
+
+
                 </section>
 
                 <ListingPhotoUpload
@@ -1147,10 +1316,19 @@ export default function CreateListing() {
                 )}
 
                 <CustomButton
-                    label="Submit for review"
-                    icon={<Send size={22} />}
+                    label={
+                        isSubmitting
+                            ? "Submitting listing..."
+                            : "Submit for review"
+                    }
+                    icon={
+                        isSubmitting
+                            ? undefined
+                            : <Send size={22} />
+                    }
                     type="submit"
                     className="create-listing-continue"
+                    disabled={isSubmitting}
                 />
             </form>
             <InfoModal
@@ -1173,6 +1351,6 @@ export default function CreateListing() {
                     );
                 }}
             />
-        </main>
+        </main >
     );
 }

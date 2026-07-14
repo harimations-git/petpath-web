@@ -24,7 +24,7 @@
     display: flex;
     justify-content: center;
 
-    margin-bottom: var(--spacing-lg);  
+    margin-bottom: var(--spacing-lg);
 }
 
 .shelter-sidebar-navigation {
@@ -99,6 +99,21 @@
 
 .shelter-sidebar-menu-button {
     display: none;
+}
+
+.shelter-sidebar-link-divider {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.shelter-sidebar-link-divider::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -13px;
+    height: 1px;
+    background: var(--color-border);
 }
 
 @media (max-width: 850px) {

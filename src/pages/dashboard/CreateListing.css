@@ -133,6 +133,41 @@
     color: var(--color-error);
 }
 
+.adoption-fee-input {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-card);
+}
+
+.adoption-fee-input:focus-within {
+    border-color: var(--color-primary);
+
+    box-shadow: 0 0 0 3px rgba(47, 118, 85, 0.12);
+}
+
+.adoption-fee-input>span {
+    padding-left: 14px;
+
+    color: var(--color-text);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.adoption-fee-input input {
+    width: 100%;
+    padding-left: 8px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+}
 
 /* Inputs, selects and textareas */
 
@@ -284,7 +319,7 @@
 /* Description and location */
 
 .create-listing-description {
-    grid-column: span 2;
+    grid-column: span 3;
 }
 
 .listing-location-field {

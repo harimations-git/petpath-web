@@ -1,66 +1,47 @@
-import { useEffect, useState } from "react";
-
-import { useOrganisationProfile } from "../../context/OrganisationProfileContext";
-import { routes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
 
-import { Bell, ListFilter, PawPrint, Plus } from "lucide-react";
-
-import SearchBar from "../../components/ui/filters/SearchBar";
-import FilterDropdown from "../../components/ui/filters/FilterDropdown";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAccountMenu";
 
-import {
-    sortFilterOptions,
-    speciesFilterOptions,
-    statusFilterOptions,
-} from "../../data/listingFilters";
+import { useMyListings } from "../../hooks/useMyListings";
+
+import { routes } from "../../constants/routes";
 
 import "./MyListings.css";
-import NavigationButton from "../../components/ui/navigation/NavigationButton";
-
-
-
+import "./PageHeading.css";
+import MyListingsFilters from "../../components/ui/listings/SearchFilters";
+import MyListingsResults from "../../components/ui/listings/MyListingResults";
 
 export default function MyListings() {
-
     const navigate = useNavigate();
-    const { organisationProfile, isLoadingProfile, profileError } = useOrganisationProfile();
 
-    const [searchQuery, setSearchQuery] = useState("");
-    const [speciesFilter, setSpeciesFilter] =
-        useState("all");
+    const {
+        isLoadingProfile,
+        profileError,
 
-    const [statusFilter, setStatusFilter] =
-        useState("all");
+        listings,
+        filteredListings,
 
-    const [sortOrder, setSortOrder] =
-        useState("newest");
+        hasMoreListings,
+        isLoadingListings,
+        isLoadingMoreListings,
+        listingsError,
 
-    useEffect(() => {
-        document.title = "My Listings | PetPath";
+        loadListings,
+        loadMoreListings,
 
-        if (!organisationProfile) {
-            return;
-        }
+        searchQuery,
+        setSearchQuery,
 
-        if (organisationProfile.accountStatus === "pending") {
-            navigate(routes.auth.accountReview, {
-                replace: true,
-            });
+        speciesFilter,
+        setSpeciesFilter,
 
-            return;
-        }
+        statusFilter,
+        setStatusFilter,
 
-        if (
-            organisationProfile.accountStatus !== "approved"
-        ) {
-            navigate(routes.auth.login, {
-                replace: true,
-            });
-        }
-    }, [organisationProfile, navigate]);
+        sortOrder,
+        setSortOrder,
+    } = useMyListings();
 
     if (isLoadingProfile) {
         return (
@@ -72,10 +53,9 @@ export default function MyListings() {
         );
     }
 
-
     if (profileError) {
         return (
-            <main className="dashboard-page">
+            <main className="page-body">
                 <p className="dashboard-error">
                     {profileError}
                 </p>
@@ -84,9 +64,9 @@ export default function MyListings() {
     }
 
     return (
-        <main className="my-listings-page">
-            <header className="my-listings-header">
-                <div className="my-listings-heading">
+        <main className="page-body">
+            <header className="page-header">
+                <div className="page-heading">
                     <h1>My Listings</h1>
 
                     <p>
@@ -94,49 +74,71 @@ export default function MyListings() {
                     </p>
                 </div>
 
-                <div className="my-listings-account-menu">
+                <div className="page-account-menu">
                     <OrganisationAccountMenu />
                 </div>
             </header>
 
-            <div className="my-listings-filters">
-                <div className="filters-row">
-                    <SearchBar
-                        value={searchQuery}
-                        onChange={setSearchQuery}
-                        placeholder="Search by pet name, breed or ID..."
-                    />
+            <MyListingsFilters
+                searchQuery={
+                    searchQuery
+                }
+                onSearchChange={
+                    setSearchQuery
+                }
+                speciesFilter={
+                    speciesFilter
+                }
+                onSpeciesChange={
+                    setSpeciesFilter
+                }
+                statusFilter={
+                    statusFilter
+                }
+                onStatusChange={
+                    setStatusFilter
+                }
+                sortOrder={
+                    sortOrder
+                }
+                onSortChange={
+                    setSortOrder
+                }
+            />
 
-                    <div className="filters">
-                        <FilterDropdown
-                            value={speciesFilter}
-                            options={speciesFilterOptions}
-                            onChange={setSpeciesFilter}
-                            icon={<PawPrint />}
-                        />
-
-                        <FilterDropdown
-                            value={statusFilter}
-                            options={statusFilterOptions}
-                            onChange={setStatusFilter}
-                            icon={<Bell />}
-                        />
-
-                        <FilterDropdown
-                            value={sortOrder}
-                            options={sortFilterOptions}
-                            onChange={setSortOrder}
-                            icon={<ListFilter />}
-                        />
-                    </div>
-
-                    <NavigationButton
-                        label="Create Listing"
-                        to={routes.home.createListing}
-                        icon={<Plus />}
-                    />
-                </div>
-            </div>
+            <MyListingsResults
+                listings={
+                    filteredListings
+                }
+                totalLoadedListings={
+                    listings.length
+                }
+                isLoading={
+                    isLoadingListings
+                }
+                isLoadingMore={
+                    isLoadingMoreListings
+                }
+                error={
+                    listingsError
+                }
+                hasMore={
+                    hasMoreListings
+                }
+                onRetry={
+                    loadListings
+                }
+                onLoadMore={
+                    loadMoreListings
+                }
+                onViewListing={(
+                    listingId
+                ) =>
+                    navigate(
+                        `${routes.home.myListings}/${listingId}`
+                    )
+                }
+            />
         </main>
     );
 }

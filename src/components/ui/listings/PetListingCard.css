@@ -1,0 +1,257 @@
+.my-listing-card {
+    display: grid;
+    grid-template-columns: 122px minmax(0, 1fr);
+    gap: 14px;
+
+    width: 100%;
+    max-width: 460px;
+    min-width: 0;
+    min-height: 164px;
+
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 22px;
+
+    box-shadow:
+        0 3px 2px rgba(15, 90, 59, 0.14),
+        0 8px 18px rgba(15, 90, 59, 0.08);
+}
+
+
+/* Image */
+
+.my-listing-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 122px;
+    height: 122px;
+
+    overflow: hidden;
+
+    color: var(--color-primary);
+    background: var(--color-pale-green);
+    border-radius: 17px;
+}
+
+.my-listing-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    object-fit: cover;
+}
+
+
+/* Card content */
+
+.my-listing-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-width: 0;
+}
+
+.my-listing-main {
+    min-width: 0;
+}
+
+.my-listing-main h2 {
+    margin: 2px 0 1px;
+
+    overflow: hidden;
+
+    color: var(--color-primary-dark);
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.15;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.my-listing-summary {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+
+    margin: 0 0 6px;
+
+    color: var(--color-text);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.my-listing-summary span {
+    color: var(--color-muted);
+}
+
+
+/* Status */
+
+.my-listing-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    width: fit-content;
+    min-height: 25px;
+
+    margin-bottom: 7px;
+    padding: 3px 12px;
+
+    border-radius: var(--radius-pill);
+
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.my-listing-status-available {
+    background: #dff0c9;
+}
+
+.my-listing-status-pending {
+    background: #fff0a6;
+}
+
+.my-listing-status-reserved {
+    background: #dceaf8;
+}
+
+.my-listing-status-rehomed {
+    background: #e6e6e6;
+}
+
+.my-listing-status-paused {
+    background: #f3dfd4;
+}
+
+/* Actions */
+
+.my-listing-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-top: 6px;
+    padding: 4px 4px 0;
+}
+
+.my-listing-actions button {
+    margin: 0;
+    padding: 0;
+
+    color: var(--color-primary-dark);
+    background: transparent;
+    border: 0;
+
+    font: inherit;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.my-listing-actions button:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.my-listing-actions button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: 3px;
+}
+
+.my-listing-action-divider {
+    color: var(--color-primary-dark);
+    font-size: 19px;
+    line-height: 1;
+}
+
+
+/* Make Delete red while pending */
+
+.my-listing-status-pending+.my-listing-actions {
+    color: inherit;
+}
+
+
+/* Responsive */
+
+@media (max-width: 600px) {
+    .my-listing-card {
+        grid-template-columns: 100px minmax(0, 1fr);
+        gap: 11px;
+
+        width: 100%;
+        max-width: 100%;
+        min-height: 142px;
+
+        padding: 8px;
+        border-radius: 18px;
+    }
+
+    .my-listing-image {
+        width: 100px;
+        height: 100px;
+
+        border-radius: 14px;
+    }
+
+    .my-listing-main h2 {
+        font-size: 18px;
+    }
+
+    .my-listing-summary {
+        font-size: 11px;
+    }
+
+    .my-listing-status {
+        min-height: 23px;
+        padding: 3px 10px;
+
+        font-size: 12px;
+    }
+
+    .my-listing-actions {
+        gap: 10px;
+    }
+
+    .my-listing-actions button,
+    .my-listing-action-divider {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 420px) {
+    .my-listing-card {
+        grid-template-columns: 86px minmax(0, 1fr);
+    }
+
+    .my-listing-image {
+        width: 86px;
+        height: 96px;
+    }
+
+    .my-listing-summary {
+        display: block;
+    }
+
+    .my-listing-summary span {
+        margin: 0 3px;
+    }
+}
