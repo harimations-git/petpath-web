@@ -42,7 +42,6 @@ export default function AuthProgressStepper({
               isCurrent ? "current" : "",
               isUpcoming ? "upcoming" : "",
             ].join(" ")}
-            aria-current={isCurrent ? "step" : undefined}
           >
             <span className="auth-progress-circle">
               {isCompleted ? (

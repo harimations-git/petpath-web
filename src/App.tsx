@@ -14,6 +14,9 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import OrganisationProfileSetup from "./pages/profile/ProfileSetup";
 import MyListings from "./pages/dashboard/MyListings";
 import CreateListing from "./pages/dashboard/CreateListing";
+import StatusUpdates from "./pages/dashboard/StatusUpdates";
+import Settings from "./pages/dashboard/Settings";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
 export default function App() {
     return (
@@ -27,6 +30,7 @@ export default function App() {
             <Route path={routes.auth.verifyEmail} element={<VerifyEmail />} />
             <Route path={routes.auth.accountReview} element={<AccountReview />} />
             <Route path={routes.home.profileSetup} element={<OrganisationProfileSetup />} />
+            <Route path={routes.auth.forgotPassword} element={<ForgotPassword />}/>
 
             {/*Logged-in shelter pages with sidebar*/}
             <Route element={<ShelterLayout />}>
@@ -43,6 +47,16 @@ export default function App() {
                 <Route
                     path={routes.home.createListing}
                     element={<CreateListing />}
+                />
+
+                <Route
+                    path={routes.home.status}
+                    element={<StatusUpdates />}
+                />
+
+                <Route
+                    path={routes.home.settings}
+                    element={<Settings />}
                 />
             </Route>
 

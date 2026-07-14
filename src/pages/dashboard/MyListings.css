@@ -226,7 +226,7 @@ body {
     }
 
     .my-listings-heading p {
-        display: none;
+        font-size: 14px;
     }
 
     .my-listings-account-menu {

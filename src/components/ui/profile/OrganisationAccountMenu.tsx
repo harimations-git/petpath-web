@@ -152,9 +152,6 @@ export default function OrganisationAccountMenu() {
                         (current) => !current
                     )
                 }
-                aria-expanded={isMenuOpen}
-                aria-haspopup="menu"
-                aria-controls="organisation-account-dropdown"
             >
                 <div className="organisation-account-avatar">
                     {shouldShowImage ? (

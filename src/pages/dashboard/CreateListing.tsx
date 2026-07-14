@@ -1,15 +1,14 @@
 import {
+    useEffect,
     useMemo,
     useState,
     type SubmitEvent,
 } from "react";
 
 import {
-    Heart,
     Lock,
     Send,
     Shield,
-    ShieldAlertIcon,
     UserRound,
     UsersRound,
 } from "lucide-react";
@@ -457,6 +456,30 @@ export default function CreateListing() {
         setShowModal(true);
     }
 
+    useEffect(() =>{
+        document.title = "Create Listing | PetPath";
+
+        if (!organisationProfile) {
+            return;
+        }
+
+        if (organisationProfile.accountStatus === "pending") {
+            navigate(routes.auth.accountReview, {
+                replace: true,
+            });
+
+            return;
+        }
+
+        if (
+            organisationProfile.accountStatus !== "approved"
+        ) {
+            navigate(routes.auth.login, {
+                replace: true,
+            });
+        }
+    }, [organisationProfile, navigate]);
+
     return (
         <main className="create-listing-page">
             <header className="create-listing-header">
@@ -677,7 +700,6 @@ export default function CreateListing() {
 
                                 <Lock
                                     size={16}
-                                    aria-hidden="true"
                                 />
                             </div>
 
@@ -700,10 +722,6 @@ export default function CreateListing() {
                                     organisationDomain
                                         ? `https://${organisationDomain}/pets/example`
                                         : "https://your-organisation.org/pets/example"
-                                }
-                                aria-invalid={
-                                    Boolean(listingUrl) &&
-                                    !listingUrlMatchesOrganisation
                                 }
                                 required
                             />
@@ -1022,6 +1040,10 @@ export default function CreateListing() {
                                     Not vaccinated
                                 </option>
 
+                                <option value="not_applicable">
+                                    Not applicable
+                                </option>
+
                             </select>
                         </label>
 
@@ -1051,6 +1073,10 @@ export default function CreateListing() {
                                 <option value="not_microchipped">
                                     Not microchipped
                                 </option>
+
+                                <option value="not_applicable">
+                                    Not applicable
+                                </option>
                             </select>
                         </label>
 
@@ -1079,6 +1105,10 @@ export default function CreateListing() {
 
                                 <option value="not_neutered">
                                     Not neutered
+                                </option>
+
+                                <option value="not_applicable">
+                                    Not applicable
                                 </option>
                             </select>
                         </label>

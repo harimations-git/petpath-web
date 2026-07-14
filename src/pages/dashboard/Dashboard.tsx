@@ -163,7 +163,6 @@ export default function Dashboard() {
                     <div className="dashboard-quick-actions-links">
                         <Link
                             to={routes.home.createListing}
-                            aria-disabled={needsProfileSetup}
                             onClick={(event) => {
                                 if (needsProfileSetup) {
                                     event.preventDefault();
@@ -179,7 +178,6 @@ export default function Dashboard() {
 
                         <Link
                             to={routes.home.myListings}
-                            aria-disabled={needsProfileSetup}
                             onClick={(event) => {
                                 if (needsProfileSetup) {
                                     event.preventDefault();
@@ -195,12 +193,6 @@ export default function Dashboard() {
                     </div>
                 </article>
             </section>
-
-            <img
-                className="dashboard-corner-image"
-                src="/images/Dashboard-Animals.webp"
-                aria-hidden="true"
-            />
 
             <InfoModal
                 visible={needsProfileSetup}

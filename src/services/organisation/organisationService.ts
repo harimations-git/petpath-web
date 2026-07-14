@@ -14,7 +14,7 @@ export type OrganisationProfile = {
   charityName: string;
   accountStatus: OrganisationStatus;
 
-  websiteURL?: string;
+  websiteUrl?: string;
   websiteDomain?: string;
   profileImageKey?: string;
   profileImageUrl?: string;
@@ -171,7 +171,109 @@ export async function uploadOrganisationProfileImage(
       "Unable to upload the profile picture."
     );
   }
-  
+
   // return the S3 object key so it can be saved in DynamoDB
   return profileImageKey;
+}
+/**
+ * Function verifies that the profile is complete and able to update it's profile picture
+ * Returns the complete organisation profile
+ * @param file 
+ * @param currentProfile 
+ * @returns 
+ */
+export async function updateOrganisationProfileImage(
+  file: File,
+  currentProfile: OrganisationProfile
+): Promise<OrganisationProfile> {
+  const profileImageKey =
+    await uploadOrganisationProfileImage(file);
+
+  const requiredValues = {
+    websiteUrl: currentProfile.websiteUrl,
+    websiteDomain: currentProfile.websiteDomain,
+    addressLine1: currentProfile.addressLine1,
+    townCity: currentProfile.townCity,
+    postcode: currentProfile.postcode,
+    country: currentProfile.country,
+  };
+
+  if (
+    !requiredValues.websiteUrl ||
+    !requiredValues.websiteDomain ||
+    !requiredValues.addressLine1 ||
+    !requiredValues.townCity ||
+    !requiredValues.postcode ||
+    !requiredValues.country
+  ) {
+    throw new Error(
+      "Your organisation profile is missing required information."
+    );
+  }
+
+  return completeOrganisationProfile({
+    websiteUrl:
+      requiredValues.websiteUrl,
+
+    websiteDomain:
+      requiredValues.websiteDomain,
+
+    profileImageKey,
+
+    description:
+      currentProfile.description ?? "",
+
+    addressLine1:
+      requiredValues.addressLine1,
+
+    addressLine2:
+      currentProfile.addressLine2,
+
+    townCity:
+      requiredValues.townCity,
+
+    county:
+      currentProfile.county,
+
+    postcode:
+      requiredValues.postcode,
+
+    country:
+      requiredValues.country,
+  });
+}
+
+/**
+ * Updates the user's profile description in dynamoDB
+ * @param description 
+ * @returns 
+ */
+export async function updateOrganisationDescription(
+  description: string
+): Promise<OrganisationProfile>{
+  const token = await getAuthToken();
+
+  const response = await fetch(`${API_BASE_URL}/organisation-profile/me/description`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        description,
+      }),
+    }
+  );
+
+  const body = await response.json().catch(() => null); //response body could cause an error, catch the error and use null instead
+
+  if (!response.ok) {
+    throw new Error(
+      body?.message ||
+        "Unable to update the description."
+    );
+  }
+
+  return body.organisationProfile;
 }

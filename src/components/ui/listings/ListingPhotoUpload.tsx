@@ -278,7 +278,6 @@ export default function ListingPhotoUpload({
                 >
                     <UploadCloud
                         size={34}
-                        aria-hidden="true"
                     />
 
                     <strong>
@@ -337,7 +336,6 @@ export default function ListingPhotoUpload({
                                         index
                                     )
                                 }
-                                aria-label={`Remove ${file.name}`}
                             >
                                 <X
                                     size={15}
@@ -347,33 +345,25 @@ export default function ListingPhotoUpload({
                     )
                 )}
 
-                {Array.from({
-                    length:
-                        remainingPhotoSpaces,
-                }).map((_, index) => (
+                {remainingPhotoSpaces > 0 && (
                     <button
-                        key={index}
                         type="button"
                         className="listing-photo-placeholder"
-                        onClick={
-                            openFilePicker
-                        }
+                        onClick={openFilePicker}
                     >
                         <ImagePlus
                             size={29}
-                            aria-hidden="true"
                         />
 
                         <span>Add photo</span>
 
                         <small>
-                            {photos.length === 0 && index === 0
+                            {photos.length === 0
                                 ? "Required"
                                 : "Optional"}
                         </small>
-
                     </button>
-                ))}
+                )}
             </div>
 
             {photoError && (

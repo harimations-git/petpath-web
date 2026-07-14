@@ -24,7 +24,6 @@ export default function NavigationButton({
             {icon && (
                 <span
                     className="navigation-button-icon"
-                    aria-hidden="true"
                 >
                     {icon}
                 </span>

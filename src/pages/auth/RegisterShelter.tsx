@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { routes } from "../../constants/routes";
 
 import { signUp } from "aws-amplify/auth";
-import { getSignUpErrorMessage } from "../../utils/authErrorMessage";
+import { getSignUpErrorMessage } from "../../utils/error/authErrorMessage";
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
 
 export default function RegisterShelter() {

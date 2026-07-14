@@ -4,7 +4,7 @@ import { useOrganisationProfile } from "../../context/OrganisationProfileContext
 import { routes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
 
-import { Bell, ListFilter, PawPrint, Plus } from "lucide-react";
+import { Bell, ListFilter, PawPrint } from "lucide-react";
 
 import SearchBar from "../../components/ui/filters/SearchBar";
 import FilterDropdown from "../../components/ui/filters/FilterDropdown";
@@ -18,12 +18,8 @@ import {
 } from "../../data/listingFilters";
 
 import "./MyListings.css";
-import NavigationButton from "../../components/ui/navigation/NavigationButton";
 
-
-
-
-export default function MyListings() {
+export default function StatusUpdates() {
 
     const navigate = useNavigate();
     const { organisationProfile, isLoadingProfile, profileError } = useOrganisationProfile();
@@ -39,7 +35,7 @@ export default function MyListings() {
         useState("newest");
 
     useEffect(() => {
-        document.title = "My Listings | PetPath";
+        document.title = "Status Updates | PetPath";
 
         if (!organisationProfile) {
             return;
@@ -87,10 +83,10 @@ export default function MyListings() {
         <main className="my-listings-page">
             <header className="my-listings-header">
                 <div className="my-listings-heading">
-                    <h1>My Listings</h1>
+                    <h1>Status Updates</h1>
 
                     <p>
-                        Manage, edit and review your current pet listings.
+                        Check your pet listing's status.
                     </p>
                 </div>
 
@@ -129,12 +125,6 @@ export default function MyListings() {
                             icon={<ListFilter />}
                         />
                     </div>
-
-                    <NavigationButton
-                        label="Create Listing"
-                        to={routes.home.createListing}
-                        icon={<Plus />}
-                    />
                 </div>
             </div>
         </main>

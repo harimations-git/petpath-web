@@ -60,7 +60,6 @@ export default function InfoModal({
       <section
         className="info-modal"
         role="dialog"
-        aria-modal="true"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="info-modal-icon-circle">

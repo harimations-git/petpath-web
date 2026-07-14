@@ -73,9 +73,7 @@
 .listing-basics-grid {
     display: grid;
     grid-template-columns:
-        minmax(190px, 1fr)
-        minmax(260px, 1.3fr)
-        minmax(170px, 0.75fr);
+        minmax(190px, 1fr) minmax(260px, 1.3fr) minmax(170px, 0.75fr);
 
     align-items: start;
     gap: 18px;
@@ -106,7 +104,7 @@
 
 /* Labels and legends */
 
-.create-listing-field > span,
+.create-listing-field>span,
 .listing-type-field legend {
     display: flex;
     align-items: flex-end;
@@ -484,13 +482,12 @@
 /* Mobile */
 
 @media (max-width: 650px) {
+
     .create-listing-page {
         gap: 16px;
 
         padding:
-            12px
-            var(--spacing-md)
-            var(--spacing-lg);
+            12px var(--spacing-md) var(--spacing-lg);
     }
 
     .create-listing-header h1 {
