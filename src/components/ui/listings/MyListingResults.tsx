@@ -1,4 +1,4 @@
-import { PawPrint } from "lucide-react";
+import { ChevronDown, LoaderCircle, PawPrint } from "lucide-react";
 
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -8,12 +8,15 @@ import type {
 } from "../../../types/listing";
 import PetListingCard from "./PetListingCard";
 
+import "./MyListingResults.css";
+
 type MyListingsResultsProps = {
     listings: PetListingSummary[];
     totalLoadedListings: number;
 
     isLoading: boolean;
     isLoadingMore: boolean;
+    isSearchingAllListings: boolean;
 
     error: string;
     hasMore: boolean;
@@ -30,6 +33,7 @@ export default function MyListingsResults({
     totalLoadedListings,
     isLoading,
     isLoadingMore,
+    isSearchingAllListings,
     error,
     hasMore,
     onRetry,
@@ -92,6 +96,21 @@ export default function MyListingsResults({
 
     return (
         <section className="my-listings-results">
+            {isSearchingAllListings && (
+                <div
+                    className="my-listings-filter-loading"
+                    role="status"
+                >
+                    <LoaderCircle
+                        size={17}
+                        className="my-listings-load-more-spinner"
+                    />
+
+                    <span>
+                        Searching all of your listings...
+                    </span>
+                </div>
+            )}
             <div className="my-listings-grid">
                 {listings.map((listing) => (
                     <PetListingCard
@@ -109,17 +128,32 @@ export default function MyListingsResults({
             {/*Will change when I have time to do pages*/}
             {hasMore && (
                 <div className="my-listings-load-more">
+                    <span className="my-listings-load-more-line" />
+
                     <button
                         type="button"
+                        className="my-listings-load-more-button"
                         onClick={onLoadMore}
-                        disabled={
-                            isLoadingMore
-                        }
+                        disabled={isLoadingMore}
+                        aria-busy={isLoadingMore}
                     >
-                        {isLoadingMore
-                            ? "Loading..."
-                            : "Load more"}
+                        {isLoadingMore ? (
+                            <LoaderCircle
+                                size={18}
+                                className="my-listings-load-more-spinner"
+                            />
+                        ) : (
+                            <ChevronDown size={18} />
+                        )}
+
+                        <span>
+                            {isLoadingMore
+                                ? "Loading listings"
+                                : "Load more listings"}
+                        </span>
                     </button>
+
+                    <span className="my-listings-load-more-line" />
                 </div>
             )}
 

@@ -20,9 +20,32 @@ export const speciesFilterOptions: FilterOption[] = [
         value: "rabbit",
     },
     {
+        label: "Guinea Pigs",
+        value: "guinea_pig"
+    },
+    {
         label: "Other",
         value: "other",
     },
+    {
+        label: "Mixed",
+        value: "mixed"
+    }
+];
+
+export const listingTypeFilterOptions: FilterOption[] = [
+    {
+        label: "All listings",
+        value: "all",
+    },
+    {
+        label: "Individual",
+        value: "individual",
+    },
+    {
+        label: "Group",
+        value: "group",
+    }
 ];
 
 export const statusFilterOptions: FilterOption[] = [

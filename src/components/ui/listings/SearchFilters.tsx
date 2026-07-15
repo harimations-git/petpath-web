@@ -1,6 +1,7 @@
 import {
     Bell,
     ListFilter,
+    Notebook,
     PawPrint,
     Plus,
 } from "lucide-react";
@@ -12,6 +13,7 @@ import NavigationButton from "../navigation/NavigationButton";
 import {
     sortFilterOptions,
     speciesFilterOptions,
+    listingTypeFilterOptions,
     statusFilterOptions,
 } from "../../../data/listingFilters";
 
@@ -23,6 +25,9 @@ type MyListingsFiltersProps = {
 
     speciesFilter: string;
     onSpeciesChange: (value: string) => void;
+
+    listingTypeFilter: string;
+    onListingTypeChange: (value: string) => void;
 
     statusFilter: string;
     onStatusChange: (value: string) => void;
@@ -36,6 +41,8 @@ export default function MyListingsFilters({
     onSearchChange,
     speciesFilter,
     onSpeciesChange,
+    listingTypeFilter,
+    onListingTypeChange,
     statusFilter,
     onStatusChange,
     sortOrder,
@@ -47,7 +54,7 @@ export default function MyListingsFilters({
                 <SearchBar
                     value={searchQuery}
                     onChange={onSearchChange}
-                    placeholder="Search by listing title or ID..."
+                    placeholder="Search by title..."
                 />
 
                 <div className="filters">
@@ -60,6 +67,19 @@ export default function MyListingsFilters({
                             onSpeciesChange
                         }
                         icon={<PawPrint />}
+                    />
+
+                    <FilterDropdown
+                        value={
+                            listingTypeFilter
+                        }
+                        options={
+                            listingTypeFilterOptions
+                        }
+                        onChange={
+                            onListingTypeChange
+                        }
+                        icon={<Notebook />}
                     />
 
                     <FilterDropdown

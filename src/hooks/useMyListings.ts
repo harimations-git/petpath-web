@@ -35,8 +35,27 @@ export function useMyListings() {
     //current filters
     const [searchQuery, setSearchQuery] = useState("");
     const [speciesFilter, setSpeciesFilter] = useState("all");
+    const [listingTypeFilter, setListingTypeFilter] = useState("all");
     const [statusFilter, setStatusFilter] = useState("all");
     const [sortOrder, setSortOrder] = useState("newest");
+
+    //checks if the user has active filters
+    const hasActiveFilters =
+        searchQuery.trim() !== "" ||
+        speciesFilter !== "all" ||
+        listingTypeFilter !== "all" ||
+        statusFilter !== "all";
+
+    /**
+     * checks if the app is loading those aditional listing so 
+     * those filters can search through them
+    */
+    const isSearchingAllListings =
+        hasActiveFilters &&
+        (
+            hasMoreListings ||
+            isLoadingMoreListings
+        );
 
     useEffect(() => {
         document.title =
@@ -89,10 +108,35 @@ export function useMyListings() {
         [organisationProfile?.accountStatus, loadListings] //runs when the account status or loadlistings change 
     );
 
+    /**
+     * automatically load every remaining page of listings 
+     * whenever a search or filter is active.
+     */
+    useEffect(() => {
+        if (
+            !hasActiveFilters ||
+            !hasMoreListings ||
+            isLoadingMoreListings ||
+            listingsError
+        ) {
+            return;
+        }
+
+        void loadMoreListings();
+    }, [
+        hasActiveFilters,
+        hasMoreListings,
+        isLoadingMoreListings,
+        listingsError,
+        loadMoreListings,
+        listings.length,
+    ]);
+
+
     /*Filter and searching
      *useMemo stores the calculated result until one of the dependencies change 
      */
-    const filteredListings = useMemo(() => { 
+    const filteredListings = useMemo(() => {
         const search = searchQuery.trim().toLowerCase();
 
         const filtered = listings.filter(
@@ -108,8 +152,14 @@ export function useMyListings() {
                 //animal type filtering
                 const matchesSpecies =
                     speciesFilter === "all" ||
-                    listing.animalType === speciesFilter;
+                    listing.animalType
+                        ?.trim()
+                        .toLowerCase() === speciesFilter;
 
+                //listing type filtering
+                const matchesListingType =
+                    listingTypeFilter === "all" ||
+                    listing.listingType === listingTypeFilter;
 
                 /**
                  * Pending review takes prioritiy over availability
@@ -131,6 +181,7 @@ export function useMyListings() {
                 return (
                     matchesSearch &&
                     matchesSpecies &&
+                    matchesListingType &&
                     matchesStatus
                 );
             }
@@ -139,25 +190,53 @@ export function useMyListings() {
         //sorts by creation date
         return [...filtered].sort(
             (firstListing, secondListing) => {
-                const firstDate =
-                    new Date(
-                        firstListing.createdAt
-                    ).getTime();
+                switch (sortOrder) {
+                    case "oldest":
+                        return (
+                            new Date(
+                                firstListing.createdAt
+                            ).getTime() -
+                            new Date(
+                                secondListing.createdAt
+                            ).getTime()
+                        );
 
-                const secondDate =
-                    new Date(
-                        secondListing.createdAt
-                    ).getTime();
+                    case "name-asc":
+                        return firstListing.title.localeCompare(
+                            secondListing.title,
+                            undefined,
+                            {
+                                sensitivity: "base",
+                            }
+                        );
 
-                return sortOrder === "oldest"
-                    ? firstDate - secondDate
-                    : secondDate - firstDate;
+                    case "name-desc":
+                        return secondListing.title.localeCompare(
+                            firstListing.title,
+                            undefined,
+                            {
+                                sensitivity: "base",
+                            }
+                        );
+
+                    case "newest":
+                    default:
+                        return (
+                            new Date(
+                                secondListing.createdAt
+                            ).getTime() -
+                            new Date(
+                                firstListing.createdAt
+                            ).getTime()
+                        );
+                }
             }
         );
     }, [
         listings,
         searchQuery,
         speciesFilter,
+        listingTypeFilter,
         statusFilter,
         sortOrder,
     ]);
@@ -171,6 +250,9 @@ export function useMyListings() {
         filteredListings,
 
         hasMoreListings,
+        hasActiveFilters,
+        isSearchingAllListings,
+
         isLoadingListings,
         isLoadingMoreListings,
         listingsError,
@@ -183,6 +265,9 @@ export function useMyListings() {
 
         speciesFilter,
         setSpeciesFilter,
+
+        listingTypeFilter,
+        setListingTypeFilter,
 
         statusFilter,
         setStatusFilter,

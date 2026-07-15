@@ -18,6 +18,19 @@ body {
     padding: 24px 24px 24px;
 }
 
+.my-listings-filter-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+
+    margin-bottom: var(--spacing-md);
+
+    color: var(--color-muted);
+    font-size: 14px;
+    font-weight: 600;
+}
+
 /* Header */
 
 .my-listings-header {
@@ -27,7 +40,6 @@ body {
     gap: var(--spacing-lg);
 
     width: 100%;
-
 }
 
 .my-listings-heading {

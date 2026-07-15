@@ -101,7 +101,7 @@ export default function StatusUpdates() {
                     <SearchBar
                         value={searchQuery}
                         onChange={setSearchQuery}
-                        placeholder="Search by pet name, breed or ID..."
+                        placeholder="Search by title"
                     />
 
                     <div className="filters">

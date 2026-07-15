@@ -1,14 +1,13 @@
 .my-listing-card {
     display: grid;
-    grid-template-columns: 122px minmax(0, 1fr);
-    gap: 14px;
+    grid-template-columns: 132px minmax(0, 1fr);
+    gap: 60px;
 
     width: 100%;
-    max-width: 460px;
-    min-width: 0;
-    min-height: 164px;
+    max-width: 600px;
+    min-height: 170px;
 
-    padding: 10px;
+    padding: 11px;
     box-sizing: border-box;
     overflow: hidden;
 
@@ -19,6 +18,18 @@
     box-shadow:
         0 3px 2px rgba(15, 90, 59, 0.14),
         0 8px 18px rgba(15, 90, 59, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.my-listing-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 4px 4px rgba(15, 90, 59, 0.12),
+        0 12px 24px rgba(15, 90, 59, 0.12);
 }
 
 
@@ -29,22 +40,26 @@
     align-items: center;
     justify-content: center;
 
-    width: 122px;
-    height: 122px;
+    width: 180px;
+    height: 210px;
 
     overflow: hidden;
 
     color: var(--color-primary);
+
     background: var(--color-pale-green);
     border-radius: 17px;
+
 }
 
 .my-listing-image img {
+    display: block;
+
     width: 100%;
     height: 100%;
 
-    display: block;
     object-fit: cover;
+    object-position: center;
 }
 
 
@@ -63,12 +78,12 @@
 }
 
 .my-listing-main h2 {
-    margin: 2px 0 1px;
+    margin: 2px 0 4px;
 
     overflow: hidden;
 
     color: var(--color-primary-dark);
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 900;
     line-height: 1.15;
 
@@ -76,22 +91,90 @@
     white-space: nowrap;
 }
 
+
+/* Listing summary */
+
 .my-listing-summary {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 5px;
 
-    margin: 0 0 6px;
+    margin: 0 0 8px;
 
     color: var(--color-text);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     line-height: 1.4;
 }
 
 .my-listing-summary span {
     color: var(--color-muted);
+}
+
+.my-listing-title-row {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 10px;
+}
+
+.my-listing-title-row h2 {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    margin: 2px 0 0;
+    overflow: hidden;
+
+    color: var(--color-primary-dark);
+    font-size: 21px;
+    font-weight: 900;
+    line-height: 1.2;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.my-listing-title-row .my-listing-status {
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.my-listing-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.my-listing-meta li {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.my-listing-meta svg {
+    flex-shrink: 0;
+
+    color: var(--color-primary);
+    stroke-width: 2.2;
 }
 
 
@@ -104,17 +187,18 @@
     gap: 5px;
 
     width: fit-content;
-    min-height: 25px;
+    min-height: 26px;
 
-    margin-bottom: 7px;
-    padding: 3px 12px;
-
-    border-radius: var(--radius-pill);
+    margin-bottom: 8px;
+    padding: 4px 12px;
+    box-sizing: border-box;
 
     color: var(--color-text);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1;
+
+    border-radius: var(--radius-pill);
 }
 
 .my-listing-status-available {
@@ -141,11 +225,12 @@
 
 .my-listing-actions {
     display: flex;
-    align-items: center;
-    gap: 14px;
+    gap: 11px;
 
-    margin-top: 6px;
-    padding: 4px 4px 0;
+    margin-top: 10px;
+    padding-top: 7px;
+
+    border-top: 1px solid var(--color-border);
 }
 
 .my-listing-actions button {
@@ -153,19 +238,20 @@
     padding: 0;
 
     color: var(--color-primary-dark);
-    background: transparent;
-    border: 0;
-
     font: inherit;
-    font-size: 19px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 700;
     line-height: 1;
 
     cursor: pointer;
+
+    background: transparent;
+    border: none;
 }
 
 .my-listing-actions button:hover {
     color: var(--color-primary);
+
     text-decoration: underline;
     text-underline-offset: 3px;
 }
@@ -173,85 +259,145 @@
 .my-listing-actions button:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 4px;
+
     border-radius: 3px;
 }
 
 .my-listing-action-divider {
-    color: var(--color-primary-dark);
-    font-size: 19px;
+    color: var(--color-border);
+    font-size: 17px;
     line-height: 1;
 }
 
 
-/* Make Delete red while pending */
+/* Tablet and smaller cards */
 
-.my-listing-status-pending+.my-listing-actions {
-    color: inherit;
+@media (max-width: 850px) {
+    .my-listing-card {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+
+        min-height: 0;
+        padding: 10px;
+
+        border-radius: 20px;
+    }
+
+    .my-listing-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+
+        border-radius: 16px;
+    }
+
+    .my-listing-content {
+        gap: var(--spacing-md);
+        padding: 2px 4px 4px;
+    }
+
+    .my-listing-title-row {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--spacing-sm);
+
+        margin-bottom: var(--spacing-md);
+    }
+
+    .my-listing-title-row h2 {
+        width: auto;
+        flex: 1;
+
+        font-size: 21px;
+        white-space: normal;
+    }
+
+    .my-listing-title-row .my-listing-status {
+        flex-shrink: 0;
+    }
+
+    .my-listing-meta {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px var(--spacing-md);
+    }
+
+    .my-listing-meta li {
+        min-width: 0;
+        font-size: 13px;
+    }
+
+    .my-listing-actions {
+        width: 100%;
+        margin-top: 0;
+        padding-top: var(--spacing-md);
+    }
+
+    .my-listing-view-button {
+        width: 100%;
+        min-height: 42px;
+    }
 }
 
 
-/* Responsive */
+/* Small phones */
 
-@media (max-width: 600px) {
+@media (max-width: 440px) {
     .my-listing-card {
-        grid-template-columns: 100px minmax(0, 1fr);
-        gap: 11px;
-
-        width: 100%;
-        max-width: 100%;
-        min-height: 142px;
-
         padding: 8px;
+        gap: 12px;
+
         border-radius: 18px;
     }
 
     .my-listing-image {
-        width: 100px;
-        height: 100px;
-
+        aspect-ratio: 16 / 11;
         border-radius: 14px;
     }
 
-    .my-listing-main h2 {
-        font-size: 18px;
+    .my-listing-content {
+        padding: 0 3px 3px;
     }
 
-    .my-listing-summary {
-        font-size: 11px;
+    .my-listing-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 7px;
+    }
+
+    .my-listing-title-row h2 {
+        width: 100%;
+
+        font-size: 19px;
+        line-height: 1.25;
     }
 
     .my-listing-status {
-        min-height: 23px;
-        padding: 3px 10px;
+        min-height: 24px;
+        padding: 4px 10px;
 
         font-size: 12px;
     }
 
-    .my-listing-actions {
-        gap: 10px;
+    .my-listing-meta {
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
 
-    .my-listing-actions button,
-    .my-listing-action-divider {
-        font-size: 16px;
-    }
-}
-
-@media (max-width: 420px) {
-    .my-listing-card {
-        grid-template-columns: 86px minmax(0, 1fr);
+    .my-listing-meta li {
+        font-size: 12px;
     }
 
-    .my-listing-image {
-        width: 86px;
-        height: 96px;
+    .my-listing-meta svg {
+        width: 15px;
+        height: 15px;
     }
 
-    .my-listing-summary {
-        display: block;
-    }
-
-    .my-listing-summary span {
-        margin: 0 3px;
+    .my-listing-view-button {
+        min-height: 40px;
+        font-size: 14px;
     }
 }

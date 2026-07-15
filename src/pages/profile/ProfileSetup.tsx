@@ -469,12 +469,12 @@ export default function ProfileSetup() {
                                     setDescription(event.target.value)
                                 }
                                 placeholder="Tell adopters about your organisation, your work and the animals you care for..."
-                                maxLength={500}
+                                maxLength={1000}
                                 required
                             />
 
                             <small>
-                                {description.length}/500 characters
+                                {description.length}/1000 characters
                             </small>
                         </label>
 

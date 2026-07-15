@@ -23,6 +23,9 @@ export default function MyListings() {
         filteredListings,
 
         hasMoreListings,
+        hasActiveFilters,
+        isSearchingAllListings,
+
         isLoadingListings,
         isLoadingMoreListings,
         listingsError,
@@ -35,6 +38,9 @@ export default function MyListings() {
 
         speciesFilter,
         setSpeciesFilter,
+
+        listingTypeFilter,
+        setListingTypeFilter,
 
         statusFilter,
         setStatusFilter,
@@ -92,6 +98,12 @@ export default function MyListings() {
                 onSpeciesChange={
                     setSpeciesFilter
                 }
+                listingTypeFilter={
+                    listingTypeFilter
+                }
+                onListingTypeChange={
+                    setListingTypeFilter
+                }
                 statusFilter={
                     statusFilter
                 }
@@ -119,11 +131,15 @@ export default function MyListings() {
                 isLoadingMore={
                     isLoadingMoreListings
                 }
+                isSearchingAllListings={
+                    isSearchingAllListings
+                }
                 error={
                     listingsError
                 }
                 hasMore={
-                    hasMoreListings
+                    hasMoreListings &&
+                    !hasActiveFilters
                 }
                 onRetry={
                     loadListings

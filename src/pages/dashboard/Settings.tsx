@@ -70,9 +70,9 @@ export default function Settings() {
             return;
         }
 
-        if (trimmedDescription.length > 500) {
+        if (trimmedDescription.length > 1000) {
             setDescriptionError(
-                "The shelter description cannot exceed 500 characters."
+                "The shelter description cannot exceed 1000 characters."
             );
 
             return;
@@ -402,12 +402,12 @@ export default function Settings() {
                                         )
                                     }
                                     placeholder="Tell adopters about your shelter..."
-                                    maxLength={500}
+                                    maxLength={1000}
                                 />
 
                                 <div className="description-edit-footer">
                                     <span>
-                                        {descriptionDraft.length}/500
+                                        {descriptionDraft.length}/1000
                                     </span>
 
                                     <div className="description-edit-actions">

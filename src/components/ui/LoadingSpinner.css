@@ -26,6 +26,12 @@
   animation: loading-spinner-spin 850ms linear infinite;
 }
 
+.loading-spinner-xs {
+  width: 8px;
+  height: 8px;
+  border-width: 2px;
+}
+
 .loading-spinner-small {
   width: 22px;
   height: 22px;

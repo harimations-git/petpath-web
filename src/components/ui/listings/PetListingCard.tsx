@@ -1,6 +1,9 @@
 import {
     Clock3,
     PawPrint,
+    PoundSterling,
+    UserRound,
+    UsersRound,
 } from "lucide-react";
 
 import type { PetListingSummary } from "../../../types/listing";
@@ -52,66 +55,67 @@ export default function PetListingCard({
 
             <div className="my-listing-content">
                 <div className="my-listing-main">
-                    <h2>{listing.title}</h2>
+                    <div className="my-listing-title-row">
+                        <h2>{listing.title}</h2>
+                    </div>
 
-                    <p className="my-listing-summary">
-                        {formatAnimalType(
-                            listing.animalType
-                        )}
-                        <span>•</span>
-                        {listing.numberOfAnimals}{" "}
-                        {listing.numberOfAnimals === 1
-                            ? "animal"
-                            : "animals"}
-                        <span>•</span>
-
-                        {listing.adoptionFee === 0
-                            ? "No Fee"
-                            : `£${listing.adoptionFee}`}
-
-                    </p>
-
-                    <span
-                        className={`my-listing-status ${statusClassName}`}
+                    <ul
+                        className="my-listing-meta"
                     >
-                        {isPending && (
-                            <Clock3 size={17} />
-                        )}
+                        <li>
+                            <PawPrint size={16} />
 
-                        {status}
-                    </span>
+                            <span>
+                                {formatAnimalType(
+                                    listing.animalType
+                                )}
+                            </span>
+                        </li>
 
+                        <li>
+                            {listing.numberOfAnimals === 1 ? (
+                                <UserRound size={16} />
+                            ) : (
+                                <UsersRound size={16} />
+                            )}
+
+                            <span>
+                                {listing.numberOfAnimals === 1
+                                    ? "Individual listing"
+                                    : `${listing.numberOfAnimals} animals`}
+                            </span>
+                        </li>
+
+                        <li>
+                            <PoundSterling size={16} />
+
+                            <span>
+                                £{listing.adoptionFee} adoption fee
+                            </span>
+                        </li>
+
+                        <span
+                            className={`my-listing-status ${statusClassName}`}
+                        >
+                            {isPending && (
+                                <Clock3 size={15} />
+                            )}
+
+                            {status}
+                        </span>
+                    </ul>
                 </div>
 
                 {/*!!! Change the look of this */}
                 <div className="my-listing-actions">
-                    <button type="button">
-                        Edit
-                    </button>
-
-                    <span className="my-listing-action-divider">
-                        |
-                    </span>
-
                     <button
                         type="button"
+                        className="my-listing-view-button"
                         onClick={() =>
-                            onView(
-                                listing.listingId
-                            )
+                            onView(listing.listingId)
                         }
                     >
-                        View
-                    </button>
-
-                    <span className="my-listing-action-divider">
-                        |
-                    </span>
-
-                    <button type="button">
-                        {isPending
-                            ? "Delete"
-                            : "Pause"}
+                        View listing
                     </button>
                 </div>
             </div>
