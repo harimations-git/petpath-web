@@ -10,7 +10,12 @@ export const routes = {
 
     home: {
         dashboard: "/dashboard",
+        myListings: "/myListings",
+        createListing: "/createListing",
+        status:"/status",
+        settings: "/settings",
         profileSetup: "/profile/setup",
+        support:"/support"
     },
 
     listings: {

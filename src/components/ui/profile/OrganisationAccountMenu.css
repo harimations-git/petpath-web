@@ -1,0 +1,179 @@
+.organisation-account-menu {
+    position: relative;
+    width: 100%;
+}
+
+.organisation-account-trigger {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 20px;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    min-height: 60px;
+
+    padding: 8px 10px;
+
+    border-radius: var(--radius-md);
+
+    background: transparent;
+    color: var(--color-text);
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        background-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.organisation-account-trigger:hover {
+    background: var(--color-pale-green);
+}
+
+.organisation-account-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
+
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.organisation-account-avatar img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    object-fit: cover;
+}
+
+.organisation-account-details {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.organisation-account-details strong {
+    overflow: hidden;
+
+    color: var(--color-primary-dark);
+
+    font-size: 16px;
+    font-weight: 800;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.organisation-account-details span {
+    color: var(--color-muted);
+    font-size: 10px;
+}
+
+.organisation-account-chevron {
+    color: var(--color-text);
+
+    transition: transform 160ms ease;
+}
+
+.organisation-account-chevron-open {
+    transform: rotate(180deg);
+}
+
+.organisation-account-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+
+    z-index: 200;
+
+    padding: 6px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+}
+
+.organisation-account-dropdown button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    min-height: 42px;
+
+    padding: 0 12px;
+
+    border: none;
+    border-radius: var(--radius-sm);
+
+    background: transparent;
+    color: var(--color-text);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.organisation-account-dropdown button:hover {
+    background: var(--color-pale-green);
+}
+
+.organisation-account-dropdown
+.organisation-account-logout {
+    color: var(--color-error);
+}
+
+.organisation-account-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-height: 60px;
+    padding: 8px 10px;
+}
+
+.organisation-account-loading-image {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    background: var(--color-pale-green);
+}
+
+.organisation-account-loading-name {
+    width: 100px;
+    height: 11px;
+
+    margin-bottom: 7px;
+
+    border-radius: var(--radius-pill);
+    background: var(--color-border);
+}
+
+.organisation-account-loading-type {
+    width: 70px;
+    height: 8px;
+
+    border-radius: var(--radius-pill);
+    background: var(--color-border);
+}

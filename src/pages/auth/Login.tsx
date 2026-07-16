@@ -166,7 +166,14 @@ export default function ShelterLogin() {
 
             <Spacer height={5} />
 
-            <Link className="forgot-link" to={routes.auth.forgotPassword}>
+            <Link
+              className="forgot-link"
+              to={routes.auth.forgotPassword}
+              state={{
+                initialEmail: email,
+                returnTo: routes.auth.login,
+              }}
+            >
               Forgot password?
             </Link>
 

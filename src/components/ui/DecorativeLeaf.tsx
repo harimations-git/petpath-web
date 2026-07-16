@@ -40,7 +40,6 @@ export default function DecorativeLeaf({
     <img
       src={src}
       alt=""
-      aria-hidden="true"
       className="decorative-leaf"
       style={{
         width,

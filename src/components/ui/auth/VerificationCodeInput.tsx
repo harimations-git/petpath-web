@@ -84,7 +84,6 @@ export default function VerificationCodeInput({
                 pattern="[0-9]*"
                 maxLength={length}
                 autoComplete="one-time-code" //Helps browsers/mobile devices suggest verification codes from email/texts
-                aria-label="Verification code"
                 disabled={disabled}
             />
         </div>

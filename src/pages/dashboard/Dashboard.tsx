@@ -1,86 +1,32 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Building2 } from "lucide-react";
+import {
+    Building2,
+} from "lucide-react";
 
 import InfoModal from "../../components/ui/InfoModal";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAccountMenu";
+
+import DashboardStatistics from "../../components/ui/dashboard/ListingStatistics";
+import DashboardQuickActions from "../../components/ui/dashboard/QuickActions";
 
 import {
-    getCurrentOrganisationProfile,
-    type OrganisationProfile,
-} from "../../services/organisation/organisationService";
+    useDashboard,
+} from "../../hooks/useDashboard";
 
-import { routes } from "../../constants/routes";
-import { useBackButtonRedirect } from "../../hooks/useBackButtonRedirect";
+import "./Dashboard.css";
+import "./PageHeading.css";
 
 export default function Dashboard() {
-    useBackButtonRedirect(routes.home.dashboard);
-    const navigate = useNavigate();
+    const {
+        organisationProfile,
+        isLoadingProfile,
+        profileError,
+        listingStatistics,
+        needsProfileSetup,
+        goToProfileSetup,
+    } = useDashboard();
 
-    const [organisationProfile, setOrganisationProfile] =
-        useState<OrganisationProfile | null>(null);
-
-    const [isCheckingProfile, setIsCheckingProfile] =
-        useState(true);
-
-    const [profileError, setProfileError] =
-        useState("");
-
-    useEffect(() => {
-        document.title = "Shelter Dashboard | PetPath";
-
-        let isMounted = true;
-
-        async function loadOrganisationProfile() {
-            try {
-                const profile =
-                    await getCurrentOrganisationProfile();
-
-                if (!isMounted) return;
-
-                if (profile.accountStatus === "pending") {
-                    navigate(routes.auth.accountReview, {
-                        replace: true,
-                    });
-
-                    return;
-                }
-
-                if (profile.accountStatus !== "approved") {
-                    navigate(routes.auth.login, {
-                        replace: true,
-                    });
-
-                    return;
-                }
-
-                setOrganisationProfile(profile);
-            } catch (error) {
-                console.error(
-                    "Unable to load organisation profile:",
-                    error
-                );
-
-                if (!isMounted) return;
-
-                setProfileError(
-                    "We couldn't load your organisation profile."
-                );
-            } finally {
-                if (isMounted) {
-                    setIsCheckingProfile(false);
-                }
-            }
-        }
-
-        loadOrganisationProfile();
-
-        return () => {
-            isMounted = false;
-        };
-    }, [navigate]);
-
-    if (isCheckingProfile) {
+    if (isLoadingProfile) {
         return (
             <LoadingSpinner
                 size="xl"
@@ -100,55 +46,81 @@ export default function Dashboard() {
         );
     }
 
-    const needsProfileSetup =
-        organisationProfile?.profileComplete !== true;
-
     return (
-        <main className="dashboard-page">
-            <h1>Shelter Dashboard</h1>
+        <main className="page-body">
+            <header className="page-header">
+                <div className="page-heading">
+                    <h1>
+                        Shelter Dashboard
+                    </h1>
 
-            <p>
-                Manage your PetPath listings.
-            </p>
+                    <p>
+                        Manage your PetPath listings.
+                    </p>
+                </div>
 
-            <div className="dashboard-actions">
-                <Link
-                    to="/listings/new"
-                    aria-disabled={needsProfileSetup}
-                    onClick={(event) => {
-                        if (needsProfileSetup) {
-                            event.preventDefault();
-                        }
-                    }}
-                >
-                    Create pet listing
-                </Link>
+                <div className="page-account-menu">
+                    <OrganisationAccountMenu />
+                </div>
+            </header>
 
-                <Link
-                    to="/listings"
-                    aria-disabled={needsProfileSetup}
-                    onClick={(event) => {
-                        if (needsProfileSetup) {
-                            event.preventDefault();
-                        }
-                    }}
-                >
-                    View my listings
-                </Link>
-            </div>
+            <DashboardStatistics
+                statistics={
+                    listingStatistics
+                }
+            />
+
+            <section className="dashboard-content-grid">
+                <article className="dashboard-summary-card">
+                    <h2>
+                        Listing status summary
+                    </h2>
+
+                    <div
+                        className="dashboard-pie-chart"
+                        role="img"
+                    />
+
+                    <div className="dashboard-chart-legend">
+                        <span>
+                            <i className="dashboard-legend-active" />
+                            Active
+                        </span>
+
+                        <span>
+                            <i className="dashboard-legend-pending" />
+                            Pending
+                        </span>
+
+                        <span>
+                            <i className="dashboard-legend-reserved" />
+                            Reserved
+                        </span>
+                    </div>
+                </article>
+
+                <DashboardQuickActions
+                    disabled={
+                        needsProfileSetup
+                    }
+                />
+            </section>
 
             <InfoModal
-                visible={needsProfileSetup}
+                visible={
+                    needsProfileSetup
+                }
                 icon={Building2}
-                title={`Welcome, ${organisationProfile?.charityName ??
+                title={`Welcome, ${
+                    organisationProfile?.charityName ??
                     "to PetPath"
-                    }`}
+                }`}
                 message="Before you can start listing pets, you must complete your profile setup. This helps adopters understand who you are and how to contact you."
                 buttonText="Complete profile"
                 closeOnBackdrop={false}
-                onConfirm={() => {
-                    navigate(routes.home.profileSetup);
-                }}
+                onConfirm={
+                    goToProfileSetup
+                }
             />
         </main>
     );

@@ -1,7 +1,7 @@
 import "./LoadingSpinner.css";
 
 type LoadingSpinnerProps = {
-  size?: "small" | "medium" | "large" | "xl";
+  size?: "xs" | "small" | "medium" | "large" | "xl";
   fullScreen?: boolean;
   label?: string;
   className?: string;

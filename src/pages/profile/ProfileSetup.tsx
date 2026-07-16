@@ -325,7 +325,7 @@ export default function ProfileSetup() {
 
                 <div>
                     <span>Organisation onboarding</span>
-                    <h1>Complete your organisation profile</h1>
+                    <h1>Complete your profile</h1>
                     <p>
                         This information will help adopters understand who you
                         are and where your organisation is based.
@@ -469,12 +469,12 @@ export default function ProfileSetup() {
                                     setDescription(event.target.value)
                                 }
                                 placeholder="Tell adopters about your organisation, your work and the animals you care for..."
-                                maxLength={500}
+                                maxLength={1000}
                                 required
                             />
 
                             <small>
-                                {description.length}/500 characters
+                                {description.length}/1000 characters
                             </small>
                         </label>
 

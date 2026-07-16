@@ -1,0 +1,84 @@
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    min-height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-card);
+    box-shadow: 0 3px 10px rgba(15, 90, 59, 0.05);
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.search-bar:focus-within {
+    border-color: var(--color-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(47, 118, 85, 0.12),
+        0 3px 10px rgba(15, 90, 59, 0.05);
+}
+
+.search-bar-icon {
+    flex-shrink: 0;
+    color: var(--color-muted);
+}
+
+.search-bar input {
+    width: 100%;
+    min-width: 0;
+
+    padding: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+    color: var(--color-text);
+
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.search-bar input::placeholder {
+    color: #8d9b94;
+}
+
+/* Removes the browser's default search clear button. */
+.search-bar input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.search-bar-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: var(--color-muted);
+
+    cursor: pointer;
+}
+
+.search-bar-clear:hover {
+    color: var(--color-primary-dark);
+}

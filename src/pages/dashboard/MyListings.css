@@ -1,0 +1,267 @@
+body {
+    margin: 0;
+    overflow-x: hidden;
+
+}
+
+.my-listings-page {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    width: 100%;
+    min-height: 100%;
+
+    margin: 0;
+    padding: 24px 24px 24px;
+}
+
+.my-listings-filter-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+
+    margin-bottom: var(--spacing-md);
+
+    color: var(--color-muted);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Header */
+
+.my-listings-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+
+    width: 100%;
+}
+
+.my-listings-heading {
+    min-width: 0;
+}
+
+.my-listings-heading h1 {
+    margin: 0 0 5px;
+
+    color: var(--color-primary-dark);
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.my-listings-heading p {
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.my-listings-account-menu {
+    width: 240px;
+    flex-shrink: 0;
+}
+
+/* Search and filters */
+
+.my-listings-filters {
+    width: 100%;
+}
+
+.filters-row {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 1fr) auto max-content;
+
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.filters-row .navigation-button {
+    min-width: 155px;
+    height: 48px;
+    min-height: 48px;
+
+    padding: 0 18px;
+
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.filters .filter-dropdown-trigger {
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+}
+
+
+.filters-row .navigation-button {
+    flex-shrink: 0;
+    width: auto;
+}
+
+/* Make all filter controls fill their grid columns. */
+
+.filters-row .search-bar,
+.filters .filter-dropdown,
+.filters-row .navigation-button {
+    min-width: 0;
+    margin: 0;
+}
+
+.filters-row .search-bar,
+.filters .filter-dropdown-trigger,
+.filters-row .navigation-button {
+    height: 48px;
+    min-height: 48px;
+}
+
+.filters-row .search-bar {
+    width: 100%;
+}
+
+/* Force the search bar and dropdowns to have identical heights. */
+
+.my-listings-filters .search-bar,
+.my-listings-filters .filter-dropdown-trigger {
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+/* Prevent dropdown text from stretching the controls. */
+
+.filters .filter-dropdown-label {
+    min-width: 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.filters-row .navigation-button {
+    width: auto;
+    min-width: 155px;
+
+    padding: 0 18px;
+
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* Tablet */
+
+@media (max-width: 1100px) {
+    .my-listings-page {
+        padding: 16px 18px 24px;
+    }
+
+    .my-listings-filters {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .my-listings-filters .search-bar {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 850px) {
+    .filters-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 10px;
+    }
+
+    .filters {
+        display: grid;
+        grid-template-columns: 1fr;
+
+        width: 100%;
+        gap: 10px;
+    }
+
+    .filters .filter-dropdown {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .filters-row .search-bar,
+    .filters-row .navigation-button {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+    .my-listings-page {
+        gap: 16px;
+
+        padding:
+            12px var(--spacing-md) var(--spacing-lg);
+    }
+
+    .my-listings-header {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        width: 100%;
+        margin: 0;
+    }
+
+    .my-listings-heading h1 {
+        font-size: 22px;
+    }
+
+    .my-listings-heading p {
+        font-size: 14px;
+    }
+
+    .my-listings-account-menu {
+        width: 100%;
+        margin: 0;
+    }
+
+    .my-listings-account-menu .organisation-account-menu,
+    .my-listings-account-menu .organisation-account-trigger {
+        width: 100%;
+    }
+
+    .my-listings-filters {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .my-listings-filters .search-bar {
+        grid-column: auto;
+    }
+
+    .my-listings-filters .filter-dropdown {
+        width: 100%;
+        min-width: 0;
+    }
+}

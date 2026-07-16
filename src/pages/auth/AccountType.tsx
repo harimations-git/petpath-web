@@ -32,7 +32,6 @@ export default function AccountType() {
                     type="button"
                     className="account-type-back"
                     onClick={() => navigate(-1)}
-                    aria-label="Go back"
                 >
                     <ArrowLeft size={22} />
                 </button>

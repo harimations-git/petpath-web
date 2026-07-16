@@ -1,0 +1,235 @@
+.my-listings-results {
+    width: 100%;
+    padding-block: var(--spacing-lg);
+}
+
+
+/* Listings grid */
+
+.my-listings-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill,
+            minmax(min(420px, 100%),
+                1fr));
+
+    align-items: stretch;
+    gap: var(--spacing-lg);
+
+    width: 100%;
+}
+
+
+/* Loading, errors and empty results */
+
+.my-listings-message,
+.my-listings-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 260px;
+
+    padding: var(--spacing-xl);
+    box-sizing: border-box;
+
+    text-align: center;
+
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.my-listings-empty svg {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-primary);
+}
+
+.my-listings-empty h2 {
+    margin: 0 0 var(--spacing-sm);
+
+    color: var(--color-primary-dark);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.my-listings-empty p,
+.my-listings-message p {
+    max-width: 480px;
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+/* Retry button */
+
+.my-listings-message button {
+    margin-top: var(--spacing-md);
+    padding: 11px 22px;
+
+    color: white;
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    background: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-pill);
+}
+
+.my-listings-message button:hover {
+    background: var(--color-primary-dark);
+}
+
+.my-listings-message button:focus-visible {
+    outline: 3px solid rgba(47, 118, 85, 0.25);
+    outline-offset: 3px;
+}
+
+
+/* Load more */
+
+.my-listings-load-more {
+    display: grid;
+    grid-template-columns:
+        minmax(30px, 1fr) auto minmax(30px, 1fr);
+    align-items: center;
+    gap: var(--spacing-md);
+
+    width: 100%;
+    margin-top: var(--spacing-xl);
+}
+
+.my-listings-load-more-line {
+    width: 100%;
+    height: 1px;
+
+    background: var(--color-border);
+}
+
+.my-listings-load-more-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 44px;
+    padding: 10px 20px;
+
+    color: var(--color-primary-dark);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    background: var(--color-card);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-pill);
+
+    box-shadow:
+        0 4px 12px rgba(15, 90, 59, 0.08);
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.my-listings-load-more-button:hover:not(:disabled) {
+    color: white;
+    background: var(--color-primary);
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 16px rgba(15, 90, 59, 0.15);
+}
+
+.my-listings-load-more-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.my-listings-load-more-button:focus-visible {
+    outline: 3px solid rgba(47, 118, 85, 0.22);
+    outline-offset: 3px;
+}
+
+.my-listings-load-more-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.my-listings-load-more-spinner {
+    animation:
+        my-listings-spinner 0.8s linear infinite;
+}
+
+
+
+/* Error below existing results */
+
+.my-listings-error {
+    width: 100%;
+    margin: var(--spacing-md) 0 0;
+
+    color: var(--color-error);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+
+@keyframes my-listings-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive layout */
+
+@media (max-width: 850px) {
+    .my-listings-grid {
+        grid-template-columns:
+            repeat(auto-fit,
+                minmax(min(300px, 100%),
+                    1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .my-listings-results {
+        padding-block: var(--spacing-md);
+    }
+
+    .my-listings-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .my-listings-message,
+    .my-listings-empty {
+        min-height: 220px;
+        padding: var(--spacing-lg);
+    }
+
+    .my-listings-load-more {
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-lg);
+    }
+
+    .my-listings-load-more-button {
+        min-height: 42px;
+        padding-inline: 16px;
+        font-size: 13px;
+    }
+}
