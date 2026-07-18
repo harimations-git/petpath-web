@@ -73,7 +73,7 @@ function cacheIsFresh() {
     return (
         hasLoadedListings &&
         Date.now() - listingsCachedAt <
-            CACHE_DURATION
+        CACHE_DURATION
     );
 }
 
@@ -264,11 +264,18 @@ export function OrganisationListingsProvider({
     const refreshListings =
         useCallback(async () => {
             /*
-             * Mark the cache as expired before loading
-             * the first page again.
+             * Clear the cached listing state so the
+             * next load is definitely fresh.
              */
-            hasLoadedListings = false;
+            cachedListings = [];
+            cachedNextToken = null;
             listingsCachedAt = 0;
+            hasLoadedListings = false;
+            pendingListingsRequest = null;
+
+            setListings([]);
+            setNextToken(null);
+            setListingsError("");
 
             await loadListings();
         }, [loadListings]);

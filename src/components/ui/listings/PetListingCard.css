@@ -221,6 +221,84 @@
     background: #f3dfd4;
 }
 
+.my-listing-availability-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.my-listing-availability-label {
+    color: var(--color-muted);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.my-listing-availability-select {
+    min-height: 34px;
+    padding: 6px 34px 6px 12px;
+
+    color: var(--color-primary-dark);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+
+    appearance: none;
+    background-image:
+        linear-gradient(45deg, transparent 50%, currentColor 50%),
+        linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+        calc(100% - 16px) 14px,
+        calc(100% - 11px) 14px;
+    background-size:
+        5px 5px,
+        5px 5px;
+    background-repeat: no-repeat;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.my-listing-availability-select:hover:not(:disabled) {
+    border-color: rgba(47, 118, 85, 0.35);
+    background-color: var(--color-pale-green);
+}
+
+.my-listing-availability-select:focus-visible {
+    outline: 3px solid rgba(47, 118, 85, 0.24);
+    outline-offset: 3px;
+}
+
+.my-listing-availability-select:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.my-listing-availability-select.my-listing-status-available {
+    color: var(--color-primary-dark);
+    background-color: var(--color-pale-green);
+    border-color: rgba(47, 118, 85, 0.25);
+}
+
+.my-listing-availability-select.my-listing-status-reserved {
+    color: #7a5a11;
+    background-color: #fff6d8;
+    border-color: rgba(122, 90, 17, 0.24);
+}
+
+.my-listing-availability-select.my-listing-status-rehomed {
+    color: #4f5f58;
+    background-color: #edf1ee;
+    border-color: rgba(79, 95, 88, 0.22);
+}
+
 /* Actions */
 
 .my-listing-actions {

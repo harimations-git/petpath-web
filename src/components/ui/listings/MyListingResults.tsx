@@ -4,6 +4,7 @@ import LoadingSpinner from "../LoadingSpinner";
 
 
 import type {
+    ListingAvailabilityStatus,
     PetListingSummary,
 } from "../../../types/listing";
 import PetListingCard from "./PetListingCard";
@@ -13,6 +14,12 @@ import "./MyListingResults.css";
 type MyListingsResultsProps = {
     listings: PetListingSummary[];
     totalLoadedListings: number;
+
+    onAvailabilityChange: (
+        listingId: string,
+        availabilityStatus: ListingAvailabilityStatus
+    ) => Promise<void> | void;
+    updatingAvailabilityId: string | null;
 
     isLoading: boolean;
     isLoadingMore: boolean;
@@ -31,6 +38,8 @@ type MyListingsResultsProps = {
 export default function MyListingsResults({
     listings,
     totalLoadedListings,
+    onAvailabilityChange,
+    updatingAvailabilityId,
     isLoading,
     isLoadingMore,
     isSearchingAllListings,
@@ -114,12 +123,12 @@ export default function MyListingsResults({
             <div className="my-listings-grid">
                 {listings.map((listing) => (
                     <PetListingCard
-                        key={
-                            listing.listingId
-                        }
+                        key={listing.listingId}
                         listing={listing}
-                        onView={
-                            onViewListing
+                        onView={onViewListing}
+                        onAvailabilityChange={onAvailabilityChange}
+                        isUpdatingAvailability={
+                            updatingAvailabilityId === listing.listingId
                         }
                     />
                 ))}

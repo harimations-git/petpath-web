@@ -240,4 +240,11 @@
     .shelter-sidebar-icon {
         width: 24px;
     }
+
+}
+
+@media (max-height: 620px) {
+    .shelter-sidebar-decoration {
+        display: none !important;
+    }
 }

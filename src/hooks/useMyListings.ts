@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useOrganisationProfile } from "../context/OrganisationProfileContext";
 import { useOrganisationListings } from "../context/OrganisationListingsContext";
+import { updateListingAvailability } from "../services/listings/listingService";
+import type { ListingAvailabilityStatus } from "../types/listing";
 
 import { routes } from "../constants/routes";
 
@@ -30,6 +32,7 @@ export function useMyListings() {
         listingsError,
         loadListings,
         loadMoreListings,
+        refreshListings,
     } = useOrganisationListings();
 
     //current filters
@@ -56,6 +59,27 @@ export function useMyListings() {
             hasMoreListings ||
             isLoadingMoreListings
         );
+
+    const [updatingAvailabilityId, setUpdatingAvailabilityId] = useState<string | null>(null);
+
+    //allows the user to change the availability status of a pet
+    async function handleAvailabilityChange(
+        listingId: string,
+        availabilityStatus: ListingAvailabilityStatus
+    ) {
+        setUpdatingAvailabilityId(listingId);
+
+        try {
+            await updateListingAvailability(
+                listingId,
+                availabilityStatus
+            );
+
+            await refreshListings();
+        } finally {
+            setUpdatingAvailabilityId(null);
+        }
+    }
 
     useEffect(() => {
         document.title =
@@ -256,6 +280,9 @@ export function useMyListings() {
         isLoadingListings,
         isLoadingMoreListings,
         listingsError,
+
+        updatingAvailabilityId,
+        handleAvailabilityChange,
 
         loadListings,
         loadMoreListings,

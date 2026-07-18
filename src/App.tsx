@@ -18,6 +18,9 @@ import StatusUpdates from "./pages/dashboard/StatusUpdates";
 import Settings from "./pages/dashboard/Settings";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Support from "./pages/dashboard/Support";
+import ViewListing from "./pages/listings/ViewListing";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfService from "./pages/legal/TermsOfService";
 
 export default function App() {
     return (
@@ -31,7 +34,7 @@ export default function App() {
             <Route path={routes.auth.verifyEmail} element={<VerifyEmail />} />
             <Route path={routes.auth.accountReview} element={<AccountReview />} />
             <Route path={routes.home.profileSetup} element={<OrganisationProfileSetup />} />
-            <Route path={routes.auth.forgotPassword} element={<ForgotPassword />}/>
+            <Route path={routes.auth.forgotPassword} element={<ForgotPassword />} />
 
             {/*Logged-in shelter pages with sidebar*/}
             <Route element={<ShelterLayout />}>
@@ -51,6 +54,11 @@ export default function App() {
                 />
 
                 <Route
+                    path={routes.listings.view}
+                    element={<ViewListing />}
+                />
+
+                <Route
                     path={routes.home.status}
                     element={<StatusUpdates />}
                 />
@@ -60,9 +68,23 @@ export default function App() {
                     element={<Settings />}
                 />
 
+
+
+                {/*Help and Legal */}
+
                 <Route
-                    path={routes.home.support}
+                    path={routes.help.support}
                     element={<Support />}
+                />
+
+                <Route
+                    path={routes.legal.privacyPolicy}
+                    element={<PrivacyPolicy />}
+                />
+
+                <Route
+                    path={routes.legal.terms}
+                    element={<TermsOfService />}
                 />
 
             </Route>

@@ -1,0 +1,235 @@
+.support-layout {
+    display: block;
+    gap: var(--spacing-lg);
+
+    width: 100%;
+    margin-top: var(--spacing-lg);
+}
+
+.support-card {
+    padding: var(--spacing-xl);
+    box-sizing: border-box;
+
+    background: var(--color-card);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.support-card-featured {
+    background: var(--color-card);
+}
+
+.support-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+}
+
+.support-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 54px;
+    height: 54px;
+
+    color: var(--color-primary-dark);
+
+    background: var(--color-card);
+    border: 1px solid rgba(47, 118, 85, 0.16);
+    border-radius: 18px;
+    box-shadow: 0 8px 18px rgba(15, 90, 59, 0.08);
+}
+
+.support-card h2 {
+    margin: 0 0 var(--spacing-sm);
+
+    color: var(--color-primary-dark);
+    font-size: 25px;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+.support-card p {
+    max-width: 560px;
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+/* Email contact card */
+
+.support-email-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+
+    width: 100%;
+    margin-top: var(--spacing-xl);
+    padding: 16px;
+    box-sizing: border-box;
+
+    color: var(--color-text);
+    text-decoration: none;
+
+    background: var(--color-card);
+    border: 1px solid rgba(47, 118, 85, 0.22);
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 18px rgba(15, 90, 59, 0.08);
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.support-email-card:hover {
+    background: #fbfdf9;
+    border-color: rgba(47, 118, 85, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(15, 90, 59, 0.12);
+}
+
+.support-email-card:focus-visible,
+.support-document-link:focus-visible {
+    outline: 3px solid rgba(47, 118, 85, 0.24);
+    outline-offset: 4px;
+}
+
+.support-email-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 44px;
+    height: 44px;
+
+    color: white;
+
+    background: var(--color-primary);
+    border-radius: 14px;
+}
+
+.support-email-card strong,
+.support-document-link strong {
+    display: block;
+
+    color: var(--color-primary-dark);
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.support-email-card small,
+.support-document-link small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+/* Legal links */
+
+.support-link-list {
+    display: grid;
+    gap: var(--spacing-sm);
+
+    margin-top: var(--spacing-xl);
+}
+
+.support-document-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+
+    padding: 15px;
+    box-sizing: border-box;
+
+    color: var(--color-primary-dark);
+    text-decoration: none;
+
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.support-document-link:hover {
+    background: var(--color-pale-green);
+    border-color: rgba(47, 118, 85, 0.32);
+    transform: translateY(-1px);
+}
+
+.support-document-main {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+
+    min-width: 0;
+}
+
+.support-document-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+
+    color: var(--color-primary-dark);
+
+    background: var(--color-background);
+    border-radius: 13px;
+}
+
+@media (max-width: 900px) {
+    .support-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .support-card {
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-md);
+    }
+
+    .support-card-header {
+        flex-direction: column;
+    }
+
+    .support-card h2 {
+        font-size: 22px;
+    }
+
+    .support-email-card,
+    .support-document-link {
+        align-items: flex-start;
+    }
+
+    .support-document-link {
+        flex-direction: column;
+    }
+
+    .support-document-main {
+        align-items: flex-start;
+    }
+}

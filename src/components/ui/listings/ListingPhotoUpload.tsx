@@ -19,13 +19,25 @@ import {
     getFileKey,
 } from "../../../utils/fileUtils";
 
+import type {
+    ExistingListingPhoto,
+} from "../../../types/listing";
+
 type ListingPhotoUploadProps = {
     photos: File[];
     onChange: (photos: File[]) => void;
+
+    existingPhotos?: ExistingListingPhoto[];
+    onRemoveExistingPhoto?: (
+        photoKey: string
+    ) => void;
+
     sectionNumber?: number;
     maxPhotos?: number;
     maxFileSizeMb?: number;
 };
+
+
 
 const allowedImageTypes = [
     "image/jpeg",
@@ -36,6 +48,8 @@ const allowedImageTypes = [
 export default function ListingPhotoUpload({
     photos,
     onChange,
+    existingPhotos = [],
+    onRemoveExistingPhoto,
     sectionNumber = 3,
     maxPhotos = 5,
     maxFileSizeMb = 10,
@@ -73,10 +87,11 @@ export default function ListingPhotoUpload({
         };
     }, [photoPreviews]);
 
-    const remainingPhotoSpaces = Math.max(maxPhotos - photos.length, 0);
+    const totalPhotoCount = existingPhotos.length + photos.length;
+    const remainingPhotoSpaces = Math.max(maxPhotos - totalPhotoCount, 0);
 
     function openFilePicker() {
-        if (photos.length >= maxPhotos) {
+        if (totalPhotoCount >= maxPhotos) {
             setPhotoError(
                 `You can only upload a maximum of ${maxPhotos} photos.`
             );
@@ -145,7 +160,7 @@ export default function ListingPhotoUpload({
             return true;
         });
 
-        const availableSpaces = maxPhotos - photos.length;
+        const availableSpaces = maxPhotos - totalPhotoCount;
 
         const acceptedFiles = uniqueFiles.slice(0, availableSpaces);
 
@@ -182,7 +197,7 @@ export default function ListingPhotoUpload({
     ) {
         event.preventDefault();
 
-        if (photos.length < maxPhotos) {
+        if (totalPhotoCount < maxPhotos) {
             setIsDragging(true);
         }
     }
@@ -197,7 +212,7 @@ export default function ListingPhotoUpload({
         event.preventDefault();
         setIsDragging(false);
 
-        if (photos.length >= maxPhotos) {
+        if (totalPhotoCount >= maxPhotos) {
             setPhotoError(
                 `You can upload a maximum of ${maxPhotos} photos.`
             );
@@ -241,7 +256,7 @@ export default function ListingPhotoUpload({
                 </div>
 
                 <span className="listing-photo-count">
-                    {photos.length}/{maxPhotos}
+                    {totalPhotoCount}/{maxPhotos}
                 </span>
             </div>
 
@@ -272,7 +287,7 @@ export default function ListingPhotoUpload({
                     }
                     onDrop={handleDrop}
                     disabled={
-                        photos.length >=
+                        totalPhotoCount >=
                         maxPhotos
                     }
                 >
@@ -281,13 +296,13 @@ export default function ListingPhotoUpload({
                     />
 
                     <strong>
-                        {photos.length >=
+                        {totalPhotoCount >=
                             maxPhotos
                             ? "Maximum photos added"
                             : "Drag and drop photos here"}
                     </strong>
 
-                    {photos.length <
+                    {totalPhotoCount <
                         maxPhotos && (
                             <span>
                                 or click to browse
@@ -300,6 +315,36 @@ export default function ListingPhotoUpload({
                     </small>
                 </button>
 
+                {existingPhotos.map((photo, index) => (
+                    <article
+                        key={photo.key}
+                        className="listing-photo-preview"
+                    >
+                        <img
+                            src={photo.url}
+                            alt={`Existing listing photo ${index + 1}`}
+                        />
+
+                        {index === 0 && (
+                            <span className="listing-photo-primary">
+                                Cover photo
+                            </span>
+                        )}
+
+                        <button
+                            type="button"
+                            className="listing-photo-remove"
+                            onClick={() =>
+                                onRemoveExistingPhoto?.(
+                                    photo.key
+                                )
+                            }
+                        >
+                            <X size={15} />
+                        </button>
+                    </article>
+                ))}
+
                 {photoPreviews.map(
                     (
                         {
@@ -309,37 +354,29 @@ export default function ListingPhotoUpload({
                         index
                     ) => (
                         <article
-                            key={getFileKey(
-                                file
-                            )}
+                            key={getFileKey(file)}
                             className="listing-photo-preview"
                         >
                             <img
-                                src={
-                                    previewUrl
-                                }
-                                alt={`Listing photo ${index + 1
-                                    }`}
+                                src={previewUrl}
+                                alt={`Listing photo ${index + 1}`}
                             />
 
-                            {index === 0 && (
-                                <span className="listing-photo-primary">
-                                    Cover photo
-                                </span>
-                            )}
+                            {existingPhotos.length === 0 &&
+                                index === 0 && (
+                                    <span className="listing-photo-primary">
+                                        Cover photo
+                                    </span>
+                                )}
 
                             <button
                                 type="button"
                                 className="listing-photo-remove"
                                 onClick={() =>
-                                    removePhoto(
-                                        index
-                                    )
+                                    removePhoto(index)
                                 }
                             >
-                                <X
-                                    size={15}
-                                />
+                                <X size={15} />
                             </button>
                         </article>
                     )
@@ -358,7 +395,7 @@ export default function ListingPhotoUpload({
                         <span>Add photo</span>
 
                         <small>
-                            {photos.length === 0
+                            {totalPhotoCount === 0
                                 ? "Required"
                                 : "Optional"}
                         </small>

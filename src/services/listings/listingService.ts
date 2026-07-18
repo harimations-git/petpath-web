@@ -1,5 +1,14 @@
+import type {
+    CreateListingAnimalInput,
+    CreatePetListingRequest,
+    GetOrganisationListingsResponse,
+    ListingAvailabilityStatus,
+    OrganisationListingDetails,
+    UpdateOrganisationListingInput,
+    UploadedListingPhoto,
+    UploadedVeterinaryDocument,
+} from "../../types/listing";
 
-import type { CreatePetListingRequest, GetOrganisationListingsResponse } from "../../types/listing";
 import { getAuthToken } from "../organisation/organisationService";
 
 const API_BASE_URL =
@@ -309,9 +318,376 @@ export async function getOrganisationListings({
                 ? body.listings
                 : [],
 
-        nextToken:
-            typeof body?.nextToken === "string"
-                ? body.nextToken
-                : null,
+        nextToken: typeof body?.nextToken === "string"
+            ? body.nextToken
+            : null,
     };
+}
+/*
+ * Loads an existing listing.
+ * Prepares and uploads any newly added files.
+ * Sends the updated listing information to the backend.
+ *
+ * Used by the View Listing page to autofill
+ * the create-listing style form.
+ */
+export async function getOrganisationListing(
+    listingId: string
+): Promise<OrganisationListingDetails> {
+    const token = await getAuthToken();
+
+    const response = await fetch(
+        //API request url. encodeURIComponent safely sends the ID for use in URL
+        `${API_BASE_URL}/pet-listings/me/${encodeURIComponent(listingId)}`,
+        {
+            method: "GET",
+
+            //Backedn checks the header to confirm user is authorised
+            headers: {
+                Authorization:
+                    `Bearer ${token}`,
+            },
+        }
+    );
+
+    const body = await response.json().catch(() => null); //if response is not valid return null instead
+
+    if (!response.ok) {
+        throw new Error(
+            body?.message ||
+            "Unable to load this pet listing."
+        );
+    }
+
+    if (!body?.listingId) {
+        throw new Error(
+            "The server returned an invalid listing."
+        );
+    }
+
+    return {
+        ...body,
+
+        //return empty arrays if server did not return valid arrays
+        animals:
+            Array.isArray(body.animals)
+                ? body.animals
+                : [],
+
+        photos:
+            Array.isArray(body.photos)
+                ? body.photos
+                : [],
+
+        documents:
+            Array.isArray(body.documents)
+                ? body.documents
+                : [],
+    };
+}
+
+
+/*
+ * This function asks the backend for presigned S3 upload URLs
+ */
+export async function prepareListingUpdateUploads(
+    listingId: string,
+    input: PrepareListingUploadsInput
+): Promise<PrepareListingUploadsResponse> {
+    const token = await getAuthToken();
+
+    const response = await fetch(
+        `${API_BASE_URL}/pet-listings/me/${encodeURIComponent(listingId)}/upload-urls`,
+        {
+            method: "POST",
+            headers: {
+                Authorization:
+                    `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(input),
+        }
+    );
+
+    const body = await response.json().catch(() => null);
+
+    if (!response.ok) {
+        throw new Error(
+            body?.message ||
+            "Unable to prepare listing update uploads."
+        );
+    }
+
+    if (
+        !body?.listingId ||
+        !Array.isArray(body.photos) ||
+        !Array.isArray(body.documents)
+    ) {
+        throw new Error(
+            "The server returned an invalid upload response."
+        );
+    }
+
+    return body;
+}
+
+
+/*
+ * Convert form animals into the shape expected
+ * by the backend update Lambda.
+ */
+function createListingAnimalInputs(
+    animals: UpdateOrganisationListingInput["animals"]
+): CreateListingAnimalInput[] {
+
+    //Check every animal
+    return animals.map((animal, index) => {
+        if (
+            !animal.name ||
+            !animal.animalType ||
+            !animal.breedSpecies ||
+            !animal.sex ||
+            !animal.ageText
+        ) {
+            throw new Error(
+                `Please complete all required details for animal ${index + 1}.`
+            );
+        }
+
+        return {
+            animalId: animal.id,
+            name: animal.name,
+
+            animalType: animal.animalType,
+            breedSpecies: animal.breedSpecies,
+
+            sex: animal.sex,
+            ageText: animal.ageText,
+
+            temperament: animal.temperament,
+
+            animalOrder: index,
+        };
+    });
+}
+
+
+/*
+ * Save changes to an existing listing.
+ * Function prepares the upload urls for any of the new files
+ * Uploads the new files to s3 and then sends the updated listing 
+ * fields to s3 keys to the API
+ */
+export async function updateOrganisationListing(
+    input: UpdateOrganisationListingInput
+): Promise<CreatePetListingResponse> {
+
+    //extract input fields
+    const {
+        listingId,
+
+        title,
+        listingType,
+        animalType,
+        numberOfAnimals,
+
+        description,
+        listingUrl,
+        adoptionFee,
+
+        vaccinationStatus,
+        microchipStatus,
+        neuteredStatus,
+        healthNotes,
+
+        matchingProfile,
+        animals,
+
+        existingPhotoKeys,
+        removedPhotoKeys,
+        newPhotos,
+
+        existingDocumentKeys,
+        removedDocumentKeys,
+        newDocuments,
+    } = input;
+
+    //request upload urls
+    const preparedUploads =
+        await prepareListingUpdateUploads(
+            listingId,
+            {
+                /**
+                 * createFileMetadata() gives the backend enough information 
+                 * to prepare a secure upload location without sending the large file 
+                 * itself through your API and Lambda.
+                */
+                photos: createFileMetadata(newPhotos),
+                documents: createFileMetadata(newDocuments),
+            }
+        );
+
+
+    //the actual files are uploaded here
+    await uploadPreparedListingFiles({
+        listingPhotos: newPhotos,
+        veterinaryDocuments: newDocuments,
+        preparedUploads,
+    });
+
+    //converts the s3 upload information into the file objects 
+    const uploadedNewPhotos: UploadedListingPhoto[] =
+        preparedUploads.photos.map( // Go through each prepared photo and create a new UploadedListingPhoto object
+            (photo, index) => ({
+                key: photo.key,
+                fileName: photo.fileName,
+
+                contentType: photo.contentType,
+                sizeBytes: photo.sizeBytes,
+
+                photoOrder:
+                    existingPhotoKeys.length +
+                    index,
+            })
+        );
+
+    //Same as uploadedNewPhotos but for newly uploaded vet documents
+    const uploadedNewDocuments: UploadedVeterinaryDocument[] =
+        preparedUploads.documents.map(
+            (document) => ({
+                key: document.key,
+                fileName: document.fileName,
+
+                contentType: document.contentType,
+                sizeBytes: document.sizeBytes,
+            })
+        );
+
+    const token = await getAuthToken();
+
+    const response = await fetch(
+        `${API_BASE_URL}/pet-listings/me/${encodeURIComponent(listingId)}`,
+        {
+            method: "PUT",
+            headers: {
+                Authorization:
+                    `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                listingId,
+                title,
+
+                listingType,
+                animalType,
+                numberOfAnimals,
+
+                description,
+                enquiryUrl: listingUrl,
+                adoptionFee,
+
+                vaccinationStatus,
+                microchipStatus,
+                neuteredStatus,
+                healthNotes,
+
+                matchingProfile,
+                animals: createListingAnimalInputs(animals),
+
+                existingPhotoKeys,
+                removedPhotoKeys,
+                newPhotos: uploadedNewPhotos,
+
+                existingDocumentKeys,
+                removedDocumentKeys,
+                newDocuments: uploadedNewDocuments,
+            }),
+        }
+    );
+
+    const body = await response
+        .json()
+        .catch(() => null);
+
+    if (!response.ok) {
+        throw new Error(
+            body?.message ||
+            "Unable to update the pet listing."
+        );
+    }
+
+    return {
+        message: body?.message || "Listing updated successfully.",
+        listingId: body?.listingId || listingId,
+    };
+}
+
+/**
+ * Update the availability status of a pet to either
+ * - Available
+ * - Reserved
+ * - Rehomed
+ * @param listingId 
+ * @param availabilityStatus 
+ */
+export async function updateListingAvailability(
+    listingId: string,
+    availabilityStatus: ListingAvailabilityStatus
+): Promise<void> {
+    const token = await getAuthToken();
+
+    const response = await fetch(
+        `${API_BASE_URL}/pet-listings/me/${encodeURIComponent(
+            listingId
+        )}/availability`,
+        {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                availabilityStatus,
+            }),
+        }
+    );
+
+    const body =
+        await response.json().catch(() => null);
+
+    if (!response.ok) {
+        throw new Error(
+            body?.message ||
+            "Unable to update listing availability."
+        );
+    }
+}
+
+/**
+ * Delete a single pet listing
+ * @param listingId 
+ */
+export async function deleteOrganisationListing(
+    listingId: string
+): Promise<void> {
+    const token = await getAuthToken();
+
+    const response = await fetch(
+        `${API_BASE_URL}/pet-listings/me/${encodeURIComponent(listingId)}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    const body = await response.json().catch(() => null);
+
+    if (!response.ok) {
+        throw new Error(
+            body?.message ||
+                "Unable to delete this listing."
+        );
+    }
 }

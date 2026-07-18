@@ -570,6 +570,7 @@ export function useCreateListing() {
 
         animals,
         updateAnimal,
+        setAnimals,
 
         listingPhotos,
         setListingPhotos,

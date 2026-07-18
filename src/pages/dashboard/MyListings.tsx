@@ -30,6 +30,9 @@ export default function MyListings() {
         isLoadingMoreListings,
         listingsError,
 
+        updatingAvailabilityId,
+        handleAvailabilityChange,
+
         loadListings,
         loadMoreListings,
 
@@ -131,6 +134,8 @@ export default function MyListings() {
                 isLoadingMore={
                     isLoadingMoreListings
                 }
+                onAvailabilityChange={handleAvailabilityChange}
+                updatingAvailabilityId={updatingAvailabilityId}
                 isSearchingAllListings={
                     isSearchingAllListings
                 }
@@ -147,11 +152,11 @@ export default function MyListings() {
                 onLoadMore={
                     loadMoreListings
                 }
-                onViewListing={(
-                    listingId
-                ) =>
+                onViewListing={(listingId) =>
                     navigate(
-                        `${routes.home.myListings}/${listingId}`
+                        routes.listings.viewListing(
+                            listingId
+                        )
                     )
                 }
             />
