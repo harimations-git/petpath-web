@@ -27,6 +27,9 @@ export function useDashboard() {
     const {
         listings,
         loadListings,
+
+        reviewUpdates,
+        loadReviewUpdates,
     } = useOrganisationListings();
 
     useEffect(() => {
@@ -40,11 +43,13 @@ export function useDashboard() {
             organisationProfile?.accountStatus ===
             "approved"
         ) {
-            loadListings();
+            void loadListings();
+            void loadReviewUpdates();
         }
     }, [
         organisationProfile?.accountStatus,
         loadListings,
+        loadReviewUpdates,
     ]);
 
 
@@ -88,9 +93,13 @@ export function useDashboard() {
     const listingStatistics = useMemo( //useMemo only recalculates when the listings change
         () =>
             getListingStatistics(
-                listings
+                listings,
+                reviewUpdates
             ),
-        [listings]
+        [
+            listings,
+            reviewUpdates,
+        ]
     );
 
     //checks if profile is setup

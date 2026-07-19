@@ -20,6 +20,7 @@ import {
 } from "../../../context/OrganisationProfileContext";
 
 import "./OrganisationAccountMenu.css";
+import { useOrganisationListings } from "../../../context/OrganisationListingsContext";
 
 export default function OrganisationAccountMenu() {
     const navigate = useNavigate();
@@ -29,6 +30,8 @@ export default function OrganisationAccountMenu() {
         isLoadingProfile: isLoading,
         clearCachedOrganisationProfile,
     } = useOrganisationProfile();
+
+    const { clearCachedListings, clearCachedReviewUpdates } = useOrganisationListings();
 
     const menuRef =
         useRef<HTMLDivElement | null>(null);
@@ -107,6 +110,8 @@ export default function OrganisationAccountMenu() {
 
             //clear profile cache
             clearCachedOrganisationProfile();
+            clearCachedListings();
+            clearCachedReviewUpdates();
 
             navigate(routes.auth.login, {
                 replace: true,
@@ -180,11 +185,10 @@ export default function OrganisationAccountMenu() {
                 </div>
 
                 <ChevronDown
-                    className={`organisation-account-chevron ${
-                        isMenuOpen
-                            ? "organisation-account-chevron-open"
-                            : ""
-                    }`}
+                    className={`organisation-account-chevron ${isMenuOpen
+                        ? "organisation-account-chevron-open"
+                        : ""
+                        }`}
                     size={18}
                 />
             </button>
