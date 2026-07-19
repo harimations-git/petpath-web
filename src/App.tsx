@@ -69,7 +69,6 @@ export default function App() {
                 />
 
 
-
                 {/*Help and Legal */}
 
                 <Route

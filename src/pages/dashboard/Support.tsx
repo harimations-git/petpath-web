@@ -15,8 +15,13 @@ import { routes } from "../../constants/routes";
 import "./Support.css";
 import "./PageHeading.css";
 import Spacer from "../../components/layout/Spacer";
+import { useEffect } from "react";
 
 export default function Support() {
+    useEffect(() => {
+        document.title = "Help Centre | PetPath"
+    })
+    
     return (
         <main className="page-body">
             <header className="page-header">

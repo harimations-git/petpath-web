@@ -277,3 +277,29 @@ export async function updateOrganisationDescription(
 
   return body.organisationProfile;
 }
+
+/**
+ * Deletes the users account
+ */
+export async function deleteOrganisationAccount(): Promise<void> {
+    const token = await getAuthToken();
+
+    const response = await fetch(
+        `${API_BASE_URL}/organisation-profile/me`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    const body = await response.json().catch(() => null);
+
+    if (!response.ok) {
+        throw new Error(
+            body?.message ||
+                "Unable to delete your shelter account."
+        );
+    }
+}

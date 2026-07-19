@@ -10,6 +10,7 @@ import type {
 import PetListingCard from "./PetListingCard";
 
 import "./MyListingResults.css";
+import Spacer from "../../layout/Spacer";
 
 type MyListingsResultsProps = {
     listings: PetListingSummary[];
@@ -54,12 +55,15 @@ export default function MyListingsResults({
         totalLoadedListings === 0
     ) {
         return (
-            <section className="my-listings-results">
-                <LoadingSpinner
-                    size="large"
-                    label="Loading your listings..."
-                />
-            </section>
+            <>
+                <Spacer height={250} />
+                <section className="my-listings-results">
+                    <LoadingSpinner
+                        size="large"
+                        label="Loading your listings..."
+                    />
+                </section>
+            </>
         );
     }
 
@@ -134,7 +138,6 @@ export default function MyListingsResults({
                 ))}
             </div>
 
-            {/*Will change when I have time to do pages*/}
             {hasMore && (
                 <div className="my-listings-load-more">
                     <span className="my-listings-load-more-line" />

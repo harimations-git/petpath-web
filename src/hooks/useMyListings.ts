@@ -23,6 +23,7 @@ export function useMyListings() {
         profileError,
     } = useOrganisationProfile();
 
+
     //get listing data
     const {
         listings,
@@ -33,6 +34,7 @@ export function useMyListings() {
         loadListings,
         loadMoreListings,
         refreshListings,
+        clearCachedReviewUpdates
     } = useOrganisationListings();
 
     //current filters
@@ -76,6 +78,7 @@ export function useMyListings() {
             );
 
             await refreshListings();
+            clearCachedReviewUpdates();
         } finally {
             setUpdatingAvailabilityId(null);
         }
@@ -165,42 +168,42 @@ export function useMyListings() {
 
         const filtered = listings.filter(
             (listing) => {
+                /*
+                 * My Listings now only shows listings that
+                 * have already been approved.
+                 */
 
-                //search matching
+                if (listing.reviewStatus !== "approved") {
+                    return false;
+                }
+
+                // Search matching
                 const matchesSearch =
                     !search ||
                     listing.title
                         .toLowerCase()
-                        .includes(search)
+                        .includes(search);
 
-                //animal type filtering
+                // Animal type filtering
                 const matchesSpecies =
                     speciesFilter === "all" ||
                     listing.animalType
                         ?.trim()
                         .toLowerCase() === speciesFilter;
 
-                //listing type filtering
+                // Listing type filtering
                 const matchesListingType =
                     listingTypeFilter === "all" ||
                     listing.listingType === listingTypeFilter;
 
-                /**
-                 * Pending review takes prioritiy over availability
-                 * E.g a listing could be available but it's pending
-                 * so the code treats its filter status as pending
+                /*
+                 * My Listings now filters by availability only.
+                 * Review status is handled by Review Updates.
                  */
-                const listingStatus =
-                    listing.reviewStatus ===
-                        "pending"
-                        ? "pending"
-                        : listing.availabilityStatus;
-
-                //Status filtering
                 const matchesStatus =
-                    statusFilter === "all" ||
-                    listingStatus ===
-                    statusFilter;
+                    statusFilter === "all"
+                        ? listing.availabilityStatus !== "rehomed"
+                        : listing.availabilityStatus === statusFilter;
 
                 return (
                     matchesSearch &&

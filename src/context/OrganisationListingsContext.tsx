@@ -8,7 +8,7 @@ import {
 } from "react";
 
 import {
-    getOrganisationListings,
+    getOrganisationListings, getReviewUpdates
 } from "../services/listings/listingService";
 
 import type {
@@ -31,6 +31,15 @@ type OrganisationListingsContextValue = {
     loadMoreListings: () => Promise<void>;
     refreshListings: () => Promise<void>;
     clearCachedListings: () => void;
+
+    reviewUpdates: PetListingSummary[];
+
+    isLoadingReviewUpdates: boolean;
+    reviewUpdatesError: string;
+
+    loadReviewUpdates: () => Promise<void>;
+    refreshReviewUpdates: () => Promise<void>;
+    clearCachedReviewUpdates: () => void;
 };
 
 type OrganisationListingsProviderProps = {
@@ -44,8 +53,8 @@ const OrganisationListingsContext =
 
 const LISTINGS_PAGE_SIZE = 12;
 
-const CACHE_DURATION =
-    5 * 60 * 1000;
+const CACHE_DURATION = 5 * 60 * 1000;
+const REVIEW_UPDATES_CACHE_DURATION = 2 * 60 * 1000;
 
 /*
  * Module-level cache.
@@ -61,6 +70,16 @@ let listingsCachedAt = 0;
 
 let hasLoadedListings = false;
 
+let cachedReviewUpdates: PetListingSummary[] = [];
+
+let reviewUpdatesCachedAt = 0;
+
+let hasLoadedReviewUpdates = false;
+
+let pendingReviewUpdatesRequest:
+    Promise<PetListingSummary[]> | null =
+    null;
+
 /*
  * Prevent Dashboard and My Listings from creating
  * the same request at the same time.
@@ -74,6 +93,14 @@ function cacheIsFresh() {
         hasLoadedListings &&
         Date.now() - listingsCachedAt <
         CACHE_DURATION
+    );
+}
+
+function reviewUpdatesCacheIsFresh() {
+    return (
+        hasLoadedReviewUpdates &&
+        Date.now() - reviewUpdatesCachedAt <
+        REVIEW_UPDATES_CACHE_DURATION
     );
 }
 
@@ -104,6 +131,10 @@ export function OrganisationListingsProvider({
         listingsError,
         setListingsError,
     ] = useState("");
+
+    const [reviewUpdates, setReviewUpdates] = useState<PetListingSummary[]>(cachedReviewUpdates);
+    const [isLoadingReviewUpdates, setIsLoadingReviewUpdates] = useState(false);
+    const [reviewUpdatesError, setReviewUpdatesError] = useState("");
 
     const loadListings = useCallback(
         async () => {
@@ -221,6 +252,13 @@ export function OrganisationListingsProvider({
                                     )
                             );
 
+                        if (newListings.length === 0) {
+                            cachedNextToken = null;
+                            setNextToken(null);
+
+                            return currentListings;
+                        }
+
                         const combinedListings = [
                             ...currentListings,
                             ...newListings,
@@ -233,15 +271,12 @@ export function OrganisationListingsProvider({
                     }
                 );
 
-                cachedNextToken =
-                    result.nextToken;
+                cachedNextToken = result.nextToken || null;
 
                 listingsCachedAt =
                     Date.now();
 
-                setNextToken(
-                    result.nextToken
-                );
+                setNextToken(result.nextToken || null);
             } catch (error) {
                 console.error(
                     "Unable to load more listings:",
@@ -293,6 +328,81 @@ export function OrganisationListingsProvider({
             setListingsError("");
         }, []);
 
+    const loadReviewUpdates =
+        useCallback(async () => {
+            setReviewUpdatesError("");
+
+            if (reviewUpdatesCacheIsFresh()) {
+                setReviewUpdates(
+                    cachedReviewUpdates
+                );
+
+                return;
+            }
+
+            setIsLoadingReviewUpdates(true);
+
+            try {
+                if (!pendingReviewUpdatesRequest) {
+                    pendingReviewUpdatesRequest =
+                        getReviewUpdates().then(
+                            (response) =>
+                                response.listings
+                        );
+                }
+
+                const result =
+                    await pendingReviewUpdatesRequest;
+
+                cachedReviewUpdates = result;
+                reviewUpdatesCachedAt =
+                    Date.now();
+                hasLoadedReviewUpdates = true;
+
+                setReviewUpdates(result);
+            } catch (error) {
+                console.error(
+                    "Unable to load review updates:",
+                    error
+                );
+
+                setReviewUpdatesError(
+                    error instanceof Error
+                        ? error.message
+                        : "Unable to load review updates."
+                );
+            } finally {
+                pendingReviewUpdatesRequest =
+                    null;
+
+                setIsLoadingReviewUpdates(false);
+            }
+        }, []);
+
+    const clearCachedReviewUpdates =
+        useCallback(() => {
+            cachedReviewUpdates = [];
+            reviewUpdatesCachedAt = 0;
+            hasLoadedReviewUpdates = false;
+            pendingReviewUpdatesRequest = null;
+
+            setReviewUpdates([]);
+            setReviewUpdatesError("");
+        }, []);
+
+    const refreshReviewUpdates =
+        useCallback(async () => {
+            cachedReviewUpdates = [];
+            reviewUpdatesCachedAt = 0;
+            hasLoadedReviewUpdates = false;
+            pendingReviewUpdatesRequest = null;
+
+            setReviewUpdates([]);
+            setReviewUpdatesError("");
+
+            await loadReviewUpdates();
+        }, [loadReviewUpdates]);
+
     const contextValue = useMemo(
         () => ({
             listings,
@@ -311,6 +421,13 @@ export function OrganisationListingsProvider({
             loadMoreListings,
             refreshListings,
             clearCachedListings,
+
+            reviewUpdates,
+            isLoadingReviewUpdates,
+            reviewUpdatesError,
+            loadReviewUpdates,
+            refreshReviewUpdates,
+            clearCachedReviewUpdates,
         }),
         [
             listings,
@@ -322,6 +439,13 @@ export function OrganisationListingsProvider({
             loadMoreListings,
             refreshListings,
             clearCachedListings,
+
+            reviewUpdates,
+            isLoadingReviewUpdates,
+            reviewUpdatesError,
+            loadReviewUpdates,
+            refreshReviewUpdates,
+            clearCachedReviewUpdates,
         ]
     );
 

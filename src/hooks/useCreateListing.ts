@@ -533,7 +533,7 @@ export function useCreateListing() {
         setShowModal(false);
 
         navigate(
-            routes.home.myListings
+            routes.home.status
         );
     }
 

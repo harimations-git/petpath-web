@@ -49,6 +49,15 @@ body {
     line-height: 1.5;
 }
 
+.settings-heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+
+    width: 100%;
+}
+
 
 .settings-grid {
     display: grid;

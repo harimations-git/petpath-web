@@ -144,7 +144,8 @@ export default function MyListings() {
                 }
                 hasMore={
                     hasMoreListings &&
-                    !hasActiveFilters
+                    !hasActiveFilters &&
+                    filteredListings.length > 0
                 }
                 onRetry={
                     loadListings

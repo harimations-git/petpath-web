@@ -154,6 +154,9 @@ export type PetListingSummary = {
     photos: UploadedListingPhoto[];
 
     reviewStatus: ListingReviewStatus;
+    reviewReason?: string;
+    reviewedAt?: string;
+    submittedAt?: string;
 
     availabilityStatus:
     ListingAvailabilityStatus;

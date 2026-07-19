@@ -239,7 +239,7 @@ export function useViewListing(listingId?: string) {
         setShowModal(false);
 
         navigate(
-            routes.home.myListings
+            routes.home.status
         );
     }
     //open and closing delete controls

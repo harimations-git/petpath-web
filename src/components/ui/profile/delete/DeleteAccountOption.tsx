@@ -6,9 +6,9 @@ import {
 
 import InfoModal from "../../InfoModal";
 
-import "./DeleteListingOption.css";
+import "./DeleteAccountOption.css";
 
-type ListingOptionsProps = {
+type DeleteAccountOptionProps = {
     isOpen: boolean;
     showDeleteModal: boolean;
     isDeleting?: boolean;
@@ -18,12 +18,7 @@ type ListingOptionsProps = {
     onConfirmDelete: () => void | Promise<void>;
 };
 
-/**
- * Dropdown menu allowing the user to delete a pet listing
- * @param param0 
- * @returns 
- */
-export default function DeleteListingOption({
+export default function DeleteAccountOption({
     isOpen,
     showDeleteModal,
     isDeleting = false,
@@ -31,29 +26,29 @@ export default function DeleteListingOption({
     onOpenDeleteModal,
     onCloseDeleteModal,
     onConfirmDelete,
-}: ListingOptionsProps) {
+}: DeleteAccountOptionProps) {
     return (
         <>
-            <div className="listing-options">
+            <div className="account-options">
                 <button
                     type="button"
-                    className="listing-options-button"
+                    className="account-options-button"
                     onClick={onToggle}
                     aria-expanded={isOpen}
                 >
                     <MoreHorizontal size={18} />
-                    Listing options
+                    Account options
                 </button>
 
                 {isOpen && (
-                    <div className="listing-options-menu">
+                    <div className="account-options-menu">
                         <button
                             type="button"
-                            className="listing-options-danger"
+                            className="account-options-danger"
                             onClick={onOpenDeleteModal}
                         >
                             <Trash2 size={17} />
-                            Delete listing
+                            Delete account
                         </button>
                     </div>
                 )}
@@ -61,14 +56,14 @@ export default function DeleteListingOption({
 
             <InfoModal
                 visible={showDeleteModal}
-                title="Delete this listing?"
-                message="This will remove the listing from your shelter account. Adopters will no longer be able to view or enquire about it."
+                title="Delete your shelter account?"
+                message="This will permanently delete your shelter account, profile details, listings and uploaded listing media."
                 warning="This action cannot be undone."
                 icon={AlertTriangle}
                 buttonText={
                     isDeleting
                         ? "Deleting..."
-                        : "Delete listing"
+                        : "Delete account"
                 }
                 buttonTextSecondary="Cancel"
                 onClose={onCloseDeleteModal}

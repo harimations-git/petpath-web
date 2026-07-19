@@ -4,6 +4,7 @@ import type {
     GetOrganisationListingsResponse,
     ListingAvailabilityStatus,
     OrganisationListingDetails,
+    PetListingSummary,
     UpdateOrganisationListingInput,
     UploadedListingPhoto,
     UploadedVeterinaryDocument,
@@ -62,6 +63,14 @@ export type CreatePetListingResponse = {
     message: string;
     listingId: string;
 };
+
+/**
+ * Response returned by GET /pet-listings/me/review-updates
+ */
+export type GetReviewUpdatesResponse = {
+    listings: PetListingSummary[];
+};
+
 
 /*
  * Convert browser File objects into metadata that
@@ -318,9 +327,11 @@ export async function getOrganisationListings({
                 ? body.listings
                 : [],
 
-        nextToken: typeof body?.nextToken === "string"
-            ? body.nextToken
-            : null,
+        nextToken:
+            typeof body?.nextToken === "string" &&
+                body.nextToken.trim() !== ""
+                ? body.nextToken
+                : null,
     };
 }
 /*
@@ -687,7 +698,42 @@ export async function deleteOrganisationListing(
     if (!response.ok) {
         throw new Error(
             body?.message ||
-                "Unable to delete this listing."
+            "Unable to delete this listing."
         );
     }
+}
+
+/**
+ * Loads the user's petlistings and status. 
+ * Used to get pending and rejected listings with admin feedback
+ * @returns 
+ */
+export async function getReviewUpdates(): Promise<GetReviewUpdatesResponse> {
+    const token = await getAuthToken();
+
+    const response = await fetch(
+        `${API_BASE_URL}/pet-listings/me/review-updates`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    const body =
+        await response.json().catch(() => null);
+
+    if (!response.ok) {
+        throw new Error(
+            body?.message ||
+            "Unable to load review updates."
+        );
+    }
+
+    return {
+        listings: Array.isArray(body?.listings)
+            ? body.listings
+            : [],
+    };
 }

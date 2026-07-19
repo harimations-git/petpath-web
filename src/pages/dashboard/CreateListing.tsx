@@ -194,7 +194,7 @@ export default function CreateListing() {
                 visible={form.showModal}
                 title="Review"
                 message="Your listing will now be reviewed by our team before it goes live."
-                warning="You will be notified when a decision has been made."
+                warning="You can view this listings current status from the review updates page."
                 icon={Shield}
                 buttonText="Continue"
                 onClose={
