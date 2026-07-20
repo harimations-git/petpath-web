@@ -19,8 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { routes } from "../../constants/routes";
 
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
-import verificationImageUrl from "../../assets/EmailVerification.png";
-import VerificationImage from "../../assets/EmailVerification.png";
+import VerificationImage from "../../assets/EmailVerification.webp";
 import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
 import VerificationCodeInput from "../../components/ui/auth/VerificationCodeInput";
 
@@ -37,8 +36,7 @@ export default function VerifyEmail() {
 
     const state = (location.state ?? {}) as VerifyEmailState;
     const email = state.email ?? sessionStorage.getItem("pendingVerificationEmail") ?? "";
-    const passwordFromLogin = state.password ?? "";
-    const fromLogin = state.fromLogin ?? false;
+    const passwordForSignIn = state.password ?? "";
 
     const [verificationCode, setVerificationCode] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -50,9 +48,6 @@ export default function VerifyEmail() {
 
     useEffect(() => {
         document.title = "Verify Email | PetPath";
-
-        const img = new Image();
-        img.src = verificationImageUrl;
     }, []);
 
     async function handleVerifyEmail(event: FormEvent<HTMLFormElement>) {
@@ -113,14 +108,16 @@ export default function VerifyEmail() {
              * Confirm the email and then sign in using the password
              * they entered on the login page.
              */
-            if (fromLogin && passwordFromLogin) {
+            if (passwordForSignIn) {
                 const signInResult = await signIn({
                     username: normalisedEmail,
-                    password: passwordFromLogin,
+                    password: passwordForSignIn,
                 });
 
                 if (!signInResult.isSignedIn) {
-                    throw new Error("Your email was verified, but sign-in was not completed.");
+                    throw new Error(
+                        "Your email was verified, but sign-in was not completed."
+                    );
                 }
 
                 goToAccountReview();
@@ -257,8 +254,7 @@ export default function VerifyEmail() {
                                 src={VerificationImage}
                                 alt="Email verification"
                                 loading="eager"
-                                decoding="sync"
-                                onError={() => console.log("Verification image failed to load:", VerificationImage)}
+                                decoding="async"
                             />
                         </div>
 

@@ -22,8 +22,11 @@ export const routes = {
     },
 
     legal: {
-        terms: "/terms-and-conditions",
-        privacyPolicy: "/privacy-policy"
+        terms: "/terms",
+        privacyPolicy: "/privacy-policy",
+
+        shelterTerms: "/settings/terms",
+        shelterPrivacyPolicy: "/settings/privacy-policy",
     },
 
     listings: {

@@ -15,7 +15,7 @@
     overflow-x: hidden;
     overflow-y: auto;
 }
-@media (max-width: 850px) {
+@media (max-width: 900px) {
     .shelter-layout-content {
         width: 100%;
         min-height: 100vh;

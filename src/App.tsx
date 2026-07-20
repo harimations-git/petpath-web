@@ -45,6 +45,23 @@ export default function App() {
 
 
             <Route path={routes.auth.forgotPassword} element={<ForgotPassword />} />
+            <Route
+                path={routes.legal.privacyPolicy}
+                element={
+                    <PrivacyPolicy
+                        layout="public"
+                    />
+                }
+            />
+
+            <Route
+                path={routes.legal.terms}
+                element={
+                    <TermsOfService
+                        layout="public"
+                    />
+                }
+            />
 
             <Route element={<ProtectedRoute />}>
                 {/*Logged-in shelter pages with sidebar*/}
@@ -98,13 +115,21 @@ export default function App() {
                     />
 
                     <Route
-                        path={routes.legal.privacyPolicy}
-                        element={<PrivacyPolicy />}
+                        path={routes.legal.shelterTerms}
+                        element={
+                            <TermsOfService
+                                layout="shelter"
+                            />
+                        }
                     />
 
                     <Route
-                        path={routes.legal.terms}
-                        element={<TermsOfService />}
+                        path={routes.legal.shelterPrivacyPolicy}
+                        element={
+                            <PrivacyPolicy
+                                layout="shelter"
+                            />
+                        }
                     />
 
                 </Route>

@@ -1,4 +1,5 @@
 import {
+    ArrowLeft,
     Database,
     FileText,
     LockKeyhole,
@@ -11,12 +12,38 @@ import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAcc
 
 import "./LegalPage.css";
 import "../dashboard/PageHeading.css";
+import { useNavigate } from "react-router-dom";
 
-export default function PrivacyPolicy() {
+
+type PrivacyPolicyProps = {
+    layout?: "public" | "shelter";
+};
+
+export default function PrivacyPolicy({
+    layout = "public",
+}: PrivacyPolicyProps) {
+
+    const navigate = useNavigate();
+
+    const isPublic = layout === "public";
+    const pageClass = isPublic ? "legal-page" : "page";
+
     return (
-        <main className="page-body">
-            <header className="page-header">
-                <div className="page-heading">
+        <main className={`${pageClass}-body`}>
+            <header className={`${pageClass}-header`}>
+                {isPublic && (
+                    <div>
+                        <button
+                            type="button"
+                            className="account-type-back"
+                            onClick={() => navigate(-1)}
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                    </div>
+                )}
+
+                <div className={`${pageClass}-heading`}>
                     <h1>Privacy Policy</h1>
 
                     <p>
@@ -25,9 +52,11 @@ export default function PrivacyPolicy() {
                     </p>
                 </div>
 
-                <div className="page-account-menu">
-                    <OrganisationAccountMenu />
-                </div>
+                {!isPublic && (
+                    <div className="page-account-menu">
+                        <OrganisationAccountMenu />
+                    </div>
+                )}
             </header>
 
             <section className="legal-page">

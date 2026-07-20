@@ -27,6 +27,12 @@ export type OrganisationProfile = {
   postcode?: string;
   country?: string;
 
+  locationLatitude?: number;
+  locationLongitude?: number;
+  locationSource?: "address";
+  locationLabel?: string;
+  locationGeocodedAt?: string;
+
   profileComplete: boolean;
   profileCompletedAt?: string;
 };
@@ -250,7 +256,7 @@ export async function updateOrganisationProfileImage(
  */
 export async function updateOrganisationDescription(
   description: string
-): Promise<OrganisationProfile>{
+): Promise<OrganisationProfile> {
   const token = await getAuthToken();
 
   const response = await fetch(`${API_BASE_URL}/organisation-profile/me/description`,
@@ -271,7 +277,7 @@ export async function updateOrganisationDescription(
   if (!response.ok) {
     throw new Error(
       body?.message ||
-        "Unable to update the description."
+      "Unable to update the description."
     );
   }
 
@@ -279,27 +285,37 @@ export async function updateOrganisationDescription(
 }
 
 /**
- * Deletes the users account
+ * Deletes the users account and information (petlistings, profile, s3 files, cognito user)
  */
 export async function deleteOrganisationAccount(): Promise<void> {
-    const token = await getAuthToken();
+  const token = await getAuthToken();
 
-    const response = await fetch(
-        `${API_BASE_URL}/organisation-profile/me`,
-        {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }
-    );
-
-    const body = await response.json().catch(() => null);
-
-    if (!response.ok) {
-        throw new Error(
-            body?.message ||
-                "Unable to delete your shelter account."
-        );
+  const response = await fetch(
+    `${API_BASE_URL}/organisation-profile/me`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
+  );
+
+  const text = await response.text();
+
+  let body: any = null;
+
+  try {
+    body = text ? JSON.parse(text) : null;
+  } catch {
+    body = null;
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      body?.errorMessage ||
+      body?.message ||
+      response.statusText ||
+      "Unable to delete your shelter account."
+    );
+  }
 }

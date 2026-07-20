@@ -95,7 +95,7 @@ export default function Support() {
 
                     <div className="support-link-list">
                         <Link
-                            to={routes.legal.terms}
+                            to={routes.legal.shelterTerms}
                             className="support-document-link"
                         >
                             <span className="support-document-main">
@@ -119,7 +119,7 @@ export default function Support() {
                         </Link>
 
                         <Link
-                            to={routes.legal.privacyPolicy}
+                            to={routes.legal.shelterPrivacyPolicy}
                             className="support-document-link"
                         >
                             <span className="support-document-main">

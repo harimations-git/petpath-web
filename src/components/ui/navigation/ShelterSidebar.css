@@ -116,7 +116,7 @@
     background: var(--color-border);
 }
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
     .shelter-sidebar {
         position: fixed;
         top: 0;

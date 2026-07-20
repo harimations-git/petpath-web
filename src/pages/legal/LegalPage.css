@@ -1,9 +1,61 @@
+.legal-page-body {
+    position: relative;
+
+    width: 100%;
+    min-height: 100dvh;
+
+    padding: 40px 32px 64px;
+    box-sizing: border-box;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background: var(--color-background);
+}
+
+.legal-page-header {
+    width: min(100%, 980px);
+    margin: 0 auto var(--spacing-xl);
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+
+    text-align: left;
+}
+
+.legal-page-heading {
+    width: 100%;
+    max-width: 760px;
+    margin-right: auto;
+}
+
+.legal-page-heading h1 {
+    margin: 0 0 var(--spacing-sm);
+
+    color: var(--color-primary-dark);
+    font-size: clamp(32px, 4vw, 42px);
+    line-height: 1.08;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+}
+
+.legal-page-heading p {
+    max-width: 720px;
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.65;
+}
+
 .legal-page {
     display: grid;
     gap: var(--spacing-lg);
 
-    width: 100%;
-    margin-top: var(--spacing-lg);
+    width: min(100%, 980px);
+    margin: 0 auto 56px;
 }
 
 .legal-intro-card,
@@ -80,7 +132,7 @@
     padding: var(--spacing-xl);
 }
 
-.legal-card p + p {
+.legal-card p+p {
     margin-top: var(--spacing-md);
 }
 
@@ -195,14 +247,12 @@
     padding: var(--spacing-lg);
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             rgba(234, 243, 223, 0.75),
-            rgba(255, 255, 255, 0.98)
-        );
+            rgba(255, 255, 255, 0.98));
 }
 
-.legal-contact-card > svg {
+.legal-contact-card>svg {
     flex-shrink: 0;
 
     margin-top: 3px;
@@ -227,9 +277,57 @@
     border-radius: var(--radius-sm);
 }
 
+.legal-page-body,
+.page-body {
+    height: 100dvh;
+    min-height: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding-bottom: 72px;
+    box-sizing: border-box;
+}
+
+.legal-page {
+    width: min(100%, 980px);
+    margin: 0 auto 72px;
+
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
 @media (max-width: 760px) {
-    .legal-page {
+    .legal-page-body {
+        padding: 24px 14px 44px;
+    }
+
+    .legal-page-header {
+        width: 100%;
+        margin-bottom: var(--spacing-lg);
+
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .legal-page-heading {
         max-width: none;
+    }
+
+    .legal-page-heading h1 {
+        font-size: 30px;
+    }
+
+    .legal-page-heading p {
+        font-size: 14px;
+        line-height: 1.55;
+    }
+
+    .legal-page {
+        width: 100%;
+        max-width: none;
+        margin-bottom: 36px;
     }
 
     .legal-intro-card,

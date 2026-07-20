@@ -26,7 +26,7 @@ export function useViewListing(listingId?: string) {
     const navigate = useNavigate();
     const form = useCreateListing();
 
-    const {refreshListings,} = useOrganisationListings();
+    const {refreshListings, refreshReviewUpdates} = useOrganisationListings();
 
     const [isLoadingListing, setIsLoadingListing] = useState(true);
     const [listingError, setListingError] = useState("");
@@ -221,6 +221,7 @@ export function useViewListing(listingId?: string) {
 
             //refresh the cache
             await refreshListings();
+            await refreshReviewUpdates();
 
             setShowModal(true);
         } catch (error) {

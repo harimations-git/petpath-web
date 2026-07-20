@@ -1,4 +1,5 @@
 import {
+    ArrowLeft,
     CheckCircle2,
     FileText,
     Mail,
@@ -7,14 +8,38 @@ import {
 
 import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAccountMenu";
 
-import "./LegalPage.css";
 import "../dashboard/PageHeading.css";
+import "./LegalPage.css";
+import { useNavigate } from "react-router-dom";
 
-export default function TermsOfService() {
+type TermsOfServiceProps = {
+    layout?: "public" | "shelter";
+};
+
+export default function TermsOfService({
+    layout = "public",
+}: TermsOfServiceProps) {
+
+    const navigate = useNavigate();
+
+    const isPublic = layout === "public";
+    const pageClass = isPublic ? "legal-page" : "page";
     return (
-        <main className="page-body">
-            <header className="page-header">
-                <div className="page-heading">
+        <main className={`${pageClass}-body`}>
+            <header className={`${pageClass}-header`}>
+
+                {isPublic && (
+                    <div>
+                        <button
+                            type="button"
+                            className="account-type-back"
+                            onClick={() => navigate(-1)}
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                    </div>
+                )}
+                <div className={`${pageClass}-heading`}>
                     <h1>Terms and Conditions</h1>
 
                     <p>
@@ -23,9 +48,11 @@ export default function TermsOfService() {
                     </p>
                 </div>
 
-                <div className="page-account-menu">
-                    <OrganisationAccountMenu />
-                </div>
+                {!isPublic && (
+                    <div className="page-account-menu">
+                        <OrganisationAccountMenu />
+                    </div>
+                )}
             </header>
 
             <section className="legal-page">

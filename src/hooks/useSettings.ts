@@ -145,10 +145,12 @@ export function useSettings() {
         setIsDeletingAccount(true);
 
         try {
+            //deletes all account info eg. pet listings, matching profile, s3 files, cognito user
             await deleteOrganisationAccount();
 
             setShowDeleteAccountModal(false);
 
+            //clear the user cache
             clearCachedOrganisationProfile();
             await signOut();
 
