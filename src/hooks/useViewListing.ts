@@ -281,9 +281,10 @@ export function useViewListing(listingId?: string) {
 
             //refresh cache
             await refreshListings();
+            await refreshReviewUpdates();
 
             //re-route
-            navigate(routes.home.myListings);
+            navigate(routes.home.status);
 
         } catch (error) {
             setEditFormError(
