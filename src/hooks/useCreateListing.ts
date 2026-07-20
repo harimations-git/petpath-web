@@ -341,7 +341,8 @@ export function useCreateListing() {
                     !animal.name.trim() ||
                     !animal.animalType ||
                     !animal.sex ||
-                    !animal.ageText.trim()
+                    !animal.ageText.trim() ||
+                    !animal.breedSpecies.trim()
                 );
             });
 

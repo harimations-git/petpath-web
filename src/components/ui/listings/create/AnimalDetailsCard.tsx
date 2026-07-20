@@ -79,8 +79,10 @@ export default function AnimalDetailsCard({
 
                 <label className="create-listing-field">
                     <span>
-                        Breed or species
+                        Breed or species <strong>*</strong>
                     </span>
+
+                    
 
                     <input
                         type="text"
@@ -95,6 +97,7 @@ export default function AnimalDetailsCard({
                             )
                         }
                         placeholder="e.g. Labrador"
+                        required
                     />
                 </label>
 
