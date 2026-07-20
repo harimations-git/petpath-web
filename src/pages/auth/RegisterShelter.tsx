@@ -85,6 +85,7 @@ export default function RegisterShelter() {
                 replace: true,
                 state: {
                     email: normalisedEmail,
+                    password,
                     accountType: "shelter",
                 },
             });
@@ -197,7 +198,7 @@ export default function RegisterShelter() {
                             <span className="register-shelter-checkbox-box" />
 
                             <span className="register-shelter-checkbox-text">
-                                I agree to PetPath's <Link to={routes.auth.login}>Terms of Service </Link> and <Link to={routes.auth.login}>Privacy Policy</Link>
+                                I agree to PetPath's <Link to={routes.legal.terms}>Terms of Service </Link> and <Link to={routes.legal.privacyPolicy}>Privacy Policy</Link>
                             </span>
                         </label>
 

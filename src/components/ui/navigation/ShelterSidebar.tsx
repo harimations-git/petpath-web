@@ -54,7 +54,7 @@ const sidebarItems: SidebarItem[] = [
 
     {
         label: "Help Centre",
-        route: routes.home.support,
+        route: routes.help.support,
         icon: <HelpCircleIcon size={20} />,
     },
 ];

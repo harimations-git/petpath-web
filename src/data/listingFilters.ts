@@ -58,10 +58,6 @@ export const statusFilterOptions: FilterOption[] = [
         value: "available",
     },
     {
-        label: "Pending Review",
-        value: "pending",
-    },
-    {
         label: "Reserved",
         value: "reserved",
     },
@@ -87,5 +83,24 @@ export const sortFilterOptions: FilterOption[] = [
     {
         label: "Name Z–A",
         value: "name-desc",
+    },
+];
+
+export const reviewStatusFilterOptions = [
+    {
+        label: "All updates",
+        value: "all",
+    },
+    {
+        label: "Pending review",
+        value: "pending",
+    },
+    {
+        label: "Rejected",
+        value: "rejected",
+    },
+    {
+        label: "Approved",
+        value: "approved",
     },
 ];

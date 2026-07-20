@@ -1,5 +1,11 @@
 import type { MatchingProfileForm } from "./matchingProfile";
 
+import type {
+    MicrochipStatus,
+    NeuteredStatus,
+    VaccinationStatus,
+} from "./vetInformation";
+
 export type ListingType =
     | "individual"
     | "group";
@@ -59,9 +65,9 @@ export type CreateListingInput = {
     listingUrl: string;
     adoptionFee: number;
 
-    vaccinationStatus: string;
-    microchipStatus: string;
-    neuteredStatus: string;
+    vaccinationStatus: VaccinationStatus;
+    microchipStatus: MicrochipStatus;
+    neuteredStatus: NeuteredStatus;
     healthNotes: string;
 
     matchingProfile: MatchingProfileForm;
@@ -107,9 +113,9 @@ export type CreatePetListingRequest = {
     enquiryUrl: string;
     adoptionFee: number;
 
-    vaccinationStatus: string;
-    microchipStatus: string;
-    neuteredStatus: string;
+    vaccinationStatus: VaccinationStatus;
+    microchipStatus: MicrochipStatus;
+    neuteredStatus: NeuteredStatus;
     healthNotes: string;
 
     photos: UploadedListingPhoto[];
@@ -140,17 +146,20 @@ export type PetListingSummary = {
     locationPostcode: string;
     locationCountry: string;
 
-    vaccinationStatus: string;
-    microchipStatus: string;
-    neuteredStatus: string;
+    vaccinationStatus: VaccinationStatus;
+    microchipStatus: MicrochipStatus;
+    neuteredStatus: NeuteredStatus;
     healthNotes?: string;
 
     photos: UploadedListingPhoto[];
 
     reviewStatus: ListingReviewStatus;
+    reviewReason?: string;
+    reviewedAt?: string;
+    submittedAt?: string;
 
     availabilityStatus:
-        ListingAvailabilityStatus;
+    ListingAvailabilityStatus;
 
     createdAt: string;
     updatedAt: string;
@@ -162,3 +171,59 @@ export type GetOrganisationListingsResponse = {
     listings: PetListingSummary[];
     nextToken: string | null;
 };
+
+export type OrganisationListingDetails = {
+    listingId: string;
+
+    title: string;
+    listingType: ListingType;
+    animalType: ListingAnimalCategory;
+    numberOfAnimals: number;
+
+    description: string;
+    enquiryUrl: string;
+    adoptionFee: number;
+
+    vaccinationStatus: VaccinationStatus;
+    microchipStatus: MicrochipStatus;
+    neuteredStatus: NeuteredStatus;
+    healthNotes: string;
+
+    matchingProfile: MatchingProfileForm;
+
+    animals: ListingAnimalForm[];
+
+    photos: ExistingListingPhoto[];
+    documents: ExistingListingDocument[];
+
+    reviewStatus: ListingReviewStatus;
+    availabilityStatus: ListingAvailabilityStatus;
+
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type UpdateOrganisationListingInput =
+    CreateListingInput & {
+        listingId: string;
+
+        existingPhotoKeys: string[];
+        removedPhotoKeys: string[];
+        newPhotos: File[];
+
+        existingDocumentKeys: string[];
+        removedDocumentKeys: string[];
+        newDocuments: File[];
+    };
+
+export type ExistingListingPhoto = {
+    key: string;
+    url: string;
+};
+
+export type ExistingListingDocument = {
+    key: string;
+    fileName: string;
+    url?: string;
+};
+

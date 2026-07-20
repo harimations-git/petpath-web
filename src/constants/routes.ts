@@ -12,14 +12,26 @@ export const routes = {
         dashboard: "/dashboard",
         myListings: "/myListings",
         createListing: "/createListing",
-        status:"/status",
+        status: "/status",
         settings: "/settings",
         profileSetup: "/profile/setup",
-        support:"/support"
+    },
+
+    help: {
+        support: "/support",
+    },
+
+    legal: {
+        terms: "/terms",
+        privacyPolicy: "/privacy-policy",
+
+        shelterTerms: "/help/terms",
+        shelterPrivacyPolicy: "/help/privacy-policy",
     },
 
     listings: {
-        create: "/listings/new",
-        mine: "/listings",
+        view: "/listings/view/:listingId",
+        viewListing: (listingId: string) =>
+            `/listings/view/${listingId}`,
     },
 } as const;

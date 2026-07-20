@@ -4,15 +4,23 @@ import LoadingSpinner from "../LoadingSpinner";
 
 
 import type {
+    ListingAvailabilityStatus,
     PetListingSummary,
 } from "../../../types/listing";
 import PetListingCard from "./PetListingCard";
 
 import "./MyListingResults.css";
+import Spacer from "../../layout/Spacer";
 
 type MyListingsResultsProps = {
     listings: PetListingSummary[];
     totalLoadedListings: number;
+
+    onAvailabilityChange: (
+        listingId: string,
+        availabilityStatus: ListingAvailabilityStatus
+    ) => Promise<void> | void;
+    updatingAvailabilityId: string | null;
 
     isLoading: boolean;
     isLoadingMore: boolean;
@@ -31,6 +39,8 @@ type MyListingsResultsProps = {
 export default function MyListingsResults({
     listings,
     totalLoadedListings,
+    onAvailabilityChange,
+    updatingAvailabilityId,
     isLoading,
     isLoadingMore,
     isSearchingAllListings,
@@ -45,12 +55,15 @@ export default function MyListingsResults({
         totalLoadedListings === 0
     ) {
         return (
-            <section className="my-listings-results">
-                <LoadingSpinner
-                    size="large"
-                    label="Loading your listings..."
-                />
-            </section>
+            <>
+                <Spacer height={250} />
+                <section className="my-listings-results">
+                    <LoadingSpinner
+                        size="large"
+                        label="Loading your listings..."
+                    />
+                </section>
+            </>
         );
     }
 
@@ -86,7 +99,7 @@ export default function MyListingsResults({
 
                     <p>
                         {totalLoadedListings === 0
-                            ? "Create your first pet listing to get started."
+                            ? "Create your first pet listing to get started. Have you already created a listing? Check the status updates page to see its progress!"
                             : "No listings match your current filters."}
                     </p>
                 </div>
@@ -114,18 +127,17 @@ export default function MyListingsResults({
             <div className="my-listings-grid">
                 {listings.map((listing) => (
                     <PetListingCard
-                        key={
-                            listing.listingId
-                        }
+                        key={listing.listingId}
                         listing={listing}
-                        onView={
-                            onViewListing
+                        onView={onViewListing}
+                        onAvailabilityChange={onAvailabilityChange}
+                        isUpdatingAvailability={
+                            updatingAvailabilityId === listing.listingId
                         }
                     />
                 ))}
             </div>
 
-            {/*Will change when I have time to do pages*/}
             {hasMore && (
                 <div className="my-listings-load-more">
                     <span className="my-listings-load-more-line" />

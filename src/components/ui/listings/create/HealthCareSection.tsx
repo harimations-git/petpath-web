@@ -12,36 +12,33 @@ import {
 
 import VeterinaryDocumentUpload from "../VeterinaryDocumentUpload";
 import FormSelect from "./FormSelect";
+import type { ExistingListingDocument } from "../../../../types/listing";
 
 type HealthCareSectionProps = {
-    vaccinationStatus:
-        VaccinationStatus;
-
-    microchipStatus:
-        MicrochipStatus;
-
-    neuteredStatus:
-        NeuteredStatus;
-
+    vaccinationStatus: VaccinationStatus;
+    microchipStatus: MicrochipStatus;
+    neuteredStatus: NeuteredStatus;
     healthNotes: string;
+
     documents: File[];
+
+    existingDocuments?: ExistingListingDocument[];
+    onRemoveExistingDocument?: (
+        documentKey: string
+    ) => void;
 
     onVaccinationChange: (
         value: VaccinationStatus
     ) => void;
-
     onMicrochipChange: (
         value: MicrochipStatus
     ) => void;
-
     onNeuteredChange: (
         value: NeuteredStatus
     ) => void;
-
     onHealthNotesChange: (
         value: string
     ) => void;
-
     onDocumentsChange: (
         documents: File[]
     ) => void;
@@ -53,6 +50,8 @@ export default function HealthCareSection({
     neuteredStatus,
     healthNotes,
     documents,
+    existingDocuments = [],
+    onRemoveExistingDocument,
     onVaccinationChange,
     onMicrochipChange,
     onNeuteredChange,
@@ -129,8 +128,10 @@ export default function HealthCareSection({
 
             <VeterinaryDocumentUpload
                 documents={documents}
-                onChange={
-                    onDocumentsChange
+                onChange={onDocumentsChange}
+                existingDocuments={existingDocuments}
+                onRemoveExistingDocument={
+                    onRemoveExistingDocument
                 }
                 maxFiles={10}
                 maxFileSizeMb={10}

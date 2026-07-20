@@ -1,3 +1,6 @@
+import { useParams } from "react-router-dom";
+import { Save, Shield } from "lucide-react";
+
 import ListingBasicsSection from "../../components/ui/listings/create/ListingBasicsSection";
 import AnimalDetailsSection from "../../components/ui/listings/create/AnimalDetailsSection";
 import HealthCareSection from "../../components/ui/listings/create/HealthCareSection";
@@ -8,48 +11,75 @@ import MatchingProfileSection from "../../components/ui/listings/MatchingProfile
 import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAccountMenu";
 import CustomButton from "../../components/ui/CustomButton";
 import InfoModal from "../../components/ui/InfoModal";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
-import {
-    useCreateListing,
-} from "../../hooks/useCreateListing";
+import { useViewListing } from "../../hooks/useViewListing";
 
-import "./CreateListing.css";
-import "./PageHeading.css";
+import "../dashboard/CreateListing.css";
+import "../dashboard/PageHeading.css";
+import DeleteListingOption from "../../components/ui/listings/delete/DeleteListingOption";
 
-import {
-    Send,
-    Shield,
-} from "lucide-react";
 
-export default function CreateListing() {
-    const form = useCreateListing();
+export default function ViewListing() {
+    //get listing id from search params
+    const { listingId } = useParams<{ listingId: string; }>();
+    //pass it to the hook to get the details to prefill the form
+    const form = useViewListing(listingId);
+
+    if (form.isLoadingListing) {
+        return (
+            <LoadingSpinner
+                size="xl"
+                fullScreen
+                label="Loading listing..."
+            />
+        );
+    }
+
+    if (form.listingError) {
+        return (
+            <main className="page-body">
+                <p className="create-listing-error">
+                    {form.listingError}
+                </p>
+            </main>
+        );
+    }
 
     return (
         <main className="page-body">
             <header className="page-header">
                 <div className="page-heading">
-                    <h1>Create Listing</h1>
+                    <h1>{form.listingTitle} Listing</h1>
 
                     <p>
-                        Add a new pet listing for
-                        adopters to discover.
+                        Update this pet listing and
+                        submit any changes for review.
                     </p>
                 </div>
 
-                <div className="page-account-menu">
+                <div className="page-header-controls">
+                    <DeleteListingOption
+                        isOpen={form.isDeleteListingOptionOpen}
+                        showDeleteModal={form.showDeleteListingModal}
+                        isDeleting={form.isDeletingListing}
+                        onToggle={form.toggleListingOptions}
+                        onOpenDeleteModal={form.openDeleteListingModal}
+                        onCloseDeleteModal={form.closeDeleteListingModal}
+                        onConfirmDelete={form.handleDeleteListing}
+                    />
+
                     <OrganisationAccountMenu />
                 </div>
             </header>
 
             <form
                 className="create-listing-form"
-                onSubmit={
-                    form.handleSubmit
-                }
+                onSubmit={form.handleSubmit}
             >
                 <ListingBasicsSection
                     listingTitle={
-                        form.listingTitle 
+                        form.listingTitle
                     }
                     onListingTitleChange={
                         form.setListingTitle
@@ -102,12 +132,10 @@ export default function CreateListing() {
                 />
 
                 <ListingPhotoUpload
-                    photos={
-                        form.listingPhotos
-                    }
-                    onChange={
-                        form.setListingPhotos
-                    }
+                    photos={form.listingPhotos}
+                    onChange={form.setListingPhotos}
+                    existingPhotos={form.existingPhotos}
+                    onRemoveExistingPhoto={form.removeExistingPhoto}
                     sectionNumber={2}
                     maxPhotos={5}
                     maxFileSizeMb={10}
@@ -115,8 +143,7 @@ export default function CreateListing() {
 
                 <AnimalDetailsSection
                     animals={form.animals}
-                    listingType={
-                        form.listingType
+                    listingType={form.listingType
                     }
                     onAnimalChange={
                         form.updateAnimal
@@ -137,7 +164,8 @@ export default function CreateListing() {
                     vaccinationStatus={
                         form.vaccinationStatus
                     }
-                    microchipStatus={ form.microchipStatus
+                    microchipStatus={
+                        form.microchipStatus
                     }
                     neuteredStatus={
                         form.neuteredStatus
@@ -147,6 +175,12 @@ export default function CreateListing() {
                     }
                     documents={
                         form.veterinaryDocuments
+                    }
+                    existingDocuments={
+                        form.existingDocuments
+                    }
+                    onRemoveExistingDocument={
+                        form.removeExistingDocument
                     }
                     onVaccinationChange={
                         form.setVaccinationStatus
@@ -174,13 +208,13 @@ export default function CreateListing() {
                 <CustomButton
                     label={
                         form.isSubmitting
-                            ? "Submitting listing..."
-                            : "Submit for review"
+                            ? "Saving changes..."
+                            : "Save changes"
                     }
                     icon={
                         form.isSubmitting
                             ? undefined
-                            : <Send size={22} />
+                            : <Save size={22} />
                     }
                     type="submit"
                     className="create-listing-continue"
@@ -192,9 +226,8 @@ export default function CreateListing() {
 
             <InfoModal
                 visible={form.showModal}
-                title="Review"
-                message="Your listing will now be reviewed by our team before it goes live."
-                warning="You can view this listings current status from the review updates page."
+                title="Listing updated"
+                message="Your changes have been saved! The listing is now being reviewed by our PetPath team before it appears publicly."
                 icon={Shield}
                 buttonText="Continue"
                 onClose={

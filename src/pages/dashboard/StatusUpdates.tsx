@@ -1,63 +1,54 @@
-import { useEffect, useState } from "react";
+import {
+    Bell,
+    ListFilter,
+    PawPrint,
+} from "lucide-react";
 
-import { useOrganisationProfile } from "../../context/OrganisationProfileContext";
-import { routes } from "../../constants/routes";
+import {
+    sortFilterOptions,
+    speciesFilterOptions,
+    reviewStatusFilterOptions,
+} from "../../data/listingFilters";
+
 import { useNavigate } from "react-router-dom";
-
-import { Bell, ListFilter, PawPrint } from "lucide-react";
 
 import SearchBar from "../../components/ui/filters/SearchBar";
 import FilterDropdown from "../../components/ui/filters/FilterDropdown";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAccountMenu";
+import StatusUpdateCard from "../../components/ui/listings/status/StatusUpdateCard";
 
-import {
-    sortFilterOptions,
-    speciesFilterOptions,
-    statusFilterOptions,
-} from "../../data/listingFilters";
+import { routes } from "../../constants/routes";
+import { useStatusUpdates } from "../../hooks/useStatusUpdates";
 
 import "./MyListings.css";
 import "./PageHeading.css";
+import "./StatusUpdates.css";
 
 export default function StatusUpdates() {
-
     const navigate = useNavigate();
-    const { organisationProfile, isLoadingProfile, profileError } = useOrganisationProfile();
 
-    const [searchQuery, setSearchQuery] = useState("");
-    const [speciesFilter, setSpeciesFilter] =
-        useState("all");
+    const {
+        isLoadingProfile,
+        profileError,
 
-    const [statusFilter, setStatusFilter] =
-        useState("all");
+        filteredUpdates,
+        isLoadingUpdates,
+        updatesError,
+        statistics,
 
-    const [sortOrder, setSortOrder] =
-        useState("newest");
+        searchQuery,
+        setSearchQuery,
 
-    useEffect(() => {
-        document.title = "Status Updates | PetPath";
+        speciesFilter,
+        setSpeciesFilter,
 
-        if (!organisationProfile) {
-            return;
-        }
+        reviewStatusFilter,
+        setReviewStatusFilter,
 
-        if (organisationProfile.accountStatus === "pending") {
-            navigate(routes.auth.accountReview, {
-                replace: true,
-            });
-
-            return;
-        }
-
-        if (
-            organisationProfile.accountStatus !== "approved"
-        ) {
-            navigate(routes.auth.login, {
-                replace: true,
-            });
-        }
-    }, [organisationProfile, navigate]);
+        sortOrder,
+        setSortOrder,
+    } = useStatusUpdates();
 
     if (isLoadingProfile) {
         return (
@@ -68,7 +59,6 @@ export default function StatusUpdates() {
             />
         );
     }
-
 
     if (profileError) {
         return (
@@ -84,10 +74,11 @@ export default function StatusUpdates() {
         <main className="page-body">
             <header className="page-header">
                 <div className="page-heading">
-                    <h1>Status Updates</h1>
+                    <h1>Review updates</h1>
 
                     <p>
-                        Check your pet listing's status.
+                        Track listing reviews, admin feedback and any
+                        changes that need your attention.
                     </p>
                 </div>
 
@@ -95,6 +86,23 @@ export default function StatusUpdates() {
                     <OrganisationAccountMenu />
                 </div>
             </header>
+
+            <section className="review-update-summary">
+                <article>
+                    <span>Pending review</span>
+                    <strong>{statistics.pending}</strong>
+                </article>
+
+                <article>
+                    <span>Action needed</span>
+                    <strong>{statistics.rejected}</strong>
+                </article>
+
+                <article>
+                    <span>Approved</span>
+                    <strong>{statistics.approved}</strong>
+                </article>
+            </section>
 
             <div className="my-listings-filters">
                 <div className="filters-row">
@@ -113,9 +121,13 @@ export default function StatusUpdates() {
                         />
 
                         <FilterDropdown
-                            value={statusFilter}
-                            options={statusFilterOptions}
-                            onChange={setStatusFilter}
+                            value={reviewStatusFilter}
+                            options={reviewStatusFilterOptions}
+                            onChange={(value) =>
+                                setReviewStatusFilter(
+                                    value as typeof reviewStatusFilter
+                                )
+                            }
                             icon={<Bell />}
                         />
 
@@ -128,6 +140,51 @@ export default function StatusUpdates() {
                     </div>
                 </div>
             </div>
+
+            {isLoadingUpdates && (
+                <LoadingSpinner
+                    size="large"
+                    label="Loading review updates..."
+                />
+            )}
+
+            {updatesError && (
+                <p className="dashboard-error">
+                    {updatesError}
+                </p>
+            )}
+
+            {!isLoadingUpdates &&
+                !updatesError &&
+                filteredUpdates.length === 0 && (
+                    <section className="review-updates-empty">
+                        <h2>No review updates found</h2>
+
+                        <p>
+                            When listings are pending, approved or rejected,
+                            they will appear here.
+                        </p>
+                    </section>
+                )}
+
+            {!isLoadingUpdates &&
+                filteredUpdates.length > 0 && (
+                    <section className="review-updates-list">
+                        {filteredUpdates.map((listing) => (
+                            <StatusUpdateCard
+                                key={listing.listingId}
+                                listing={listing}
+                                onView={(listingId) =>
+                                    navigate(
+                                        routes.listings.viewListing(
+                                            listingId
+                                        )
+                                    )
+                                }
+                            />
+                        ))}
+                    </section>
+                )}
         </main>
     );
 }

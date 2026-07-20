@@ -38,12 +38,16 @@ import { routes } from "../../constants/routes";
 import "./ProfileSetup.css";
 import Spacer from "../../components/layout/Spacer";
 import { useBackButtonRedirect } from "../../hooks/useBackButtonRedirect";
+import { useOrganisationProfile } from "../../context/OrganisationProfileContext";
 
 
 export default function ProfileSetup() {
     useBackButtonRedirect(routes.home.dashboard);
-    
+
     const navigate = useNavigate();
+    const {
+        updateCachedOrganisationProfile,
+    } = useOrganisationProfile();
 
     const [organisationProfile, setOrganisationProfile] = useState<OrganisationProfile | null>(null);
 
@@ -210,12 +214,22 @@ export default function ProfileSetup() {
             return;
         }
 
+        if (country === "") {
+            setFormError(
+                `Please select a country.`
+            );
+
+            return;
+        }
+
         const requiredAddressFields = {
             "Address line 1": addressLine1,
             "Town or city": townCity,
             "Postcode": postcode,
             "Country": country,
         };
+
+
 
         //list containing only fields whose values are empty.
         const missingAddressFields = Object.entries(requiredAddressFields)
@@ -253,23 +267,28 @@ export default function ProfileSetup() {
             }
 
             //send comeplte profile to the backend
-            await completeOrganisationProfile({
-                //store a complete URL, including a protocol
-                websiteUrl: websiteUrl.startsWith("http")
-                    ? websiteUrl.trim()
-                    : `https://${websiteUrl.trim()}`,
+            const completedProfile =
+                await completeOrganisationProfile({
+                    //store a complete URL, including a protocol
+                    websiteUrl: websiteUrl.startsWith("http")
+                        ? websiteUrl.trim()
+                        : `https://${websiteUrl.trim()}`,
 
-                websiteDomain,
-                profileImageKey,
-                description: description.trim(),
+                    websiteDomain,
+                    profileImageKey,
+                    description: description.trim(),
 
-                addressLine1: addressLine1.trim(),
-                addressLine2: addressLine2.trim(),
-                townCity: townCity.trim(),
-                county: county.trim(),
-                postcode: postcode.trim(),
-                country,
-            });
+                    addressLine1: addressLine1.trim(),
+                    addressLine2: addressLine2.trim(),
+                    townCity: townCity.trim(),
+                    county: county.trim(),
+                    postcode: postcode.trim(),
+                    country,
+                });
+
+            updateCachedOrganisationProfile(
+                completedProfile
+            );
 
             //send the user to the dashboard after a successful save.
             navigate(routes.home.dashboard, {
@@ -574,6 +593,7 @@ export default function ProfileSetup() {
                                     onChange={(event) => setCountry(event.target.value)}
                                     required
                                 >
+                                    <option value="">Select Country</option>
                                     <option value="United Kingdom">United Kingdom</option>
                                     <option value="Ireland">Ireland</option>
                                 </select>

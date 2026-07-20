@@ -19,11 +19,21 @@ import {
     isPdf,
 } from "../../../utils/fileUtils";
 
+import type {
+    ExistingListingDocument,
+} from "../../../types/listing";
+
 import "./VeterinaryDocumentUpload.css";
 
 type VeterinaryDocumentUploadProps = {
     documents: File[];
     onChange: (documents: File[]) => void;
+
+    existingDocuments?: ExistingListingDocument[];
+    onRemoveExistingDocument?: (
+        documentKey: string
+    ) => void;
+
     maxFiles?: number;
     maxFileSizeMb?: number;
     required?: boolean;
@@ -32,6 +42,9 @@ type VeterinaryDocumentUploadProps = {
 export default function VeterinaryDocumentUpload({
     documents,
     onChange,
+    existingDocuments = [],
+    onRemoveExistingDocument,
+
     maxFiles = 10,
     maxFileSizeMb = 10,
     required = true,
@@ -44,13 +57,15 @@ export default function VeterinaryDocumentUpload({
 
     const maxFileSizeBytes = maxFileSizeMb * 1024 * 1024;
 
+    const totalDocumentCount = existingDocuments.length + documents.length;
+
     const recentDocuments = documents.slice(-2);
-    const displayDocuments = showAllFiles ? documents : recentDocuments
+    const displayDocuments = showAllFiles ? documents : recentDocuments;
 
     const hiddenDocumentCount = Math.max(documents.length - recentDocuments.length, 0);
 
     function openFilePicker() {
-        if (documents.length >= maxFiles) {
+        if (totalDocumentCount >= maxFiles) {
             setUploadError(`You can only upload a maximum of ${maxFiles} veterinary documents.`);
             return
         }
@@ -92,7 +107,7 @@ export default function VeterinaryDocumentUpload({
             return true;
         });
 
-        const availableSpaces = maxFiles - documents.length;
+        const availableSpaces = maxFiles - totalDocumentCount;
 
         const acceptedFiles = validFiles.slice(0, availableSpaces);
 
@@ -133,7 +148,7 @@ export default function VeterinaryDocumentUpload({
     function handleDragOver(event: DragEvent<HTMLButtonElement>) {
         event.preventDefault(); //dropping a file might cause the browser to open the file instead of uploading it
 
-        if (documents.length < maxFiles) { //checks for free space
+        if (totalDocumentCount < maxFiles) { //checks for free space
             setIsDragging(true);
         }
     }
@@ -206,17 +221,17 @@ export default function VeterinaryDocumentUpload({
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
-                    disabled={documents.length >= maxFiles}
+                    disabled={totalDocumentCount >= maxFiles}
                 >
                     <Upload
                         size={25}
                     />
 
                     <strong>
-                        {documents.length >= maxFiles ? "Maximum files uploaded" : "Drag and drop PDF files here"}
+                        {totalDocumentCount >= maxFiles ? "Maximum files uploaded" : "Drag and drop PDF files here"}
                     </strong>
 
-                    {documents.length < maxFiles && (
+                    {totalDocumentCount < maxFiles && (
                         <span>or click to browse</span>
                     )}
 
@@ -230,19 +245,52 @@ export default function VeterinaryDocumentUpload({
                         <span>Uploaded files</span>
 
                         <span>
-                            {documents.length}/{maxFiles}
+                            {totalDocumentCount}/{maxFiles}
                         </span>
                     </div>
 
-                    {documents.length === 0 ? (
+                    {totalDocumentCount === 0 ? (
                         <div className="vet-document-empty">
                             No documents uploaded yet
                         </div>
                     ) : (
                         <>
-
-
                             <div className="vet-document-list">
+                                {existingDocuments.map((document) => (
+                                    <article
+                                        key={document.key}
+                                        className="vet-document-item"
+                                    >
+                                        <div className="vet-document-icon">
+                                            <FileText size={18} />
+                                        </div>
+
+                                        <div className="vet-document-details">
+                                            <strong title={document.fileName}>
+                                                {document.fileName}
+                                            </strong>
+
+                                            <small>
+                                                Existing document
+                                            </small>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            className="vet-document-remove"
+                                            onClick={() =>
+                                                onRemoveExistingDocument?.(
+                                                    document.key
+                                                )
+                                            }
+                                        >
+                                            <X size={15} />
+                                        </button>
+                                    </article>
+                                ))}
+
+
+
                                 {displayDocuments.map((document) => (
                                     <article
                                         key={getFileKey(document)}

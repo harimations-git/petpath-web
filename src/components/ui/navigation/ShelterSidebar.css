@@ -116,7 +116,7 @@
     background: var(--color-border);
 }
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
     .shelter-sidebar {
         position: fixed;
         top: 0;
@@ -239,5 +239,12 @@
 
     .shelter-sidebar-icon {
         width: 24px;
+    }
+
+}
+
+@media (max-height: 620px) {
+    .shelter-sidebar-decoration {
+        display: none !important;
     }
 }

@@ -15,6 +15,7 @@ export default function ShelterLayout() {
                 <ShelterSidebar />
 
                 <main className="shelter-layout-content">
+                    {/* Outlet renders the child routes "Render the matched child route here"*/}
                     <Outlet />
                 </main>
             </div>

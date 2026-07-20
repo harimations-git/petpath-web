@@ -16,7 +16,8 @@ export type ListingStatistics = {
  * @returns 
  */
 export function getListingStatistics(
-    listings: PetListingSummary[]
+    listings: PetListingSummary[],
+    reviewUpdates: PetListingSummary[] = listings
 ): ListingStatistics {
     const now = new Date();
 
@@ -31,7 +32,7 @@ export function getListingStatistics(
             listing.availabilityStatus === "available"
     ).length;
 
-    const pendingReview = listings.filter(
+    const pendingReview = reviewUpdates.filter(
         (listing) =>
             listing.reviewStatus === "pending"
     ).length;

@@ -1,0 +1,96 @@
+.account-options {
+    position: relative;
+}
+
+.account-options-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 48px;
+    min-width: 200px;
+    padding: 12px 20px;
+
+    color: var(--color-primary-dark);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+}
+
+.account-options-button:hover {
+    background: var(--color-pale-green);
+    border-color: rgba(47, 118, 85, 0.28);
+    box-shadow: 0 6px 14px rgba(15, 90, 59, 0.08);
+}
+
+.account-options-button:focus-visible {
+    outline: 3px solid rgba(47, 118, 85, 0.24);
+    outline-offset: 3px;
+}
+
+.account-options-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 10;
+
+    min-width: 200px;
+    padding: 8px;
+
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.account-options-menu button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+
+    width: 100%;
+    padding: 10px 11px;
+
+    color: inherit;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: left;
+
+    cursor: pointer;
+
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+}
+
+.account-options-menu button:hover {
+    background: rgba(217, 106, 106, 0.479);
+}
+
+.account-options-danger {
+    color: var(--color-error);
+}
+
+@media (max-width: 700px) {
+    .account-options {
+        width: 40%;
+    }
+
+    .account-options-button {
+        width: 100%;
+    }
+
+    .account-options-menu {
+        left: 0;
+        right: auto;
+        width: 100%;
+    }
+}

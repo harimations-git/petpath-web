@@ -53,6 +53,10 @@ export function useCreateListing() {
         "Create Listing | PetPath"
     );
 
+    const {
+        refreshReviewUpdates
+    } = useOrganisationListings()
+
     const { refreshListings } = useOrganisationListings();
 
     const [listingTitle, setListingTitle] = useState("");
@@ -510,6 +514,7 @@ export function useCreateListing() {
              * new pending listing appears.
              */
             await refreshListings();
+            await refreshReviewUpdates();
 
             setShowModal(true);
         } catch (error) {
@@ -533,7 +538,7 @@ export function useCreateListing() {
         setShowModal(false);
 
         navigate(
-            routes.home.myListings
+            routes.home.status
         );
     }
 
@@ -570,6 +575,7 @@ export function useCreateListing() {
 
         animals,
         updateAnimal,
+        setAnimals,
 
         listingPhotos,
         setListingPhotos,

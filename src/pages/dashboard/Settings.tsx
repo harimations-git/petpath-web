@@ -1,11 +1,5 @@
-import { useEffect, useState } from "react";
-
-import { useOrganisationProfile } from "../../context/OrganisationProfileContext";
-import { useOrganisationProfileImage } from "../../hooks/useOrganisationProfileImage";
-import { updateOrganisationDescription } from "../../services/organisation/organisationService";
-
 import { routes } from "../../constants/routes";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 import { Building2, Mail, Pencil, ShieldCheck } from "lucide-react";
@@ -16,146 +10,43 @@ import "./Settings.css";
 import Card from "../../components/ui/Card";
 import ProfilePictureCard from "../../components/ui/profile/ProfilePictureCard";
 import Spacer from "../../components/layout/Spacer";
+import { useSettings } from "../../hooks/useSettings";
+import DeleteAccountOption from "../../components/ui/profile/delete/DeleteAccountOption";
 
 
 
 export default function Settings() {
 
-    const navigate = useNavigate();
-    const { organisationProfile, isLoadingProfile, profileError, updateCachedOrganisationProfile, refreshOrganisationProfile } = useOrganisationProfile();
-
     const {
+        organisationProfile,
+        isLoadingProfile,
+        profileError,
+
         profileImagePreview,
         profileImageError,
         isUploadingProfileImage,
         changeProfileImage,
-    } = useOrganisationProfileImage({
-        organisationProfile,
-        updateCachedOrganisationProfile,
-        refreshOrganisationProfile,
-    });
 
-    const [descriptionError, setDescriptionError] = useState("");
-    const [descriptionSuccess, setDescriptionSuccess] = useState("");
-    const [descriptionDraft, setDescriptionDraft] = useState("");
-
-    const [isEditingDescription, setIsEditingDescription] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-
-    const descriptionMessage = descriptionError || descriptionSuccess;
-    const descriptionMessageType = descriptionError ? "error" : "success";
-
-    //resets description back to normal if user cancels
-    function handleCancelDescriptionEdit() {
-        setDescriptionDraft(
-            organisationProfile?.description ?? ""
-        );
-
-        setIsEditingDescription(false);
-    }
-
-    //Format and save new description to database
-    async function handleSaveDescription() {
-        const trimmedDescription =
-            descriptionDraft.trim();
-
-        setDescriptionError("");
-        setDescriptionSuccess("");
-
-        if (!trimmedDescription) {
-            setDescriptionError(
-                "Please enter a shelter description."
-            );
-
-            return;
-        }
-
-        if (trimmedDescription.length > 1000) {
-            setDescriptionError(
-                "The shelter description cannot exceed 1000 characters."
-            );
-
-            return;
-        }
-
-        setIsSaving(true);
-
-        try {
-            //try updating the profile with new formatted description
-            const updatedProfile =
-                await updateOrganisationDescription(
-                    trimmedDescription
-                );
-
-            //updated the cached profile to the newly updated profile
-            updateCachedOrganisationProfile({
-                ...organisationProfile,
-                ...updatedProfile,
-                profileImageUrl:
-                    organisationProfile?.profileImageUrl,
-            });
-
-            //refresh the profile and the page
-            await refreshOrganisationProfile();
-
-            setDescriptionDraft(
-                updatedProfile.description ?? ""
-            );
-
-            setIsEditingDescription(false);
-
-            setDescriptionSuccess(
-                "Shelter description updated successfully."
-            );
-        } catch (error) {
-            console.error(
-                "Unable to update shelter description:",
-                error
-            );
-
-            setDescriptionError(
-                error instanceof Error
-                    ? error.message
-                    : "Unable to update the shelter description."
-            );
-        } finally {
-            setIsSaving(false);
-            setIsEditingDescription(false);
-        }
-    }
-
-    useEffect(() => {
-        document.title = "Settings | PetPath";
-
-        if (!organisationProfile) {
-            return;
-        }
-
-        if (organisationProfile.accountStatus === "pending") {
-            navigate(routes.auth.accountReview, {
-                replace: true,
-            });
-
-            return;
-        }
-
-        if (
-            organisationProfile.accountStatus !== "approved"
-        ) {
-            navigate(routes.auth.login, {
-                replace: true,
-            });
-        }
-
-        if (!isEditingDescription) {
-            setDescriptionDraft(
-                organisationProfile?.description ?? ""
-            );
-        }
-    }, [organisationProfile, navigate,
-        organisationProfile?.description,
+        descriptionDraft,
+        setDescriptionDraft,
         isEditingDescription,
-    ]);
+        isSavingDescription,
+        descriptionMessage,
+        descriptionMessageType,
+        descriptionError,
+
+        startDescriptionEdit,
+        handleCancelDescriptionEdit,
+        handleSaveDescription,
+
+        isAccountOptionsOpen,
+        showDeleteAccountModal,
+        isDeletingAccount,
+        toggleAccountOptions,
+        openDeleteAccountModal,
+        closeDeleteAccountModal,
+        handleDeleteAccount,
+    } = useSettings();
 
     if (isLoadingProfile) {
         return (
@@ -182,7 +73,18 @@ export default function Settings() {
         <main className="page-body">
             <header className="page-header">
                 <div className="page-heading">
-                    <h1>Settings</h1>
+                    <div className="settings-heading-row">
+                        <h1>Settings</h1>
+                        <DeleteAccountOption
+                            isOpen={isAccountOptionsOpen}
+                            showDeleteModal={showDeleteAccountModal}
+                            isDeleting={isDeletingAccount}
+                            onToggle={toggleAccountOptions}
+                            onOpenDeleteModal={openDeleteAccountModal}
+                            onCloseDeleteModal={closeDeleteAccountModal}
+                            onConfirmDelete={handleDeleteAccount}
+                        />
+                    </div>
 
                     <p>
                         Manage your shelter account.
@@ -417,7 +319,7 @@ export default function Settings() {
                                             onClick={
                                                 handleCancelDescriptionEdit
                                             }
-                                            disabled={isSaving}
+                                            disabled={isSavingDescription}
                                         >
                                             Cancel
                                         </button>
@@ -428,9 +330,9 @@ export default function Settings() {
                                             onClick={
                                                 handleSaveDescription
                                             }
-                                            disabled={isSaving}
+                                            disabled={isSavingDescription}
                                         >
-                                            {!isSaving ? "Save Description" : "Saving..."}
+                                            {!isSavingDescription ? "Save Description" : "Saving..."}
                                         </button>
                                     </div>
                                 </div>
@@ -457,14 +359,14 @@ export default function Settings() {
                                 <button
                                     type="button"
                                     className="description-edit-button"
-                                    onClick={() => setIsEditingDescription(true)}
-                                    disabled={isSaving}
+                                    onClick={startDescriptionEdit}
+                                    disabled={isSavingDescription}
                                 >
                                     <Pencil
                                         size={14}
                                     />
 
-                                    {!isSaving ? "Edit" : "Saving..."}
+                                    {!isSavingDescription ? "Edit" : "Saving..."}
                                 </button>
                             </>
                         )}

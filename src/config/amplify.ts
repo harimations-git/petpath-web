@@ -1,4 +1,6 @@
 import { Amplify } from "aws-amplify";
+import { cognitoUserPoolsTokenProvider } from "aws-amplify/auth/cognito";
+import { defaultStorage } from "aws-amplify/utils";
 
 const userPoolId = import.meta.env.VITE_COGNITO_USER_POOL_ID;
 const userPoolClientId = import.meta.env.VITE_COGNITO_CLIENT_ID;
@@ -18,3 +20,8 @@ Amplify.configure({
     },
   },
 });
+
+//user session persists
+cognitoUserPoolsTokenProvider.setKeyValueStorage(
+    defaultStorage //browser local storage
+);

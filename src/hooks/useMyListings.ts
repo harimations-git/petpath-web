@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useOrganisationProfile } from "../context/OrganisationProfileContext";
 import { useOrganisationListings } from "../context/OrganisationListingsContext";
+import { updateListingAvailability } from "../services/listings/listingService";
+import type { ListingAvailabilityStatus } from "../types/listing";
 
 import { routes } from "../constants/routes";
 
@@ -21,6 +23,7 @@ export function useMyListings() {
         profileError,
     } = useOrganisationProfile();
 
+
     //get listing data
     const {
         listings,
@@ -30,6 +33,8 @@ export function useMyListings() {
         listingsError,
         loadListings,
         loadMoreListings,
+        refreshListings,
+        clearCachedReviewUpdates
     } = useOrganisationListings();
 
     //current filters
@@ -56,6 +61,28 @@ export function useMyListings() {
             hasMoreListings ||
             isLoadingMoreListings
         );
+
+    const [updatingAvailabilityId, setUpdatingAvailabilityId] = useState<string | null>(null);
+
+    //allows the user to change the availability status of a pet
+    async function handleAvailabilityChange(
+        listingId: string,
+        availabilityStatus: ListingAvailabilityStatus
+    ) {
+        setUpdatingAvailabilityId(listingId);
+
+        try {
+            await updateListingAvailability(
+                listingId,
+                availabilityStatus
+            );
+
+            await refreshListings();
+            clearCachedReviewUpdates();
+        } finally {
+            setUpdatingAvailabilityId(null);
+        }
+    }
 
     useEffect(() => {
         document.title =
@@ -141,42 +168,42 @@ export function useMyListings() {
 
         const filtered = listings.filter(
             (listing) => {
+                /*
+                 * My Listings now only shows listings that
+                 * have already been approved.
+                 */
 
-                //search matching
+                if (listing.reviewStatus !== "approved") {
+                    return false;
+                }
+
+                // Search matching
                 const matchesSearch =
                     !search ||
                     listing.title
                         .toLowerCase()
-                        .includes(search)
+                        .includes(search);
 
-                //animal type filtering
+                // Animal type filtering
                 const matchesSpecies =
                     speciesFilter === "all" ||
                     listing.animalType
                         ?.trim()
                         .toLowerCase() === speciesFilter;
 
-                //listing type filtering
+                // Listing type filtering
                 const matchesListingType =
                     listingTypeFilter === "all" ||
                     listing.listingType === listingTypeFilter;
 
-                /**
-                 * Pending review takes prioritiy over availability
-                 * E.g a listing could be available but it's pending
-                 * so the code treats its filter status as pending
+                /*
+                 * My Listings now filters by availability only.
+                 * Review status is handled by Review Updates.
                  */
-                const listingStatus =
-                    listing.reviewStatus ===
-                        "pending"
-                        ? "pending"
-                        : listing.availabilityStatus;
-
-                //Status filtering
                 const matchesStatus =
-                    statusFilter === "all" ||
-                    listingStatus ===
-                    statusFilter;
+                    statusFilter === "all"
+                        ? true
+                        : listing.availabilityStatus === statusFilter;
 
                 return (
                     matchesSearch &&
@@ -256,6 +283,9 @@ export function useMyListings() {
         isLoadingListings,
         isLoadingMoreListings,
         listingsError,
+
+        updatingAvailabilityId,
+        handleAvailabilityChange,
 
         loadListings,
         loadMoreListings,
