@@ -12,6 +12,7 @@ import {
     getCurrentOrganisationProfile,
     type OrganisationProfile,
 } from "../services/organisation/organisationService";
+import { getCurrentUser } from "aws-amplify/auth";
 
 type OrganisationProfileContextValue = {
     organisationProfile: OrganisationProfile | null;
@@ -40,6 +41,16 @@ let cachedOrganisationProfile: OrganisationProfile | null = null;
  * request instead of creating two calls
  */
 let pendingProfileRequest: Promise<OrganisationProfile> | null = null;
+
+//checks if the user is signed in
+async function userIsSignedIn() {
+    try {
+        await getCurrentUser();
+        return true;
+    } catch {
+        return false;
+    }
+}
 
 async function fetchOrganisationProfile(
     forceRefresh = false
@@ -116,10 +127,45 @@ export function OrganisationProfileProvider({
 
     //Load the profile
     useEffect(() => {
-        //Do not call API again if cached profile already exists.
-        if (!cachedOrganisationProfile) {
-            loadOrganisationProfile();
+
+        let isMounted = true;
+
+        async function loadProfileIfSignedIn() {
+            const signedIn =
+                await userIsSignedIn();
+
+            if (!isMounted) {
+                return;
+            }
+
+            /*
+             * User is on login/register/etc.
+             * Do not try to load an organisation profile.
+             */
+            if (!signedIn) {
+                cachedOrganisationProfile = null;
+                pendingProfileRequest = null;
+
+                setOrganisationProfile(null);
+                setProfileError("");
+                setIsLoadingProfile(false);
+
+                return;
+            }
+
+            //Do not call API again if cached profile already exists.
+            if (!cachedOrganisationProfile) {
+                loadOrganisationProfile();
+                return;
+            }
+
+            setIsLoadingProfile(false);
         }
+        void loadProfileIfSignedIn();
+
+        return () => {
+            isMounted = false
+        };
     }, [loadOrganisationProfile]);
 
     //Reload the profile and force a refresh on the cache
@@ -136,7 +182,7 @@ export function OrganisationProfileProvider({
             setProfileError("");
         }, []);
 
-    //Clear cached profile. Rests all stored profile information
+    //Clear cached profile. Resets all stored profile information
     const clearCachedOrganisationProfile =
         useCallback(() => {
             cachedOrganisationProfile = null; //Clear cached profile

@@ -46,7 +46,7 @@ export default function ProfileSetup() {
 
     const navigate = useNavigate();
     const {
-        updateCachedOrganisationProfile,
+        updateCachedOrganisationProfile, refreshOrganisationProfile
     } = useOrganisationProfile();
 
     const [organisationProfile, setOrganisationProfile] = useState<OrganisationProfile | null>(null);
@@ -289,6 +289,8 @@ export default function ProfileSetup() {
             updateCachedOrganisationProfile(
                 completedProfile
             );
+
+            refreshOrganisationProfile();
 
             //send the user to the dashboard after a successful save.
             navigate(routes.home.dashboard, {

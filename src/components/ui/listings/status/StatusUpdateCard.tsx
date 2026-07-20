@@ -107,7 +107,7 @@ export default function StatusUpdateCard({
 
                 <h2>{listing.title}</h2>
 
-                <p>{message}</p>
+                <p><strong>Reason: </strong>{message}</p>
 
                 <div className="status-update-meta">
                     <span>
