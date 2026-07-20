@@ -202,7 +202,7 @@ export function useMyListings() {
                  */
                 const matchesStatus =
                     statusFilter === "all"
-                        ? listing.availabilityStatus !== "rehomed"
+                        ? true
                         : listing.availabilityStatus === statusFilter;
 
                 return (

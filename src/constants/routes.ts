@@ -18,15 +18,15 @@ export const routes = {
     },
 
     help: {
-        support: "/support"
+        support: "/support",
     },
 
     legal: {
         terms: "/terms",
         privacyPolicy: "/privacy-policy",
 
-        shelterTerms: "/settings/terms",
-        shelterPrivacyPolicy: "/settings/privacy-policy",
+        shelterTerms: "/help/terms",
+        shelterPrivacyPolicy: "/help/privacy-policy",
     },
 
     listings: {

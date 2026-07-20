@@ -99,7 +99,7 @@ export default function MyListingsResults({
 
                     <p>
                         {totalLoadedListings === 0
-                            ? "Create your first pet listing to get started."
+                            ? "Create your first pet listing to get started. Have you already created a listing? Check the status updates page to see its progress!"
                             : "No listings match your current filters."}
                     </p>
                 </div>
