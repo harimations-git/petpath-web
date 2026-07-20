@@ -11,11 +11,11 @@ import {
     deleteOrganisationListing,
     getOrganisationListing,
     updateOrganisationListing,
-} from "../services/listings/listingService";
+} from "../../services/listings/listingService";
 
-import { useOrganisationListings } from "../context/OrganisationListingsContext";
-import { routes } from "../constants/routes";
-import type { ExistingListingDocument, ExistingListingPhoto} from "../types/listing";
+import { useOrganisationListings } from "../../context/OrganisationListingsContext";
+import { routes } from "../../constants/routes";
+import type { ExistingListingDocument, ExistingListingPhoto} from "../../types/listing";
 
 /**
  * Hook containing the logic used for the View listing page

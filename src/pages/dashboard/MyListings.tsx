@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAccountMenu";
 
-import { useMyListings } from "../../hooks/useMyListings";
+import { useMyListings } from "../../hooks/dashboard/useMyListings";
 
 import { routes } from "../../constants/routes";
 

@@ -1,6 +1,3 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { confirmSignUp, resendSignUpCode, autoSignIn, signIn, getCurrentUser } from "aws-amplify/auth";
-
 import { ArrowLeft } from "lucide-react";
 
 import Logo from "../../components/ui/Logo";
@@ -15,203 +12,31 @@ import { loginSlideshowContent } from "../../data/imageContent";
 import "./RegisterShelter.css"; //Basically the same css
 import "./VerifyEmail.css";
 
-import { useLocation, useNavigate } from "react-router-dom";
-import { routes } from "../../constants/routes";
-
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
 import VerificationImage from "../../assets/EmailVerification.webp";
 import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
 import VerificationCodeInput from "../../components/ui/auth/VerificationCodeInput";
-
-type VerifyEmailState = {
-    email?: string;
-    password?: string;
-    accountType?: "shelter";
-    fromLogin?: boolean;
-};
+import { useVerifyEmail } from "../../hooks/auth/useVerifyEmail";
 
 export default function VerifyEmail() {
-    const navigate = useNavigate();
-    const location = useLocation();
+    const {
+        email,
 
-    const state = (location.state ?? {}) as VerifyEmailState;
-    const email = state.email ?? sessionStorage.getItem("pendingVerificationEmail") ?? "";
-    const passwordForSignIn = state.password ?? "";
+        verificationCode,
+        setVerificationCode,
 
-    const [verificationCode, setVerificationCode] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [isResending, setIsResending] = useState(false);
-    const [formError, setFormError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+        codeLength,
 
-    const codeLength = 6;
+        isLoading,
+        isResending,
 
-    useEffect(() => {
-        document.title = "Verify Email | PetPath";
-    }, []);
+        formError,
+        successMessage,
 
-    async function handleVerifyEmail(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-
-        setFormError("");
-        setSuccessMessage("");
-
-        const normalisedEmail = email.trim().toLowerCase();
-
-        if (!normalisedEmail) {
-            setFormError("No email address was found. Please register again.");
-            return;
-        }
-
-        if (verificationCode.length !== codeLength) {
-            setFormError("Please enter the 6-digit verification code.");
-            return;
-        }
-
-        function goToAccountReview() {
-            sessionStorage.removeItem("pendingVerificationEmail");
-
-            navigate(routes.auth.accountReview, {
-                replace: true,
-                state: {
-                    message:
-                        "Email verified. Your shelter account is now pending manual review.",
-                    accountType: "shelter",
-                },
-            });
-        }
-
-        try {
-            setIsLoading(true);
-
-            const confirmResult = await confirmSignUp({
-                username: normalisedEmail,
-                confirmationCode: verificationCode,
-            });
-
-            console.log("Confirm sign-up result:", confirmResult);
-
-            /*
-             * The user may already be authenticated.
-             * In that case, do not call autoSignIn or signIn again.
-             */
-            try {
-                await getCurrentUser();
-                goToAccountReview();
-                return;
-            } catch {
-                // No existing session, continue with sign-in flow.
-            }
-
-            /*
-             * User arrived from the login page.
-             * Confirm the email and then sign in using the password
-             * they entered on the login page.
-             */
-            if (passwordForSignIn) {
-                const signInResult = await signIn({
-                    username: normalisedEmail,
-                    password: passwordForSignIn,
-                });
-
-                if (!signInResult.isSignedIn) {
-                    throw new Error(
-                        "Your email was verified, but sign-in was not completed."
-                    );
-                }
-
-                goToAccountReview();
-                return;
-            }
-
-            /*
-             * User arrived directly from registration.
-             * Only call autoSignIn when Cognito explicitly requests it.
-             */
-            if (
-                confirmResult.nextStep.signUpStep === "COMPLETE_AUTO_SIGN_IN"
-            ) {
-                try {
-                    const autoSignInResult = await autoSignIn();
-
-                    if (!autoSignInResult.isSignedIn) {
-                        throw new Error("Automatic sign-in was not completed.");
-                    }
-
-                    goToAccountReview();
-                    return;
-                } catch (error) {
-                    const errorName =
-                        error instanceof Error ? error.name : "";
-
-                    /*
-                     * This means the user is already signed in,
-                     * so they can continue to the review page.
-                     */
-                    if (errorName === "UserAlreadyAuthenticatedException") {
-                        goToAccountReview();
-                        return;
-                    }
-
-                    throw error;
-                }
-            }
-
-            /*
-             * Email was confirmed, but there is no active sign-in flow.
-             * Send the user to login.
-             */
-            sessionStorage.removeItem("pendingVerificationEmail");
-
-            navigate(routes.auth.login, {
-                replace: true,
-                state: {
-                    message: "Email verified. Please log in to continue.",
-                    accountType: "shelter",
-                },
-            });
-        } catch (error) {
-            console.log("Verify email error:", error);
-
-            if (error instanceof Error) {
-                setFormError(error.message);
-            } else {
-                setFormError("Unable to verify your email. Please try again.");
-            }
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    async function handleResendCode() {
-        setFormError("");
-        setSuccessMessage("");
-
-        if (!email) {
-            setFormError("No email address was found. Please register again.");
-            return;
-        }
-
-        try {
-            setIsResending(true);
-
-            await resendSignUpCode({
-                username: email.trim().toLowerCase(),
-            });
-
-            setSuccessMessage("A new verification code has been sent to your email.");
-        } catch (error) {
-            console.log("Resend code error:", error);
-
-            if (error instanceof Error) {
-                setFormError(error.message);
-            } else {
-                setFormError("Unable to resend the code. Please try again.");
-            }
-        } finally {
-            setIsResending(false);
-        }
-    }
+        handleVerifyEmail,
+        handleResendCode,
+        goToLogin,
+    } = useVerifyEmail();
 
     return (
         <main className="register-shelter-page">
@@ -222,7 +47,7 @@ export default function VerifyEmail() {
                 <button
                     type="button"
                     className="account-type-back"
-                    onClick={() => { navigate(routes.auth.login) }}
+                    onClick={() => { goToLogin }}
                 >
                     <ArrowLeft size={22} />
                 </button>

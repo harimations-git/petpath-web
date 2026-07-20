@@ -13,7 +13,7 @@ import CustomButton from "../../components/ui/CustomButton";
 import InfoModal from "../../components/ui/InfoModal";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
-import { useViewListing } from "../../hooks/useViewListing";
+import { useViewListing } from "../../hooks/dashboard/useViewListing";
 
 import "../dashboard/CreateListing.css";
 import "../dashboard/PageHeading.css";

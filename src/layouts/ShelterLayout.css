@@ -13,7 +13,7 @@
     padding: 16px 24px;
 
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 @media (max-width: 900px) {
     .shelter-layout-content {

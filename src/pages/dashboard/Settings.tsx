@@ -10,7 +10,7 @@ import "./Settings.css";
 import Card from "../../components/ui/Card";
 import ProfilePictureCard from "../../components/ui/profile/ProfilePictureCard";
 import Spacer from "../../components/layout/Spacer";
-import { useSettings } from "../../hooks/useSettings";
+import { useSettings } from "../../hooks/dashboard/useSettings";
 import DeleteAccountOption from "../../components/ui/profile/delete/DeleteAccountOption";
 
 

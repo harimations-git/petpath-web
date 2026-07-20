@@ -6,7 +6,7 @@ import {
 
 import LoadingSpinner from "../ui/LoadingSpinner";
 import { routes } from "../../constants/routes";
-import { useAuthSessionCheck } from "../../hooks/useAuthSessionCheck";
+import { useAuthSessionCheck } from "../../hooks/dashboard/useAuthSessionCheck";
 
 export default function ProtectedRoute() {
     const location = useLocation();

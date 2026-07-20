@@ -10,15 +10,15 @@ import {
 
 import {
     useOrganisationProfile,
-} from "../context/OrganisationProfileContext";
+} from "../../context/OrganisationProfileContext";
 
 import {
     useOrganisationListings,
-} from "../context/OrganisationListingsContext";
+} from "../../context/OrganisationListingsContext";
 
 import {
     routes,
-} from "../constants/routes";
+} from "../../constants/routes";
 
 type ReviewStatusFilter =
     | "all"

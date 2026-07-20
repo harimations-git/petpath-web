@@ -6,12 +6,12 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-import { useOrganisationProfile } from "../context/OrganisationProfileContext";
-import { useOrganisationListings } from "../context/OrganisationListingsContext";
-import { updateListingAvailability } from "../services/listings/listingService";
-import type { ListingAvailabilityStatus } from "../types/listing";
+import { useOrganisationProfile } from "../../context/OrganisationProfileContext";
+import { useOrganisationListings } from "../../context/OrganisationListingsContext";
+import { updateListingAvailability } from "../../services/listings/listingService";
+import type { ListingAvailabilityStatus } from "../../types/listing";
 
-import { routes } from "../constants/routes";
+import { routes } from "../../constants/routes";
 
 export function useMyListings() {
     const navigate = useNavigate();

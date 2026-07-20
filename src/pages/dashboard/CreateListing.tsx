@@ -11,7 +11,7 @@ import InfoModal from "../../components/ui/InfoModal";
 
 import {
     useCreateListing,
-} from "../../hooks/useCreateListing";
+} from "../../hooks/dashboard/useCreateListing";
 
 import "./CreateListing.css";
 import "./PageHeading.css";

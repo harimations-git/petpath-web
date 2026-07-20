@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
 import { routes } from "../../constants/routes";
-import { useBackButtonRedirect } from "../../hooks/useBackButtonRedirect";
+import { useBackButtonRedirect } from "../../hooks/dashboard/useBackButtonRedirect";
 import { getCurrentOrganisationProfile } from "../../services/organisation/organisationService";
 import { getRouteForOrganisation } from "../../services/organisation/organisationRedirect";
 

@@ -4,10 +4,10 @@ import {
 } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { useOrganisationProfile } from "../context/OrganisationProfileContext";
+import { useOrganisationProfile } from "../../context/OrganisationProfileContext";
 import { useOrganisationProfileImage } from "./useOrganisationProfileImage";
-import { deleteOrganisationAccount, updateOrganisationDescription } from "../services/organisation/organisationService";
-import { routes } from "../constants/routes";
+import { deleteOrganisationAccount, updateOrganisationDescription } from "../../services/organisation/organisationService";
+import { routes } from "../../constants/routes";
 import { signOut } from "aws-amplify/auth";
 
 export function useSettings() {

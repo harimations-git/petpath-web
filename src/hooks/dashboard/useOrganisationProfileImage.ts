@@ -7,9 +7,9 @@ import {
 import {
     updateOrganisationProfileImage,
     type OrganisationProfile,
-} from "../services/organisation/organisationService";
+} from "../../services/organisation/organisationService";
 
-import { validateImageFile } from "../utils/imageValidation";
+import { validateImageFile } from "../../utils/imageValidation";
 
 type UseOrganisationProfileImageProps = {
     organisationProfile: OrganisationProfile | null;

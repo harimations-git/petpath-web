@@ -17,7 +17,7 @@ import DashboardQuickActions from "../../components/ui/dashboard/QuickActions";
 
 import {
     useDashboard,
-} from "../../hooks/useDashboard";
+} from "../../hooks/dashboard/useDashboard";
 
 import "./Dashboard.css";
 import "./PageHeading.css";

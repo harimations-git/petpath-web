@@ -19,7 +19,7 @@ import OrganisationAccountMenu from "../../components/ui/profile/OrganisationAcc
 import StatusUpdateCard from "../../components/ui/listings/status/StatusUpdateCard";
 
 import { routes } from "../../constants/routes";
-import { useStatusUpdates } from "../../hooks/useStatusUpdates";
+import { useStatusUpdates } from "../../hooks/dashboard/useStatusUpdates";
 
 import "./MyListings.css";
 import "./PageHeading.css";

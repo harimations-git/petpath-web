@@ -1,13 +1,13 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useOrganisationProfile } from "../context/OrganisationProfileContext";
-import { useOrganisationListings } from "../context/OrganisationListingsContext";
+import { useOrganisationProfile } from "../../context/OrganisationProfileContext";
+import { useOrganisationListings } from "../../context/OrganisationListingsContext";
 
-import { getListingStatistics } from "../utils/listings/getListingStatistics";
+import { getListingStatistics } from "../../utils/listings/getListingStatistics";
 import { useBackButtonRedirect } from "./useBackButtonRedirect";
 
-import { routes } from "../constants/routes";
+import { routes } from "../../constants/routes";
 
 export function useDashboard() {
     useBackButtonRedirect(

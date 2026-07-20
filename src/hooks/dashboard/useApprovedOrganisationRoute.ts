@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import {
     useOrganisationProfile,
-} from "../context/OrganisationProfileContext";
+} from "../../context/OrganisationProfileContext";
 
-import { routes } from "../constants/routes";
+import { routes } from "../../constants/routes";
 
 export function useApprovedOrganisationRoute(
     documentTitle: string

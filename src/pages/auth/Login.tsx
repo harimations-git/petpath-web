@@ -1,9 +1,3 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { signIn, signOut, resendSignUpCode } from "aws-amplify/auth";
-import { getCurrentOrganisationProfile } from "../../services/organisation/organisationService";
-import { getRouteForOrganisation } from "../../services/organisation/organisationRedirect";
-
 import { Mail, Lock } from "lucide-react";
 import Logo from "../../components/ui/Logo";
 import Card from "../../components/ui/Card";
@@ -18,117 +12,21 @@ import Spacer from "../../components/layout/Spacer";
 import { loginSlideshowContent } from "../../data/imageContent";
 import { routes } from "../../constants/routes";
 import { Link } from "react-router-dom";
+import { useShelterLogin } from "../../hooks/auth/useShelterLogin";
 
 export default function ShelterLogin() {
-  const navigate = useNavigate();
+  const {
+        email,
+        setEmail,
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [formError, setFormError] = useState("");
-
-  useEffect(() => {
-    document.title = "Log in | PetPath";;
-  }, []);
-
-  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    setFormError("");
-    setIsLoading(true);
-
-    const normalisedEmail = email.trim().toLowerCase();
-
-    try {
-      try {
-        await signOut();
-      } catch {
-        // Ignore if nobody was signed in.
-      }
-
-      const signInResult = await signIn({
-        username: normalisedEmail,
         password,
-      });
+        setPassword,
 
-      const signInStep = signInResult.nextStep.signInStep;
+        isLoading,
+        formError,
 
-      if (signInStep === "CONFIRM_SIGN_UP") {
-        sessionStorage.setItem("pendingVerificationEmail", normalisedEmail);
-
-        try {
-          await resendSignUpCode({
-            username: normalisedEmail,
-          });
-        } catch (resendError) {
-          console.log("Unable to resend verification code:", resendError);
-        }
-
-        navigate(routes.auth.verifyEmail, {
-          replace: true,
-          state: {
-            email: normalisedEmail,
-            password,
-            accountType: "shelter",
-            fromLogin: true,
-          },
-        });
-
-        return;
-      }
-
-      if (!signInResult.isSignedIn || signInStep !== "DONE") {
-        setFormError("This account needs another sign-in step before continuing.");
-        return;
-      }
-
-      const organisationProfile = await getCurrentOrganisationProfile();
-
-      const nextRoute = getRouteForOrganisation(organisationProfile);
-
-      navigate(nextRoute, { replace: true });
-    } catch (error) {
-      console.log("Login error:", error);
-
-      const authError = error as { name?: string; message?: string };
-
-      if (
-        authError.name === "UserNotConfirmedException" ||
-        authError.message?.toLowerCase().includes("not confirmed")
-      ) {
-        sessionStorage.setItem("pendingVerificationEmail", normalisedEmail);
-
-        try {
-          await resendSignUpCode({
-            username: normalisedEmail,
-          });
-        } catch (resendError) {
-          console.log("Unable to resend verification code:", resendError);
-        }
-
-        navigate(routes.auth.verifyEmail, {
-          replace: true,
-          state: {
-            email: normalisedEmail,
-            password,
-            accountType: "shelter",
-            fromLogin: true,
-          },
-        });
-
-        return;
-      }
-
-      if (error instanceof Error) {
-        setFormError(error.message);
-      } else {
-        setFormError("Unable to log in. Please try again.");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }
+        handleLogin,
+    } = useShelterLogin();
 
   return (
     <main className="login-page">

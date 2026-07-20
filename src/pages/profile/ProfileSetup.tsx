@@ -37,7 +37,7 @@ import { routes } from "../../constants/routes";
 
 import "./ProfileSetup.css";
 import Spacer from "../../components/layout/Spacer";
-import { useBackButtonRedirect } from "../../hooks/useBackButtonRedirect";
+import { useBackButtonRedirect } from "../../hooks/dashboard/useBackButtonRedirect";
 import { useOrganisationProfile } from "../../context/OrganisationProfileContext";
 
 

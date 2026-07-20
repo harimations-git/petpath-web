@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { Mail, Lock, BadgeCheck, Building2, ArrowLeft } from "lucide-react";
-
 import Logo from "../../components/ui/Logo";
 import Card from "../../components/ui/Card";
 import TextInput from "../../components/ui/TextInput";
@@ -12,90 +10,38 @@ import Spacer from "../../components/layout/Spacer";
 import { loginSlideshowContent } from "../../data/imageContent";
 
 import "./RegisterShelter.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { routes } from "../../constants/routes";
 
-import { signUp } from "aws-amplify/auth";
-import { getSignUpErrorMessage } from "../../utils/error/authErrorMessage";
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
+import { useRegisterShelter } from "../../hooks/auth/useRegisterShelter";
 
 export default function RegisterShelter() {
-    const navigate = useNavigate();
+    const {
+        charityId,
+        setCharityId,
 
-    const [charityId, setCharityId] = useState("");
-    const [charityName, setCharityName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [acceptedTerms, setAcceptedTerms] = useState(false);
+        charityName,
+        setCharityName,
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [formError, setFormError] = useState("");
+        email,
+        setEmail,
 
-    useEffect(() => {
-        document.title = "Register Shelter | PetPath";
-    }, []);
+        password,
+        setPassword,
 
-    async function handleRegisterShelter(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        setFormError("");
+        confirmPassword,
+        setConfirmPassword,
 
-        const normalisedEmail = email.trim().toLowerCase();
+        acceptedTerms,
+        setAcceptedTerms,
 
-        if (password !== confirmPassword) {
-            setFormError("Passwords do not match");
-            return;
-        }
+        isLoading,
+        formError,
 
-        if (!acceptedTerms) {
-            setFormError("You need to accept the terms before continuing"); //Extra failsafe
-            return;
-        }
-
-        try {
-            setIsLoading(true);
-
-            await signUp({
-                username: normalisedEmail,
-                password,
-                options: {
-                    userAttributes: {
-                        email: normalisedEmail,
-                        name: charityName.trim(),
-                        "custom:charity_id": charityId.trim(),
-                        "custom:charity_name": charityName.trim(),
-                        "custom:account_type": "shelter",
-                    },
-                    autoSignIn: true,
-                },
-            });
-
-            sessionStorage.setItem(
-                "pendingShelterRegistration",
-                JSON.stringify({
-                    charityId: charityId.trim(),
-                    charityName: charityName.trim(),
-                    email: normalisedEmail
-                })
-            );
-
-            sessionStorage.setItem("pendingVerificationEmail", normalisedEmail);
-
-            navigate(routes.auth.verifyEmail, {
-                replace: true,
-                state: {
-                    email: normalisedEmail,
-                    password,
-                    accountType: "shelter",
-                },
-            });
-        } catch (error) {
-            setFormError(getSignUpErrorMessage(error));
-        } finally {
-            setIsLoading(false);
-        }
-
-    }
+        goBack,
+        handleRegisterShelter,
+    } = useRegisterShelter();
 
     return (
         <main className="register-shelter-page">
@@ -106,7 +52,7 @@ export default function RegisterShelter() {
                 <button
                     type="button"
                     className="account-type-back"
-                    onClick={() => navigate(-1)}
+                    onClick={() => goBack}
                 >
                     <ArrowLeft size={22} />
                 </button>

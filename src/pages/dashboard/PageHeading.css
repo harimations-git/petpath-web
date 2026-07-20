@@ -104,7 +104,18 @@
         gap: 14px;
     }
 
+    .page-account-menu {
+        order: -1;
+        width: 100%;
+        align-self: stretch;
+    }
+
+    .page-account-menu>* {
+        width: 100%;
+    }
+
     .page-heading {
+        order: 0;
         width: 100%;
     }
 
@@ -119,15 +130,6 @@
         line-height: 1.45;
     }
 
-    .page-account-menu {
-        width: 100%;
-        align-self: stretch;
-    }
-
-    .page-account-menu>* {
-        width: 100%;
-    }
-
     .page-header-controls {
         width: 100%;
         justify-content: stretch;
@@ -138,6 +140,7 @@
         flex: 1 1 160px;
     }
 }
+
 
 @media (max-width: 430px) {
     .page-body {
