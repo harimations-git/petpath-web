@@ -18,3 +18,13 @@ export function createEmptyAnimal():
         temperament: "",
     };
 }
+
+export function formatDisplayValue(
+    animalType: string
+) {
+    return animalType
+        .replaceAll("_", " ")
+        .replace(/\b\w/g, (letter) =>
+            letter.toUpperCase()
+        );
+}

@@ -11,19 +11,12 @@ import type {
 } from "../../../../types/listing";
 
 import "./StatusUpdateCard.css";
+import { formatDisplayValue } from "../../../../utils/listings/createEmptyAnimal";
 
 type StatusUpdateCardProps = {
     listing: PetListingSummary;
     onView: (listingId: string) => void;
 };
-
-function formatAnimalType(value: string) {
-    return value
-        .replaceAll("_", " ")
-        .replace(/\b\w/g, (letter) =>
-            letter.toUpperCase()
-        );
-}
 
 function getStatusContent(
     listing: PetListingSummary
@@ -112,7 +105,7 @@ export default function StatusUpdateCard({
                 <div className="status-update-meta">
                     <span>
                         <PawPrint size={15} />
-                        {formatAnimalType(
+                        {formatDisplayValue(
                             listing.animalType
                         )}
                     </span>

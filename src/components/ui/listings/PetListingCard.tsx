@@ -9,6 +9,7 @@ import {
 import type { ListingAvailabilityStatus, PetListingSummary } from "../../../types/listing";
 
 import "./PetListingCard.css";
+import { formatDisplayValue } from "../../../utils/listings/createEmptyAnimal";
 
 type PetListingCardProps = {
     listing: PetListingSummary;
@@ -38,14 +39,6 @@ const availabilityOptions: {
         },
     ];
 
-function formatAnimalType(value: string) {
-    return value
-        .replaceAll("_", " ")
-        .replace(/\b\w/g, (letter) =>
-            letter.toUpperCase()
-        );
-}
-
 export default function PetListingCard({
     listing,
     onView,
@@ -56,7 +49,7 @@ export default function PetListingCard({
     const isPending = listing.reviewStatus === "pending";
     const status = isPending
         ? "Pending Review"
-        : formatAnimalType(
+        : formatDisplayValue(
             listing.availabilityStatus
         );
 
@@ -112,7 +105,7 @@ export default function PetListingCard({
                             <PawPrint size={16} />
 
                             <span>
-                                {formatAnimalType(
+                                {formatDisplayValue(
                                     listing.animalType
                                 )}
                             </span>

@@ -99,6 +99,7 @@ export async function prepareListingUploads(
     input: PrepareListingUploadsInput
 ): Promise<PrepareListingUploadsResponse> {
     const token = await getAuthToken();
+    
 
     const response = await fetch(
         `${API_BASE_URL}/pet-listings/upload-urls`,
