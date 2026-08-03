@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Building2, ChevronRight, UserRound, Heart } from "lucide-react";
 
-import Logo from "../../components/ui/Logo";
+import Logo from "../../components/ui/decorative/Logo";
 import Card from "../../components/ui/Card";
-import ImageSlideShow from "../../components/ui/ImageSlideShow";
-import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
+import ImageSlideShow from "../../components/ui/decorative/ImageSlideShow";
+import DecorativeLeaf from "../../components/ui/decorative/DecorativeLeaf";
 import InfoModal from "../../components/ui/InfoModal";
 
-import { loginSlideshowContent } from "../../data/imageContent";
+import { loginSlideshowContent } from "../../data/assets/imageContent";
 
 import "./AccountType.css";
 import { routes } from "../../constants/routes";

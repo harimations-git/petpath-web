@@ -147,7 +147,6 @@ export default function MyListingsResults({
                         className="my-listings-load-more-button"
                         onClick={onLoadMore}
                         disabled={isLoadingMore}
-                        aria-busy={isLoadingMore}
                     >
                         {isLoadingMore ? (
                             <LoaderCircle

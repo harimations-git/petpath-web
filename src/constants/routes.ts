@@ -29,6 +29,12 @@ export const routes = {
         shelterPrivacyPolicy: "/help/privacy-policy",
     },
 
+    admin: {
+        dashboard: "/admin/dashboard",
+        organisations: "/admin/organisations",
+        listings: "/admin/listings",
+    },
+
     listings: {
         view: "/listings/view/:listingId",
         viewListing: (listingId: string) =>

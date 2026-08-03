@@ -7,9 +7,8 @@ import {
 } from "lucide-react";
 
 import type { ListingAvailabilityStatus, PetListingSummary } from "../../../types/listing";
-
 import "./PetListingCard.css";
-import { formatDisplayValue } from "../../../utils/listings/createEmptyAnimal";
+import { formatDisplayValue } from "../../../utils/listings/displayFormatting";
 
 type PetListingCardProps = {
     listing: PetListingSummary;
@@ -58,25 +57,16 @@ export default function PetListingCard({
         ? "my-listing-status-pending"
         : `my-listing-status-${listing.availabilityStatus}`;
 
-    const canChangeAvailability =
-        listing.reviewStatus === "approved";
+    const canChangeAvailability = listing.reviewStatus === "approved";
 
-    async function handleAvailabilityChange(
-        event: React.ChangeEvent<HTMLSelectElement>
-    ) {
-        const nextStatus =
-            event.target.value as ListingAvailabilityStatus;
+    async function handleAvailabilityChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        const nextStatus = event.target.value as ListingAvailabilityStatus;
 
-        if (
-            nextStatus === listing.availabilityStatus
-        ) {
+        if (nextStatus === listing.availabilityStatus) {
             return;
         }
 
-        await onAvailabilityChange(
-            listing.listingId,
-            nextStatus
-        );
+        await onAvailabilityChange(listing.listingId, nextStatus);
     }
 
     return (
@@ -98,16 +88,12 @@ export default function PetListingCard({
                         <h2>{listing.title}</h2>
                     </div>
 
-                    <ul
-                        className="my-listing-meta"
-                    >
+                    <ul className="my-listing-meta">
                         <li>
                             <PawPrint size={16} />
 
                             <span>
-                                {formatDisplayValue(
-                                    listing.animalType
-                                )}
+                                {formatDisplayValue(listing.animalType)}
                             </span>
                         </li>
 
@@ -141,40 +127,25 @@ export default function PetListingCard({
                                     </span>
 
                                     <select
-                                        value={
-                                            listing.availabilityStatus
-                                        }
-                                        onChange={
-                                            handleAvailabilityChange
-                                        }
-                                        disabled={
-                                            isUpdatingAvailability
-                                        }
-                                        aria-label={`Change availability status for ${listing.title}`}
+                                        value={listing.availabilityStatus}
+                                        onChange={handleAvailabilityChange}
+                                        disabled={isUpdatingAvailability}
                                         className={`my-listing-availability-select ${statusClassName}`}
                                     >
                                         {availabilityOptions.map(
                                             (option) => (
                                                 <option
-                                                    key={
-                                                        option.value
-                                                    }
-                                                    value={
-                                                        option.value
-                                                    }
+                                                    key={option.value}
+                                                    value={option.value}
                                                 >
-                                                    {
-                                                        option.label
-                                                    }
+                                                    {option.label}
                                                 </option>
                                             )
                                         )}
                                     </select>
                                 </label>
                             ) : (
-                                <span
-                                    className={`my-listing-status ${statusClassName}`}
-                                >
+                                <span className={`my-listing-status ${statusClassName}`}>
                                     <Clock3 size={15} />
                                     {status}
                                 </span>
@@ -183,14 +154,11 @@ export default function PetListingCard({
                     </ul>
                 </div>
 
-                {/*!!! Change the look of this */}
                 <div className="my-listing-actions">
                     <button
                         type="button"
                         className="my-listing-view-button"
-                        onClick={() =>
-                            onView(listing.listingId)
-                        }
+                        onClick={() => onView(listing.listingId)}
                     >
                         View listing
                     </button>

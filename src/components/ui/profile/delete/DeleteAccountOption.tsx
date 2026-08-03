@@ -34,7 +34,6 @@ export default function DeleteAccountOption({
                     type="button"
                     className="account-options-button"
                     onClick={onToggle}
-                    aria-expanded={isOpen}
                 >
                     <MoreHorizontal size={18} />
                     Account options

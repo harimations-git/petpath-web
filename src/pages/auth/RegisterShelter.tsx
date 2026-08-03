@@ -1,13 +1,13 @@
 import { Mail, Lock, BadgeCheck, Building2, ArrowLeft } from "lucide-react";
-import Logo from "../../components/ui/Logo";
+import Logo from "../../components/ui/decorative/Logo";
 import Card from "../../components/ui/Card";
-import TextInput from "../../components/ui/TextInput";
+import TextInput from "../../components/ui/forms/TextInput";
 import CustomButton from "../../components/ui/CustomButton";
-import ImageSlideShow from "../../components/ui/ImageSlideShow";
-import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
+import ImageSlideShow from "../../components/ui/decorative/ImageSlideShow";
+import DecorativeLeaf from "../../components/ui/decorative/DecorativeLeaf";
 
 import Spacer from "../../components/layout/Spacer";
-import { loginSlideshowContent } from "../../data/imageContent";
+import { loginSlideshowContent } from "../../data/assets/imageContent";
 
 import "./RegisterShelter.css";
 import { Link } from "react-router-dom";

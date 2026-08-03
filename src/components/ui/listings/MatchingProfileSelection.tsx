@@ -7,17 +7,6 @@ import {
     UserRoundCheck,
 } from "lucide-react";
 
-import FormSelect from "../forms/FormSelect";
-
-import {
-    activityNeededOptions,
-    attentionNeededOptions,
-    experienceNeededOptions,
-    matchingHomeTypeOptions,
-    petCostOptions,
-    spaceNeededOptions,
-} from "../../../data/matchingProfileOptions";
-
 import type {
     ActivityNeeded,
     AttentionNeeded,
@@ -28,7 +17,17 @@ import type {
     SpaceNeeded,
 } from "../../../types/matchingProfile";
 
+import {
+    activityNeededOptions,
+    attentionNeededOptions,
+    experienceNeededOptions,
+    matchingHomeTypeOptions,
+    petCostOptions,
+    spaceNeededOptions,
+} from "../../../data/dropdown/matchingProfileOptions";
+
 import "./MatchingProfileSelection.css";
+import FormSelect from "../forms/FormSelect";
 
 type MatchingProfileSectionProps = {
     value: MatchingProfileForm;
@@ -41,9 +40,8 @@ export default function MatchingProfileSection({
     onChange,
     sectionNumber = 5,
 }: MatchingProfileSectionProps) {
-    function updateField<
-        Field extends keyof MatchingProfileForm
-    >(
+
+    function updateField<Field extends keyof MatchingProfileForm>(
         field: Field,
         fieldValue: MatchingProfileForm[Field]
     ) {
@@ -117,9 +115,7 @@ export default function MatchingProfileSection({
                     }
                     placeholder="Select experience needed"
                     helperText="Choose the recommended level of pet ownership experience."
-                    icon={
-                        <UserRoundCheck size={17} />
-                    }
+                    icon={<UserRoundCheck size={17} />}
                     required
                 />
 

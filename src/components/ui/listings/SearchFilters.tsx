@@ -6,17 +6,16 @@ import {
     Plus,
 } from "lucide-react";
 
-import SearchBar from "../filters/SearchBar";
-import FilterDropdown from "../filters/FilterDropdown";
-import NavigationButton from "../navigation/NavigationButton";
-
 import {
     sortFilterOptions,
     speciesFilterOptions,
     listingTypeFilterOptions,
     statusFilterOptions,
-} from "../../../data/listingFilters";
+} from "../../../data/dropdown/listingFilters";
 
+import SearchBar from "../filters/SearchBar";
+import FilterDropdown from "../filters/FilterDropdown";
+import NavigationButton from "../navigation/NavigationButton";
 import { routes } from "../../../constants/routes";
 
 type MyListingsFiltersProps = {
@@ -60,56 +59,36 @@ export default function MyListingsFilters({
                 <div className="filters">
                     <FilterDropdown
                         value={speciesFilter}
-                        options={
-                            speciesFilterOptions
-                        }
-                        onChange={
-                            onSpeciesChange
-                        }
+                        options={speciesFilterOptions}
+                        onChange={onSpeciesChange}
                         icon={<PawPrint />}
                     />
 
                     <FilterDropdown
-                        value={
-                            listingTypeFilter
-                        }
-                        options={
-                            listingTypeFilterOptions
-                        }
-                        onChange={
-                            onListingTypeChange
-                        }
+                        value={listingTypeFilter}
+                        options={listingTypeFilterOptions}
+                        onChange={onListingTypeChange}
                         icon={<Notebook />}
                     />
 
                     <FilterDropdown
                         value={statusFilter}
-                        options={
-                            statusFilterOptions
-                        }
-                        onChange={
-                            onStatusChange
-                        }
+                        options={statusFilterOptions}
+                        onChange={onStatusChange}
                         icon={<Bell />}
                     />
 
                     <FilterDropdown
                         value={sortOrder}
-                        options={
-                            sortFilterOptions
-                        }
-                        onChange={
-                            onSortChange
-                        }
+                        options={sortFilterOptions}
+                        onChange={onSortChange}
                         icon={<ListFilter />}
                     />
                 </div>
 
                 <NavigationButton
                     label="Create Listing"
-                    to={
-                        routes.home.createListing
-                    }
+                    to={routes.home.createListing}
                     icon={<Plus />}
                 />
             </div>

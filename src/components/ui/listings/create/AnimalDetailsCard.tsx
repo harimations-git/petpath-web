@@ -8,7 +8,7 @@ import type {
 import {
     animalSexOptions,
     individualAnimalTypeOptions,
-} from "../../../../data/listingOptions";
+} from "../../../../data/dropdown/listingOptions";
 
 import FormSelect from "./FormSelect";
 
@@ -63,9 +63,7 @@ export default function AnimalDetailsCard({
                 <FormSelect
                     label="Animal type"
                     value={animal.animalType}
-                    options={
-                        individualAnimalTypeOptions
-                    }
+                    options={individualAnimalTypeOptions}
                     onChange={(value) =>
                         onChange(
                             animal.id,
@@ -86,9 +84,7 @@ export default function AnimalDetailsCard({
 
                     <input
                         type="text"
-                        value={
-                            animal.breedSpecies
-                        }
+                        value={animal.breedSpecies}
                         onChange={(event) =>
                             onChange(
                                 animal.id,
@@ -144,9 +140,7 @@ export default function AnimalDetailsCard({
 
                     <input
                         type="text"
-                        value={
-                            animal.temperament
-                        }
+                        value={animal.temperament}
                         onChange={(event) =>
                             onChange(
                                 animal.id,

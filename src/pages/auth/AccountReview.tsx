@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { ArrowLeft, Clock, MailCheck } from "lucide-react";
 
-import Logo from "../../components/ui/Logo";
+import Logo from "../../components/ui/decorative/Logo";
 import Card from "../../components/ui/Card";
-import ImageSlideShow from "../../components/ui/ImageSlideShow";
-import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
+import ImageSlideShow from "../../components/ui/decorative/ImageSlideShow";
+import DecorativeLeaf from "../../components/ui/decorative/DecorativeLeaf";
 
 import Spacer from "../../components/layout/Spacer";
-import { loginSlideshowContent } from "../../data/imageContent";
+import { loginSlideshowContent } from "../../data/assets/imageContent";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 import "./RegisterShelter.css";
@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
 import { routes } from "../../constants/routes";
-import { useBackButtonRedirect } from "../../hooks/dashboard/useBackButtonRedirect";
+import { useBackButtonRedirect } from "../../hooks/organisation/dashboard/useBackButtonRedirect";
 import { getCurrentOrganisationProfile } from "../../services/organisation/organisationService";
 import { getRouteForOrganisation } from "../../services/organisation/organisationRedirect";
 

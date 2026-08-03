@@ -8,7 +8,7 @@ import {
     microchipStatusOptions,
     neuteredStatusOptions,
     vaccinationStatusOptions,
-} from "../../../../data/listingOptions";
+} from "../../../../data/dropdown/listingOptions";
 
 import VeterinaryDocumentUpload from "../VeterinaryDocumentUpload";
 import FormSelect from "./FormSelect";
@@ -21,27 +21,14 @@ type HealthCareSectionProps = {
     healthNotes: string;
 
     documents: File[];
-
     existingDocuments?: ExistingListingDocument[];
-    onRemoveExistingDocument?: (
-        documentKey: string
-    ) => void;
 
-    onVaccinationChange: (
-        value: VaccinationStatus
-    ) => void;
-    onMicrochipChange: (
-        value: MicrochipStatus
-    ) => void;
-    onNeuteredChange: (
-        value: NeuteredStatus
-    ) => void;
-    onHealthNotesChange: (
-        value: string
-    ) => void;
-    onDocumentsChange: (
-        documents: File[]
-    ) => void;
+    onRemoveExistingDocument?: (documentKey: string) => void;
+    onVaccinationChange: (value: VaccinationStatus) => void;
+    onMicrochipChange: (value: MicrochipStatus) => void;
+    onNeuteredChange: (value: NeuteredStatus) => void;
+    onHealthNotesChange: (value: string) => void;
+    onDocumentsChange: (documents: File[]) => void;
 };
 
 export default function HealthCareSection({
@@ -66,42 +53,24 @@ export default function HealthCareSection({
                 <FormSelect
                     label="Vaccination status"
                     value={vaccinationStatus}
-                    options={
-                        vaccinationStatusOptions
-                    }
-                    onChange={(value) =>
-                        onVaccinationChange(
-                            value as VaccinationStatus
-                        )
-                    }
+                    options={vaccinationStatusOptions}
+                    onChange={(value) => onVaccinationChange(value as VaccinationStatus)}
                     required
                 />
 
                 <FormSelect
                     label="Microchip status"
                     value={microchipStatus}
-                    options={
-                        microchipStatusOptions
-                    }
-                    onChange={(value) =>
-                        onMicrochipChange(
-                            value as MicrochipStatus
-                        )
-                    }
+                    options={microchipStatusOptions}
+                    onChange={(value) => onMicrochipChange(value as MicrochipStatus)}
                     required
                 />
 
                 <FormSelect
                     label="Neutered status"
                     value={neuteredStatus}
-                    options={
-                        neuteredStatusOptions
-                    }
-                    onChange={(value) =>
-                        onNeuteredChange(
-                            value as NeuteredStatus
-                        )
-                    }
+                    options={neuteredStatusOptions}
+                    onChange={(value) => onNeuteredChange(value as NeuteredStatus)}
                     required
                 />
 
@@ -110,11 +79,7 @@ export default function HealthCareSection({
 
                     <textarea
                         value={healthNotes}
-                        onChange={(event) =>
-                            onHealthNotesChange(
-                                event.target.value
-                            )
-                        }
+                        onChange={(event) => onHealthNotesChange(event.target.value)}
                         placeholder="Add any known conditions, medication or ongoing care requirements..."
                         maxLength={1000}
                     />
@@ -130,9 +95,7 @@ export default function HealthCareSection({
                 documents={documents}
                 onChange={onDocumentsChange}
                 existingDocuments={existingDocuments}
-                onRemoveExistingDocument={
-                    onRemoveExistingDocument
-                }
+                onRemoveExistingDocument={onRemoveExistingDocument}
                 maxFiles={10}
                 maxFileSizeMb={10}
                 required

@@ -15,12 +15,12 @@ import { routes } from "../../constants/routes";
 
 import InfoModal from "../../components/ui/InfoModal";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
-import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
+import DecorativeLeaf from "../../components/ui/decorative/DecorativeLeaf";
 import Spacer from "../../components/layout/Spacer";
-import Logo from "../../components/ui/Logo";
+import Logo from "../../components/ui/decorative/Logo";
 import Card from "../../components/ui/Card";
-import ImageSlideshow from "../../components/ui/ImageSlideShow";
-import { loginSlideshowContent } from "../../data/imageContent";
+import ImageSlideshow from "../../components/ui/decorative/ImageSlideShow";
+import { loginSlideshowContent } from "../../data/assets/imageContent";
 
 type PasswordResetStep =
     | "email"

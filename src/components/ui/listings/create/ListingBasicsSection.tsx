@@ -6,7 +6,7 @@ import {
 
 import {
     listingAnimalTypeOptions,
-} from "../../../../data/listingOptions";
+} from "../../../../data/dropdown/listingOptions";
 
 import type {
     ListingAnimalCategory,
@@ -25,33 +25,13 @@ type ListingBasicsSectionProps = {
     organisationDomain: string;
     listingUrlMatchesOrganisation: boolean;
 
-    onListingTitleChange: (
-        value: string
-    ) => void;
-
-    onListingTypeChange: (
-        value: ListingType
-    ) => void;
-
-    onAnimalTypeChange: (
-        value: ListingAnimalCategory
-    ) => void;
-
-    onNumberOfAnimalsChange: (
-        value: number
-    ) => void;
-
-    onDescriptionChange: (
-        value: string
-    ) => void;
-
-    onListingUrlChange: (
-        value: string
-    ) => void;
-
-    onAdoptionFeeChange: (
-        value: string
-    ) => void;
+    onListingTitleChange: (value: string) => void;
+    onListingTypeChange: (value: ListingType) => void;
+    onAnimalTypeChange: (value: ListingAnimalCategory) => void;
+    onNumberOfAnimalsChange: (value: number) => void;
+    onDescriptionChange: (value: string) => void;
+    onListingUrlChange: (value: string) => void;
+    onAdoptionFeeChange: (value: string) => void;
 };
 
 export default function ListingBasicsSection({
@@ -82,9 +62,9 @@ export default function ListingBasicsSection({
         listingType === "group"
             ? listingAnimalTypeOptions
             : listingAnimalTypeOptions.filter(
-                  (option) =>
-                      option.value !== "mixed"
-              );
+                (option) =>
+                    option.value !== "mixed"
+            );
 
     return (
         <section className="create-listing-section">
@@ -101,13 +81,11 @@ export default function ListingBasicsSection({
                         type="text"
                         value={listingTitle}
                         onChange={(event) =>
-                            onListingTitleChange(
-                                event.target.value
-                            )
+                            onListingTitleChange(event.target.value)
                         }
                         placeholder={
                             listingType ===
-                            "individual"
+                                "individual"
                                 ? "e.g. Winnie"
                                 : "e.g. Winnie and Harley"
                         }
@@ -132,19 +110,13 @@ export default function ListingBasicsSection({
                             type="button"
                             className={
                                 listingType ===
-                                "individual"
+                                    "individual"
                                     ? "listing-type-option listing-type-option-selected"
                                     : "listing-type-option"
                             }
-                            onClick={() =>
-                                onListingTypeChange(
-                                    "individual"
-                                )
-                            }
+                            onClick={() => onListingTypeChange("individual")}
                         >
-                            <UserRound
-                                size={18}
-                            />
+                            <UserRound size={18} />
 
                             Individual
                         </button>
@@ -153,19 +125,14 @@ export default function ListingBasicsSection({
                             type="button"
                             className={
                                 listingType ===
-                                "group"
+                                    "group"
                                     ? "listing-type-option listing-type-option-selected"
                                     : "listing-type-option"
                             }
-                            onClick={() =>
-                                onListingTypeChange(
-                                    "group"
-                                )
+                            onClick={() => onListingTypeChange("group")
                             }
                         >
-                            <UsersRound
-                                size={18}
-                            />
+                            <UsersRound size={18} />
 
                             Group
                         </button>
@@ -173,7 +140,7 @@ export default function ListingBasicsSection({
 
                     <small>
                         {listingType ===
-                        "individual"
+                            "individual"
                             ? "Use this for one animal."
                             : "Use this when the animals must be adopted together."}
                     </small>
@@ -190,17 +157,8 @@ export default function ListingBasicsSection({
                             type="number"
                             min={2}
                             max={4}
-                            value={
-                                numberOfAnimals
-                            }
-                            onChange={(event) =>
-                                onNumberOfAnimalsChange(
-                                    Number(
-                                        event.target
-                                            .value
-                                    )
-                                )
-                            }
+                            value={numberOfAnimals}
+                            onChange={(event) => onNumberOfAnimalsChange(Number(event.target.value))}
                             required
                         />
 
@@ -218,26 +176,15 @@ export default function ListingBasicsSection({
                     </span>
 
                     <select
-                        value={
-                            listingAnimalType
-                        }
-                        onChange={(event) =>
-                            onAnimalTypeChange(
-                                event.target
-                                    .value as ListingAnimalCategory
-                            )
-                        }
+                        value={listingAnimalType}
+                        onChange={(event) => onAnimalTypeChange(event.target.value as ListingAnimalCategory)}
                         required
                     >
                         {availableAnimalTypes.map(
                             (option) => (
                                 <option
-                                    key={
-                                        option.value
-                                    }
-                                    value={
-                                        option.value
-                                    }
+                                    key={option.value}
+                                    value={option.value}
                                 >
                                     {
                                         option.label
@@ -249,13 +196,13 @@ export default function ListingBasicsSection({
 
                     {listingType ===
                         "group" && (
-                        <small>
-                            Select Mixed when
-                            the group contains
-                            different animal
-                            types.
-                        </small>
-                    )}
+                            <small>
+                                Select Mixed when
+                                the group contains
+                                different animal
+                                types.
+                            </small>
+                        )}
                 </label>
 
                 <label className="create-listing-field create-listing-description">
@@ -266,14 +213,10 @@ export default function ListingBasicsSection({
 
                     <textarea
                         value={description}
-                        onChange={(event) =>
-                            onDescriptionChange(
-                                event.target.value
-                            )
-                        }
+                        onChange={(event) => onDescriptionChange(event.target.value)}
                         placeholder={
                             listingType ===
-                            "group"
+                                "group"
                                 ? "Describe the animals and why they are being listed together..."
                                 : "Describe the animal and the home they need..."
                         }
@@ -298,11 +241,7 @@ export default function ListingBasicsSection({
                     <input
                         type="url"
                         value={listingUrl}
-                        onChange={(event) =>
-                            onListingUrlChange(
-                                event.target.value
-                            )
-                        }
+                        onChange={(event) => onListingUrlChange(event.target.value)}
                         placeholder={
                             organisationDomain
                                 ? `https://${organisationDomain}/pets/example`
@@ -311,17 +250,16 @@ export default function ListingBasicsSection({
                         required
                     />
 
-                    {listingUrl &&
-                        !listingUrlMatchesOrganisation && (
-                            <small className="create-listing-field-error">
-                                The URL must use
-                                your organisation's
-                                domain:{" "}
-                                {
-                                    organisationDomain
-                                }
-                            </small>
-                        )}
+                    {listingUrl && !listingUrlMatchesOrganisation && (
+                        <small className="create-listing-field-error">
+                            The URL must use
+                            your organisation's
+                            domain:{" "}
+                            {
+                                organisationDomain
+                            }
+                        </small>
+                    )}
                 </label>
 
                 <label className="create-listing-field adoption-fee-field">
@@ -338,11 +276,7 @@ export default function ListingBasicsSection({
                             step={1}
                             inputMode="numeric"
                             value={adoptionFee}
-                            onChange={(event) =>
-                                onAdoptionFeeChange(
-                                    event.target.value
-                                )
-                            }
+                            onChange={(event) => onAdoptionFeeChange(event.target.value)}
                             placeholder="e.g. 150"
                             required
                         />
@@ -350,7 +284,7 @@ export default function ListingBasicsSection({
 
                     <small>
                         {listingType ===
-                        "group"
+                            "group"
                             ? "Enter the total adoption fee for the group."
                             : "Enter the adoption fee for this animal."}
                     </small>
@@ -362,10 +296,7 @@ export default function ListingBasicsSection({
                     <div className="listing-readonly-input">
                         <input
                             type="text"
-                            value={
-                                organisationLocation ||
-                                "No location available"
-                            }
+                            value={organisationLocation || "No location available"}
                             disabled
                             readOnly
                         />

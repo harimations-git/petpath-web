@@ -1,0 +1,36 @@
+config:
+  target: "{{ $env.API_BASE_URL }}"
+  phases:
+    - duration: 60
+      arrivalRate: 1
+      rampTo: 4
+      name: "Ramp from normal to busy shelter traffic"
+
+    - duration: 60
+      arrivalRate: 4
+      rampTo: 8
+      name: "Increase shelter traffic"
+
+    - duration: 60
+      arrivalRate: 8
+      rampTo: 12
+      name: "Push beyond normal shelter traffic"
+
+    - duration: 60
+      arrivalRate: 12
+      name: "Sustain shelter stress level"
+
+  defaults:
+    headers:
+      Authorization: "Bearer {{ $env.SHELTER_ACCESS_TOKEN }}"
+
+scenarios:
+  - name: "Shelter read-only stress flow"
+    flow:
+      - get:
+          url: "/organisation-profile/me"
+
+      - think: 1
+
+      - get:
+          url: "/pet-listings/me"

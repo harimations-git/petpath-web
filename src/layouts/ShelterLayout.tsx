@@ -6,7 +6,7 @@ import {
     OrganisationProfileProvider,
 } from "../context/OrganisationProfileContext";
 
-import "./ShelterLayout.css";
+import "./Layout.css";
 
 export default function ShelterLayout() {
     return (

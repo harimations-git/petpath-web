@@ -10,17 +10,10 @@ import "./App.css";
 import "./styles/theme.css";
 import "./styles/global.css";
 
-import { OrganisationProfileProvider } from "./context/OrganisationProfileContext";
-import { OrganisationListingsProvider } from "./context/OrganisationListingsContext";
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <BrowserRouter>
-            <OrganisationProfileProvider>
-                <OrganisationListingsProvider>
-                    <App />
-                </OrganisationListingsProvider>
-            </OrganisationProfileProvider>
+            <App />
         </BrowserRouter>
     </React.StrictMode>
 );

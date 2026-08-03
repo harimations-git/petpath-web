@@ -67,7 +67,6 @@ export async function getAuthToken() {
 
 export async function getCurrentOrganisationProfile() {
   const token = await getAuthToken();
-  console.log(token);
 
   const response = await fetch(`${API_BASE_URL}/organisation-profile/me`, {
     method: "GET",

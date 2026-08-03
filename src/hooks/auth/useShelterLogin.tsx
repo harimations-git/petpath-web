@@ -14,6 +14,7 @@ import { routes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
 import { getCurrentOrganisationProfile } from "../../services/organisation/organisationService";
 import { getRouteForOrganisation } from "../../services/organisation/organisationRedirect";
+import { getCurrentPortalRole } from "../../services/auth/portalRole";
 
 
 // Describe the parts of an authentication error that this file uses.
@@ -101,7 +102,8 @@ export function useShelterLogin() {
             //get the next step cognito says is required
             const signInStep = signInResult.nextStep.signInStep;
 
-            //if the user needs to verify their email redirect them
+            // Shelter users who registered themselves
+            // may still need to confirm their email.
             if (signInStep === "CONFIRM_SIGN_UP") {
                 await sendUserToVerification(normalisedEmail);
 
@@ -109,25 +111,47 @@ export function useShelterLogin() {
             }
 
             //check the login is "complete"
-            if (
-                !signInResult.isSignedIn || signInStep !== "DONE"
-            ) {
-                setFormError(
-                    "This account needs another sign-in step before continuing."
+            if (!signInResult.isSignedIn || signInStep !== "DONE") {
+                setFormError("This account needs another sign-in step before continuing.");
+
+                return;
+            }
+
+            //check whether this is an
+            //admin or organisation account
+            const portalRole = await getCurrentPortalRole();
+
+            if (portalRole === "admin") {
+                navigate(
+                    routes.admin.dashboard,
+                    {
+                        replace: true,
+                    }
                 );
 
                 return;
             }
 
-            //load their profile
-            const organisationProfile = await getCurrentOrganisationProfile();
+            if (portalRole === "organisation") {
+                const organisationProfile = await getCurrentOrganisationProfile();
 
-            //decide which page they need to go to
-            //i.e. approved account --> dashboard
-            //     pending account -> account review page
-            const nextRoute = getRouteForOrganisation(organisationProfile);
+                const nextRoute = getRouteForOrganisation(organisationProfile);
 
-            navigate(nextRoute, { replace: true });
+                navigate(
+                    nextRoute,
+                    {
+                        replace: true,
+                    }
+                );
+
+                return;
+            }
+
+            //the user signed in successfully but
+            //has no permitted portal role
+            await signOut();
+
+            setFormError("This account does not have access to the PetPath portal.");
         } catch (error) {
             console.log("Login error:", error);
 

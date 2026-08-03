@@ -11,7 +11,7 @@ import type {
 } from "../../../../types/listing";
 
 import "./StatusUpdateCard.css";
-import { formatDisplayValue } from "../../../../utils/listings/createEmptyAnimal";
+import { formatDisplayValue } from "../../../../utils/listings/displayFormatting";
 
 type StatusUpdateCardProps = {
     listing: PetListingSummary;

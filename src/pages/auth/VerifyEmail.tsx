@@ -1,20 +1,20 @@
 import { ArrowLeft } from "lucide-react";
 
-import Logo from "../../components/ui/Logo";
+import Logo from "../../components/ui/decorative/Logo";
 import Card from "../../components/ui/Card";
 
 import CustomButton from "../../components/ui/CustomButton";
-import ImageSlideShow from "../../components/ui/ImageSlideShow";
+import ImageSlideShow from "../../components/ui/decorative/ImageSlideShow";
 
 import Spacer from "../../components/layout/Spacer";
-import { loginSlideshowContent } from "../../data/imageContent";
+import { loginSlideshowContent } from "../../data/assets/imageContent";
 
 import "./RegisterShelter.css"; //Basically the same css
 import "./VerifyEmail.css";
 
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
 import VerificationImage from "../../assets/EmailVerification.webp";
-import DecorativeLeaf from "../../components/ui/DecorativeLeaf";
+import DecorativeLeaf from "../../components/ui/decorative/DecorativeLeaf";
 import VerificationCodeInput from "../../components/ui/auth/VerificationCodeInput";
 import { useVerifyEmail } from "../../hooks/auth/useVerifyEmail";
 

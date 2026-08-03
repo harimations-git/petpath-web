@@ -39,7 +39,6 @@ export default function DeleteListingOption({
                     type="button"
                     className="listing-options-button"
                     onClick={onToggle}
-                    aria-expanded={isOpen}
                 >
                     <MoreHorizontal size={18} />
                     Listing options
