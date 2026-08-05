@@ -1,19 +1,5 @@
+import type { PendingListing } from "./adminListing";
 import type { PendingOrganisation } from "./adminOrganisation";
-
-/*
- * Represents a pet listing that is
- * waiting for admin review.
- */
-export type PendingListing = {
-    listingId: string;
-    title: string;
-    organisationId: string;
-    organisationName: string;
-    animalType: string;
-    listingType: string;
-    documentCount: number;
-    submittedAt: string;
-};
 
 /*
  * Contains the main statistics displayed

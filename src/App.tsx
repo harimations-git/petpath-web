@@ -27,6 +27,7 @@ import RoleProtectedRoute from "./components/routing/RoleProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 import OrganisationProvidersRoute from "./components/routing/OrganisationProvidersRoute";
 import OrganisationReview from "./pages/admin/organisations/OrganisationReview";
+import ListingReview from "./pages/admin/listings/ListingReview";
 
 export default function App() {
     return (
@@ -191,10 +192,15 @@ export default function App() {
                             element={<OrganisationReview />}
                         />
 
-                        {/* Unknown route fallback 
                         <Route
-                            path={routes.admin.listings}
-                            element={<ListingReviews />}
+                            path={routes.admin.pending.listings}
+                            element={<ListingReview />}
+                        />
+
+                        {/** 
+                        <Route
+                            path="listings/:listingId"
+                            element={<ListingReview />}
                         />
                         */}
                     </Route>

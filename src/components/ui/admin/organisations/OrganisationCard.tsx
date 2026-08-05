@@ -7,8 +7,8 @@ import {
     X,
 } from "lucide-react";
 
-import type { PendingOrganisation } from "../../../../types/admin/adminDashboard";
 import { formatDate } from "../../../../utils/listings/displayFormatting";
+import type { PendingOrganisation } from "../../../../types/admin/adminOrganisation";
 
 type AdminOrganisationCardProps = {
     organisation: PendingOrganisation;

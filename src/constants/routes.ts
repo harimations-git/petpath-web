@@ -35,7 +35,9 @@ export const routes = {
         listings: "/admin/listings",
         pending: {
             organisations: "/admin/pending-organisations",
-            listings: "/admin/pending-listings"
+            listings: "/admin/pending-listings",
+            listingReview: (listingId: string) =>
+                `/admin/listings/${encodeURIComponent(listingId)}`,
         }
     },
 

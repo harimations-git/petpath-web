@@ -3,6 +3,7 @@ import {
     Clock3,
     Search,
     ShieldCheck,
+    XCircle,
 } from "lucide-react";
 
 import Card from "../../../components/ui/Card";
@@ -14,6 +15,9 @@ import { formatDate } from "../../../utils/listings/displayFormatting";
 import "./OrganisationReview.css";
 import { usePendingOrganisations } from "../../../hooks/admin/usePendingOrganisation";
 import type { PendingOrganisation } from "../../../types/admin/adminOrganisation";
+import InfoModal from "../../../components/ui/InfoModal";
+import { useState } from "react";
+import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 
 export default function OrganisationReview() {
     const {
@@ -43,30 +47,46 @@ export default function OrganisationReview() {
         rejectOrganisation,
     } = usePendingOrganisations();
 
-    async function handleApproveOrganisation(
-        organisation:PendingOrganisation
-    ) {
-        //will replace with info modal
-        const confirmed = window.confirm(`Approve ${organisation.charityName}?`);
+    const [selectedOrganisation, setSelectedOrganisation] = useState<PendingOrganisation | null>(null);
+    const [modalType, setModalType] = useState<"approve" | "reject" | null>(null);
 
-        if (!confirmed) {
-            return;
-        }
-
-        await approveOrganisation(organisation.organisationId);
-    }
-
-    async function handleRejectOrganisation(
+    function handleApproveOrganisation(
         organisation: PendingOrganisation
     ) {
-        //will replace with info modal
-        const confirmed = window.confirm(`Reject ${organisation.charityName}?`);
+        setSelectedOrganisation(organisation);
+        setModalType("approve");
+    }
 
-        if (!confirmed) {
+    function handleRejectOrganisation(
+        organisation: PendingOrganisation
+    ) {
+        setSelectedOrganisation(organisation);
+        setModalType("reject");
+    }
+
+    function closeReviewModal() {
+        setModalType(null);
+        setSelectedOrganisation(null);
+    }
+
+    async function confirmApproveOrganisation() {
+        if (!selectedOrganisation) {
             return;
         }
 
-        await rejectOrganisation(organisation.organisationId);
+        await approveOrganisation(selectedOrganisation.organisationId);
+
+        closeReviewModal();
+    }
+
+    async function confirmRejectOrganisation() {
+        if (!selectedOrganisation) {
+            return;
+        }
+
+        await rejectOrganisation(selectedOrganisation.organisationId);
+
+        closeReviewModal();
     }
 
     return (
@@ -193,6 +213,7 @@ export default function OrganisationReview() {
 
                 {isLoading ? (
                     <Card className="admin-organisations-empty">
+                        <LoadingSpinner size="large"/>
                         <p>Loading organisations... </p>
                     </Card>
                 ) : displayedOrganisations.length > 0 ? (
@@ -238,6 +259,33 @@ export default function OrganisationReview() {
                     </Card>
                 )}
             </section>
+            <InfoModal
+                visible={modalType === "approve" && selectedOrganisation !== null}
+                title="Approve organisation?"
+                message={selectedOrganisation
+                        ? `Are you sure you want to approve ${selectedOrganisation.charityName}? They will be able to create and publish pet listings.`
+                        : ""
+                }
+                icon={ShieldCheck}
+                buttonText="Approve"
+                buttonTextSecondary="Cancel"
+                onClose={closeReviewModal}
+                onConfirm={() => {void confirmApproveOrganisation()}}
+            />
+
+            <InfoModal
+                visible={modalType === "reject" && selectedOrganisation !== null}
+                title="Reject organisation?"
+                message={selectedOrganisation
+                        ? `Are you sure you want to reject ${selectedOrganisation.charityName}? Their organisation account will not be approved.`
+                        : ""
+                }
+                icon={XCircle}
+                buttonText="Reject"
+                buttonTextSecondary="Cancel"
+                onClose={closeReviewModal}
+                onConfirm={() => {void confirmRejectOrganisation()}}
+            />
         </div>
     );
 }
