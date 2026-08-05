@@ -1,4 +1,5 @@
-import type { OrganisationSortOrder, PendingOrganisationsResponse, ReviewOrganisationRequest } from "../../types/admin/adminOrganisation";
+import type { PendingOrganisationsResponse, ReviewOrganisationRequest } from "../../types/admin/adminOrganisation";
+import type { SortOrder } from "../../types/filters";
 import { getErrorMessage } from "../../utils/error/authErrorMessage";
 import { getAdminIdToken } from "../../utils/user/userUtils";
 
@@ -12,7 +13,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @returns 
  */
 export async function getPendingOrganisations(
-    sortOrder: OrganisationSortOrder,
+    sortOrder: SortOrder,
     nextToken?: string | null
 ): Promise<PendingOrganisationsResponse> {
 
@@ -53,7 +54,6 @@ export async function getPendingOrganisations(
 export async function reviewOrganisation({
     organisationId,
     decision,
-    reason,
 }: ReviewOrganisationRequest) {
     const idToken = await getAdminIdToken();
 
@@ -69,7 +69,6 @@ export async function reviewOrganisation({
 
                 body: JSON.stringify({
                     decision,
-                    reason,
                 }),
             }
         );

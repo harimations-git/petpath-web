@@ -5,8 +5,13 @@ import {
     useState,
 } from "react";
 
-import type { OrganisationReviewDecision, OrganisationSortOrder, PendingOrganisation } from "../../types/admin/adminOrganisation";
+import type { 
+    OrganisationReviewDecision,  
+    PendingOrganisation 
+} from "../../types/admin/adminOrganisation";
+
 import { getPendingOrganisations, reviewOrganisation } from "../../services/admin/adminOrganisationService";
+import type { SortOrder } from "../../types/filters";
 
 /*
  * Custom hook responsible for getting the pending organisation's page
@@ -18,7 +23,9 @@ export function usePendingOrganisations() {
     const [nextToken, setNextToken] = useState<string | null>(null);
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [sortOrder, setSortOrder] = useState<OrganisationSortOrder>("oldest");
+    const [sortOrder, setSortOrder] = useState<SortOrder>("oldest");
+
+    const [showModal, setShowModal] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -141,7 +148,6 @@ export function usePendingOrganisations() {
             async (
                 organisationId: string,
                 decision: OrganisationReviewDecision,
-                reason?: string
             ) => {
                 //stop another review request from starting while one is already running
                 if (updatingOrganisationId) {
@@ -158,7 +164,6 @@ export function usePendingOrganisations() {
                     await reviewOrganisation({
                         organisationId,
                         decision,
-                        reason,
                     });
 
                     //reload the first page
@@ -246,6 +251,9 @@ export function usePendingOrganisations() {
         //retry loading the first page
         retry: loadOrganisations,
 
+        showModal,
+        setShowModal,
+
         //helper function that submits the approved decision
         approveOrganisation:
             (organisationId: string) =>
@@ -253,7 +261,7 @@ export function usePendingOrganisations() {
 
         //helper function that submits the rejected decision with an optional reason
         rejectOrganisation:
-            (organisationId: string, reason?: string) =>
-                submitReview(organisationId, "rejected", reason),
+            (organisationId: string) => 
+                submitReview(organisationId, "rejected",),
     };
 }

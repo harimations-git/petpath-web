@@ -1,38 +1,40 @@
 /* Summary row */
 
-.admin-organisations-statistics {
+.admin-listings-statistics {
     display: grid;
     grid-template-columns:
-        minmax(360px, 2fr) minmax(180px, 1fr) minmax(210px, 1fr);
+        minmax(360px, 2fr)
+        minmax(180px, 1fr)
+        minmax(210px, 1fr);
 
     align-items: stretch;
     gap: var(--spacing-md);
 }
 
 
-/* Search and sorting card */
+/* Search and sorting */
 
-.admin-organisations-controls {
+.admin-listings-controls {
     display: grid;
     grid-template-columns:
         minmax(0, 1fr) 150px;
 
     width: 100%;
+    min-height: 92px;
 
     align-items: end;
     gap: 12px;
 
-    min-height: 92px;
     padding: var(--spacing-md);
 }
 
-.admin-organisations-search,
-.admin-organisations-sort {
+.admin-listings-search,
+.admin-listings-sort {
     min-width: 0;
 }
 
-.admin-organisations-search label,
-.admin-organisations-sort label {
+.admin-listings-search label,
+.admin-listings-sort label {
     display: block;
 
     margin: 0 0 5px;
@@ -46,7 +48,7 @@
 
 /* Search input */
 
-.admin-organisations-search-input {
+.admin-listings-search-input {
     display: flex;
     height: 40px;
 
@@ -55,11 +57,15 @@
 
     padding: 0 12px;
 
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border: 1px solid
+        var(--color-border);
+    border-radius:
+        var(--radius-sm);
 
-    background: var(--color-background);
-    color: var(--color-muted);
+    background:
+        var(--color-background);
+    color:
+        var(--color-muted);
 
     transition:
         border-color 160ms ease,
@@ -67,20 +73,24 @@
         background-color 160ms ease;
 }
 
-.admin-organisations-search-input:focus-within {
-    border-color: var(--color-primary);
-    background: var(--color-card);
+.admin-listings-search-input:focus-within {
+    border-color:
+        var(--color-primary);
+
+    background:
+        var(--color-card);
 
     box-shadow:
-        0 0 0 3px rgba(47, 118, 85, 0.12);
+        0 0 0 3px
+        rgba(47, 118, 85, 0.12);
 }
 
-.admin-organisations-search-input svg {
+.admin-listings-search-input svg {
     display: block;
     flex-shrink: 0;
 }
 
-.admin-organisations-search-input input {
+.admin-listings-search-input input {
     width: 100%;
     height: 100%;
     min-width: 0;
@@ -100,7 +110,7 @@
     line-height: 1;
 }
 
-.admin-organisations-search-input input::placeholder {
+.admin-listings-search-input input::placeholder {
     color: var(--color-muted);
     opacity: 0.8;
 }
@@ -108,7 +118,7 @@
 
 /* Sort select */
 
-.admin-organisations-sort select {
+.admin-listings-sort select {
     width: 100%;
     height: 40px;
     min-height: 0;
@@ -116,28 +126,35 @@
     margin: 0;
     padding: 0 10px;
 
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border: 1px solid
+        var(--color-border);
+    border-radius:
+        var(--radius-sm);
 
-    background: var(--color-background);
-    color: var(--color-text);
+    background:
+        var(--color-background);
+    color:
+        var(--color-text);
 
     font-size: 13px;
     cursor: pointer;
 }
 
-.admin-organisations-sort select:focus {
-    border-color: var(--color-primary);
+.admin-listings-sort select:focus {
+    border-color:
+        var(--color-primary);
+
     outline: none;
 
     box-shadow:
-        0 0 0 3px rgba(47, 118, 85, 0.12);
+        0 0 0 3px
+        rgba(47, 118, 85, 0.12);
 }
 
 
 /* Statistic cards */
 
-.admin-organisations-statistic-card {
+.admin-listings-statistic-card {
     display: flex;
     min-height: 92px;
 
@@ -147,8 +164,8 @@
     padding: var(--spacing-md);
 }
 
-.admin-organisations-statistic-icon,
-.admin-organisation-icon {
+.admin-listings-statistic-icon,
+.admin-listing-icon {
     display: grid;
     width: 42px;
     height: 42px;
@@ -156,18 +173,21 @@
 
     place-items: center;
 
-    border-radius: var(--radius-md);
+    border-radius:
+        var(--radius-md);
 
-    background: var(--color-pale-green);
-    color: var(--color-primary-dark);
+    background:
+        var(--color-pale-green);
+    color:
+        var(--color-primary-dark);
 }
 
-.admin-organisations-statistic-icon svg,
-.admin-organisation-icon svg {
+.admin-listings-statistic-icon svg,
+.admin-listing-icon svg {
     display: block;
 }
 
-.admin-organisations-statistic-text {
+.admin-listings-statistic-text {
     display: flex;
     min-width: 0;
 
@@ -176,18 +196,19 @@
     gap: 2px;
 }
 
-.admin-organisations-statistic-text strong {
+.admin-listings-statistic-text strong {
     display: block;
 
     margin: 0;
 
-    color: var(--color-primary-dark);
+    color:
+        var(--color-primary-dark);
     font-size: 19px;
     font-weight: 900;
     line-height: 1.15;
 }
 
-.admin-organisations-statistic-text span {
+.admin-listings-statistic-text span {
     display: block;
 
     margin: 0;
@@ -201,21 +222,22 @@
 
 /* Results */
 
-.admin-organisations-results {
+.admin-listings-results {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
 }
 
-.admin-organisations-results-header h2 {
+.admin-listings-results-header h2 {
     margin: 0 0 2px;
 
-    color: var(--color-primary-dark);
+    color:
+        var(--color-primary-dark);
     font-size: 20px;
     line-height: 1.25;
 }
 
-.admin-organisations-results-header p {
+.admin-listings-results-header p {
     margin: 0;
 
     color: var(--color-muted);
@@ -223,14 +245,16 @@
     line-height: 1.4;
 }
 
-.admin-organisations-list {
+.admin-listings-list {
     display: flex;
-    max-height: clamp(320px, 60dvh, 700px);
+    max-height:
+        clamp(320px, 60dvh, 700px);
 
     flex-direction: column;
     gap: var(--spacing-md);
 
-    padding-right: var(--spacing-xs);
+    padding-right:
+        var(--spacing-xs);
 
     overflow-x: hidden;
     overflow-y: auto;
@@ -239,49 +263,59 @@
     scrollbar-gutter: stable;
 }
 
-.admin-organisations-list:focus-visible {
-    outline: 2px solid var(--color-primary);
+.admin-listings-list:focus-visible {
+    outline: 2px solid
+        var(--color-primary);
     outline-offset: 4px;
 }
 
-.admin-organisations-load-more {
+
+/* Load more */
+
+.admin-listings-load-more {
     display: flex;
     justify-content: center;
 
-    padding-top: var(--spacing-sm);
+    padding-top:
+        var(--spacing-sm);
 }
 
-.admin-organisations-load-more button {
+.admin-listings-load-more button {
     width: auto;
     min-height: 40px;
 
     margin: 0;
     padding: 0 18px;
 
-    border: 1px solid var(--color-primary-dark);
-    border-radius: var(--radius-pill);
+    border: 1px solid
+        var(--color-primary-dark);
+    border-radius:
+        var(--radius-pill);
 
-    background: var(--color-card);
-    color: var(--color-primary-dark);
+    background:
+        var(--color-card);
+    color:
+        var(--color-primary-dark);
 
     font-size: 13px;
     font-weight: 800;
     cursor: pointer;
 }
 
-.admin-organisations-load-more button:hover {
-    background: var(--color-pale-green);
+.admin-listings-load-more button:hover {
+    background:
+        var(--color-pale-green);
 }
 
-.admin-organisations-load-more button:disabled {
+.admin-listings-load-more button:disabled {
     cursor: not-allowed;
     opacity: 0.6;
 }
 
 
-/* Organisation card */
+/* Listing card */
 
-.admin-organisation-card {
+.admin-listing-card {
     display: flex;
 
     align-items: center;
@@ -290,14 +324,18 @@
 
     padding: var(--spacing-lg);
 
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    border: 1px solid
+        var(--color-border);
+    border-radius:
+        var(--radius-md);
 
-    background: var(--color-card);
-    box-shadow: var(--shadow-card);
+    background:
+        var(--color-card);
+    box-shadow:
+        var(--shadow-card);
 }
 
-.admin-organisation-card-main {
+.admin-listing-card-main {
     display: flex;
     min-width: 0;
     flex: 1;
@@ -306,12 +344,12 @@
     gap: var(--spacing-md);
 }
 
-.admin-organisation-content {
+.admin-listing-content {
     min-width: 0;
     flex: 1;
 }
 
-.admin-organisation-heading {
+.admin-listing-heading {
     display: flex;
 
     align-items: flex-start;
@@ -319,7 +357,7 @@
     gap: var(--spacing-md);
 }
 
-.admin-organisation-heading h2 {
+.admin-listing-heading h2 {
     margin: 4px 0 0;
 
     overflow-wrap: anywhere;
@@ -330,10 +368,9 @@
 }
 
 
-/* Status and submitted date */
+/* Status */
 
-.admin-organisation-status,
-.admin-organisation-date {
+.admin-listing-status {
     display: inline-flex;
 
     align-items: center;
@@ -341,44 +378,38 @@
 
     margin: 0;
 
+    color:
+        var(--color-primary-dark);
+
     font-size: 12px;
+    font-weight: 800;
     line-height: 1.2;
 }
 
-.admin-organisation-status svg,
-.admin-organisation-date svg {
+.admin-listing-status svg {
     display: block;
     flex-shrink: 0;
 }
 
-.admin-organisation-status {
-    color: var(--color-primary-dark);
-    font-weight: 800;
-}
 
-.admin-organisation-date {
-    flex-shrink: 0;
-    color: var(--color-muted);
-}
+/* Details */
 
-
-/* Organisation details */
-
-.admin-organisation-details {
+.admin-listing-details {
     display: grid;
     grid-template-columns:
         repeat(3, minmax(0, 1fr));
 
     gap: var(--spacing-md);
 
-    margin: var(--spacing-md) 0 0;
+    margin:
+        var(--spacing-md) 0 0;
 }
 
-.admin-organisation-details div {
+.admin-listing-details div {
     min-width: 0;
 }
 
-.admin-organisation-details dt {
+.admin-listing-details dt {
     display: flex;
 
     align-items: center;
@@ -392,12 +423,12 @@
     line-height: 1.25;
 }
 
-.admin-organisation-details dt svg {
+.admin-listing-details dt svg {
     display: block;
     flex-shrink: 0;
 }
 
-.admin-organisation-details dd {
+.admin-listing-details dd {
     margin: 0;
 
     overflow-wrap: anywhere;
@@ -409,16 +440,16 @@
 }
 
 
-/* Review action */
+/* View action */
 
-.admin-organisation-actions {
+.admin-listing-actions {
     display: flex;
     flex-shrink: 0;
+
     align-items: center;
-    gap: var(--spacing-sm);
 }
 
-.admin-organisation-action {
+.admin-listing-action {
     display: inline-flex;
     min-height: 40px;
 
@@ -430,7 +461,8 @@
     padding: 0 16px;
 
     border: 1px solid transparent;
-    border-radius: var(--radius-pill);
+    border-radius:
+        var(--radius-pill);
 
     font-size: 13px;
     font-weight: 800;
@@ -439,44 +471,42 @@
     cursor: pointer;
 }
 
-.admin-organisation-action svg {
+.admin-listing-action svg {
     display: block;
     flex-shrink: 0;
 }
 
-.admin-organisation-approve-button {
-    background: var(--color-primary-dark);
+.admin-listing-view-button {
+    background:
+        var(--color-primary-dark);
     color: white;
 }
 
-.admin-organisation-approve-button:hover {
-    background: var(--color-primary);
+.admin-listing-view-button:hover {
+    background:
+        var(--color-primary);
 }
 
-.admin-organisation-reject-button {
-    border-color: var(--color-error);
-    background: transparent;
-    color: var(--color-error);
+.admin-listing-view-button:focus-visible {
+    outline: 3px solid
+        rgba(47, 118, 85, 0.2);
+    outline-offset: 2px;
 }
 
-.admin-organisation-reject-button:hover {
-    background: rgba(217, 106, 106, 0.1);
-}
 
-.admin-organisation-action:disabled {
-    cursor: not-allowed;
-    opacity: 0.55;
-}
+/* Error */
 
-.admin-organisations-error{
+.admin-listings-error {
+    width: 100%;
+
     justify-content: center;
     text-align: center;
-    width: 100%
 }
 
-/* Empty state */
 
-.admin-organisations-empty {
+/* Empty/loading state */
+
+.admin-listings-empty {
     display: flex;
     min-height: 260px;
     width: 100%;
@@ -492,17 +522,18 @@
     text-align: center;
 }
 
-.admin-organisations-empty svg {
+.admin-listings-empty svg {
     display: block;
 }
 
-.admin-organisations-empty strong {
-    color: var(--color-primary-dark);
+.admin-listings-empty strong {
+    color:
+        var(--color-primary-dark);
     font-size: 16px;
     line-height: 1.25;
 }
 
-.admin-organisations-empty p {
+.admin-listings-empty p {
     max-width: 340px;
 
     margin: 0;
@@ -516,16 +547,17 @@
 /* Tablet */
 
 @media (max-width: 1150px) {
-    .admin-organisations-statistics {
+    .admin-listings-statistics {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
     }
 
-    .admin-organisations-controls {
+    .admin-listings-controls {
         grid-column: 1 / -1;
         grid-row: 1;
     }
-    .admin-organisations-list {
+
+    .admin-listings-list {
         max-height: none;
 
         padding-right: 0;
@@ -533,66 +565,54 @@
         overflow-y: visible;
         scrollbar-gutter: auto;
     }
-    .admin-organisation-card {
+
+    .admin-listing-card {
         align-items: stretch;
         flex-direction: column;
     }
 }
 
 
-/* Smaller tablets */
+/* Smaller tablet */
 
 @media (max-width: 800px) {
-    .admin-organisations-controls {
+    .admin-listings-controls {
         grid-template-columns: 1fr;
     }
 
-    .admin-organisation-card {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .admin-organisation-actions {
+    .admin-listing-actions {
         width: 100%;
     }
 
-    .admin-organisation-review-button {
+    .admin-listing-action {
         width: 100%;
     }
-    .admin-organisation-actions {
-        width: 100%;
-    }
-
-    .admin-organisation-action {
-        flex: 1;
-    }
-    
 }
 
 
 /* Mobile */
 
 @media (max-width: 640px) {
-    .admin-organisations-statistics {
+    .admin-listings-statistics {
         grid-template-columns: 1fr;
     }
 
-    .admin-organisations-controls {
+    .admin-listings-controls {
         grid-column: auto;
     }
 
-    .admin-organisation-details {
+    .admin-listing-details {
         grid-template-columns: 1fr;
         gap: var(--spacing-sm);
     }
 
-    .admin-organisation-heading {
+    .admin-listing-heading {
         align-items: flex-start;
         flex-direction: column;
         gap: var(--spacing-sm);
     }
 
-    .admin-organisation-card-main {
+    .admin-listing-card-main {
         align-items: flex-start;
         flex-direction: column;
     }

@@ -184,7 +184,7 @@ export default function AdminDashboard() {
                         )
                     )}
                 </AdminReviewSection>
-            </section>
+            </section>          
         </main>
     );
 }

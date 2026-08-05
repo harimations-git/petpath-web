@@ -1,8 +1,4 @@
-
-//Filters used for finding the oldest or newest pending organisation requests
-export type OrganisationSortOrder =
-    | "oldest"
-    | "newest";
+import type { SortOrder } from "../filters";
 
 //Options the admin has when reviewing a organisation account
 export type OrganisationReviewDecision =
@@ -32,14 +28,13 @@ export type PendingOrganisationsResponse = {
 
 //Get request type for the response sent to the backend lambda
 export type GetPendingOrganisationsOptions = {
-    sortOrder: OrganisationSortOrder;
+    sortOrder: SortOrder;
     nextToken?: string | null;
 };
 
-//Decision made by the admin, containing the account that was decided, 
-//the decision made and an optional reason for the admin logs table
+//Decision made by the admin, containing the account that was decided and
+//the decision that was made.
 export type ReviewOrganisationRequest = {
     organisationId: string;
     decision: OrganisationReviewDecision;
-    reason?: string;
 };
