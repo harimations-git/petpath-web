@@ -1,11 +1,9 @@
-export type PendingOrganisation = {
-    organisationId: string;
-    charityName: string;
-    charityId: string;
-    email: string;
-    submittedAt: string;
-};
+import type { PendingOrganisation } from "./adminOrganisation";
 
+/*
+ * Represents a pet listing that is
+ * waiting for admin review.
+ */
 export type PendingListing = {
     listingId: string;
     title: string;
@@ -17,12 +15,20 @@ export type PendingListing = {
     submittedAt: string;
 };
 
+/*
+ * Contains the main statistics displayed
+ * on the admin dashboard.
+ */
 export type AdminDashboardStatistics = {
     pendingOrganisationCount: number;
     pendingListingCount: number;
     oldestWaitingAt: string | null;
 };
 
+/*
+ * Represents all data returned for
+ * the admin dashboard.
+ */
 export type AdminDashboardData = {
     periodDays: number;
     periodStart: string;

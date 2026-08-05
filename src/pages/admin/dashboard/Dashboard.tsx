@@ -17,7 +17,8 @@ import "./Dashboard.css";
 import "../../organisation/dashboard/PageHeading.css";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 import CustomButton from "../../../components/ui/CustomButton";
-import { formatDashboardDate, formatDisplayValue, formatOldestWaiting } from "../../../utils/listings/displayFormatting";
+import { formatDate, formatDisplayValue, formatOldestWaiting } from "../../../utils/listings/displayFormatting";
+import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
 
 export default function AdminDashboard() {
 
@@ -65,10 +66,8 @@ export default function AdminDashboard() {
         statistics,
     } = dashboard;
 
-console.log(pendingListings);
-
     return (
-        <main className="page-body admin-dashboard">
+        <main className="page-body">
             <header className="page-header">
                 <div className="page-heading">
                     <h1>Admin Dashboard</h1>
@@ -77,6 +76,9 @@ console.log(pendingListings);
                         Review organisation applications and pet listings
                         awaiting approval.
                     </p>
+                </div>
+                <div className="page-account-menu">
+                    <AdminAccountMenu />
                 </div>
             </header>
 
@@ -116,7 +118,7 @@ console.log(pendingListings);
                     isEmpty={pendingOrganisations.length === 0}
                     emptyMessage="There are no organisation applications awaiting review."
                     viewAllRoute={routes.admin.organisations}
-                    viewAllLabel="View all organisations"
+                    viewAllLabel="View all pending organisations"
                 >
                     {pendingOrganisations.map(
                         (organisation) => (
@@ -134,7 +136,7 @@ console.log(pendingListings);
                                         value: organisation.email,
                                     },
                                 ]}
-                                submittedAt={formatDashboardDate(organisation.submittedAt)}
+                                submittedAt={formatDate(organisation.submittedAt)}
                             />
                         )
                     )}
@@ -148,7 +150,7 @@ console.log(pendingListings);
                     isEmpty={pendingListings.length === 0}
                     emptyMessage="There are no pet listings awaiting review."
                     viewAllRoute={routes.admin.listings}
-                    viewAllLabel="View all listings"
+                    viewAllLabel="View all pending listings"
                 >
                     {pendingListings.map(
                         (listing) => (
@@ -168,8 +170,7 @@ console.log(pendingListings);
                                             `${formatDisplayValue(listing.animalType)} · ${formatDisplayValue(listing.listingType)}`,
                                     },
                                     {
-                                        label:
-                                            "Documents",
+                                        label: "Documents",
 
                                         value:
                                             listing.documentCount ===
@@ -178,9 +179,7 @@ console.log(pendingListings);
                                                 : `${listing.documentCount} uploaded`,
                                     },
                                 ]}
-                                submittedAt={
-                                    formatDashboardDate(listing.submittedAt)
-                                }
+                                submittedAt={formatDate(listing.submittedAt)}
                             />
                         )
                     )}

@@ -1,0 +1,199 @@
+.admin-account-menu {
+    position: relative;
+    width: 100%;
+}
+
+.admin-account-trigger {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 20px;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 60px;
+
+    margin: 0;
+    padding: 8px 10px;
+
+    border: none;
+    border-radius: var(--radius-md);
+
+    background: transparent;
+    color: var(--color-text);
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        background-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.admin-account-trigger:hover {
+    background: var(--color-pale-green);
+    box-shadow: none;
+}
+
+.admin-account-trigger:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Admin avatar/icon */
+
+.admin-account-icon {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
+
+    font-size: 15px;
+    font-weight: 900;
+}
+
+/* Admin name and account type */
+
+.admin-account-details {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.admin-account-details strong {
+    display: block;
+    width: 100%;
+
+    overflow: hidden;
+
+    color: var(--color-primary-dark);
+
+    font-size: 16px;
+    font-weight: 800;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.admin-account-details span {
+    color: var(--color-muted);
+    font-size: 10px;
+}
+
+/* Chevron */
+
+.admin-account-chevron {
+    flex-shrink: 0;
+    color: var(--color-text);
+
+    transition: transform 160ms ease;
+}
+
+.admin-account-chevron-open {
+    transform: rotate(180deg);
+}
+
+/* Dropdown */
+
+.admin-account-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+
+    z-index: 200;
+
+    width: auto;
+    padding: 6px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+}
+
+.admin-account-dropdown button {
+    display: flex;
+    width: 100%;
+    min-height: 42px;
+
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+
+    margin: 0;
+    padding: 0 12px;
+
+    border: none;
+    border-radius: var(--radius-sm);
+
+    background: transparent;
+    color: var(--color-text);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.admin-account-dropdown button:hover {
+    background: var(--color-pale-green);
+}
+
+.admin-account-dropdown .admin-account-logout {
+    color: var(--color-error);
+}
+
+/* Optional loading state */
+
+.admin-account-loading {
+    display: flex;
+    min-height: 60px;
+
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 10px;
+}
+
+.admin-account-loading-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    background: var(--color-pale-green);
+}
+
+.admin-account-loading-name {
+    width: 100px;
+    height: 11px;
+
+    margin-bottom: 7px;
+
+    border-radius: var(--radius-pill);
+    background: var(--color-border);
+}
+
+.admin-account-loading-type {
+    width: 70px;
+    height: 8px;
+
+    border-radius: var(--radius-pill);
+    background: var(--color-border);
+}

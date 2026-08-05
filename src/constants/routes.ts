@@ -33,6 +33,10 @@ export const routes = {
         dashboard: "/admin/dashboard",
         organisations: "/admin/organisations",
         listings: "/admin/listings",
+        pending: {
+            organisations: "/admin/pending-organisations",
+            listings: "/admin/pending-listings"
+        }
     },
 
     listings: {

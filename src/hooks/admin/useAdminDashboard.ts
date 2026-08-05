@@ -5,7 +5,7 @@ import {
 } from "react";
 
 import { getAdminDashboard } from "../../services/admin/adminDashboardService";
-import type { AdminDashboardData } from "../../types/adminDashboard";
+import type { AdminDashboardData } from "../../types/admin/adminDashboard";
 
 export function useAdminDashboard() {
     const [dashboard, setDashboard] = useState<AdminDashboardData | null>(null);

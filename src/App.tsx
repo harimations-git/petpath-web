@@ -26,6 +26,7 @@ import AdminDashboard from "./pages/admin/dashboard/Dashboard";
 import RoleProtectedRoute from "./components/routing/RoleProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 import OrganisationProvidersRoute from "./components/routing/OrganisationProvidersRoute";
+import OrganisationReview from "./pages/admin/organisations/OrganisationReview";
 
 export default function App() {
     return (
@@ -158,10 +159,7 @@ export default function App() {
                             />
 
                             <Route
-                                path={
-                                    routes.legal
-                                        .shelterPrivacyPolicy
-                                }
+                                path={routes.legal.shelterPrivacyPolicy}
                                 element={
                                     <PrivacyPolicy
                                         layout="shelter"
@@ -187,14 +185,13 @@ export default function App() {
                             element={<AdminDashboard />}
                         />
 
-                        {/*
-                        Add these when the pages exist:
 
                         <Route
-                            path={routes.admin.organisations}
-                            element={<OrganisationReviews />}
+                            path={routes.admin.pending.organisations}
+                            element={<OrganisationReview />}
                         />
 
+                        {/* Unknown route fallback 
                         <Route
                             path={routes.admin.listings}
                             element={<ListingReviews />}

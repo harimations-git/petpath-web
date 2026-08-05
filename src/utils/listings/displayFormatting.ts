@@ -3,7 +3,7 @@
  * @param dateValue 
  * @returns 
  */
-export function formatDashboardDate(
+export function formatDate(
     dateValue: string
 ) {
     const date = new Date(dateValue);
@@ -37,7 +37,7 @@ export function formatOldestWaiting(
 
     const difference = Date.now() - submittedDate.getTime();
 
-    const days = Math.max(0, Math.floor(difference /(1000 * 60 * 60 * 24)));
+    const days = Math.max(0, Math.floor(difference / (1000 * 60 * 60 * 24)));
 
     if (days === 0) {
         return "Today";
@@ -64,4 +64,27 @@ export function formatDisplayValue(
         .replace(/\b\w/g, (letter) =>
             letter.toUpperCase()
         );
+}
+
+/*
+ * Creates initials from a given name to display 
+ */
+export function getInitials(name: string) {
+    const words = name
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+    if (words.length === 0) {
+        return "PP";
+    }
+
+    if (words.length === 1) {
+        return words[0]
+            .slice(0, 2)
+            .toUpperCase();
+    }
+
+    return `${words[0][0]}${words[1][0]}`
+        .toUpperCase();
 }
