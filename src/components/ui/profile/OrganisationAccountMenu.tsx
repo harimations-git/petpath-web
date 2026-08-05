@@ -12,15 +12,12 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { signOut } from "aws-amplify/auth";
-
 import { routes } from "../../../constants/routes";
-
-import {
-    useOrganisationProfile,
-} from "../../../context/OrganisationProfileContext";
+import { useOrganisationProfile } from "../../../context/OrganisationProfileContext";
+import { useOrganisationListings } from "../../../context/OrganisationListingsContext";
 
 import "./OrganisationAccountMenu.css";
-import { useOrganisationListings } from "../../../context/OrganisationListingsContext";
+import { getInitials } from "../../../utils/listings/displayFormatting";
 
 export default function OrganisationAccountMenu() {
     const navigate = useNavigate();
@@ -33,14 +30,10 @@ export default function OrganisationAccountMenu() {
 
     const { clearCachedListings, clearCachedReviewUpdates } = useOrganisationListings();
 
-    const menuRef =
-        useRef<HTMLDivElement | null>(null);
+    const menuRef = useRef<HTMLDivElement | null>(null);
 
-    const [isMenuOpen, setIsMenuOpen] =
-        useState(false);
-
-    const [imageFailed, setImageFailed] =
-        useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [imageFailed, setImageFailed] = useState(false);
 
     /*
      * Reset the image error state whenever the profile image URL changes.
@@ -80,30 +73,6 @@ export default function OrganisationAccountMenu() {
         };
     }, []);
 
-    /*
-     * Creates initials to display when the profile image
-     * is unavailable or fails to load.
-     */
-    function getInitials(name: string) {
-        const words = name
-            .trim()
-            .split(/\s+/)
-            .filter(Boolean);
-
-        if (words.length === 0) {
-            return "PP";
-        }
-
-        if (words.length === 1) {
-            return words[0]
-                .slice(0, 2)
-                .toUpperCase();
-        }
-
-        return `${words[0][0]}${words[1][0]}`
-            .toUpperCase();
-    }
-
     async function handleLogout() {
         try {
             await signOut();
@@ -116,11 +85,7 @@ export default function OrganisationAccountMenu() {
             navigate(routes.auth.login, {
                 replace: true,
             });
-        } catch (error) {
-            console.error(
-                "Unable to log out:",
-                error
-            );
+        } catch {
         }
     }
 
@@ -137,8 +102,7 @@ export default function OrganisationAccountMenu() {
         );
     }
 
-    const organisationName =
-        profile?.charityName || "Account details";
+    const organisationName = profile?.charityName || "Account details";
 
     const shouldShowImage =
         Boolean(profile?.profileImageUrl) &&
@@ -152,26 +116,18 @@ export default function OrganisationAccountMenu() {
             <button
                 type="button"
                 className="organisation-account-trigger"
-                onClick={() =>
-                    setIsMenuOpen(
-                        (current) => !current
-                    )
-                }
+                onClick={() => setIsMenuOpen((current) => !current)}
             >
                 <div className="organisation-account-avatar">
                     {shouldShowImage ? (
                         <img
                             src={profile?.profileImageUrl}
                             alt={`${organisationName} profile`}
-                            onError={() =>
-                                setImageFailed(true)
-                            }
+                            onError={() => setImageFailed(true)}
                         />
                     ) : (
                         <span>
-                            {getInitials(
-                                organisationName
-                            )}
+                            {getInitials(organisationName)}
                         </span>
                     )}
                 </div>

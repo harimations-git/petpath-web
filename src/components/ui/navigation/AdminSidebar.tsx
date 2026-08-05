@@ -2,6 +2,8 @@ import {
     Building2,
     ClipboardCheck,
     LayoutDashboard,
+    PawPrint,
+    WatchIcon,
 } from "lucide-react";
 
 import { routes } from "../../../constants/routes";
@@ -12,17 +14,28 @@ const adminSidebarItems: SidebarItem[] = [
     {
         label: "Dashboard",
         route: routes.admin.dashboard,
-        icon: <LayoutDashboard size={20}/>,
+        icon: <LayoutDashboard size={20} />,
     },
     {
         label: "Organisations",
         route: routes.admin.organisations,
-        icon: <Building2 size={20}/>,
+        icon: <Building2 size={20} />,
     },
     {
         label: "Listings",
         route: routes.admin.listings,
-        icon: <ClipboardCheck size={20}/>,
+        icon: <PawPrint size={20} />,
+        hasDivider: true
+    },
+    {
+        label: "Pending Organisations",
+        route: routes.admin.pending.organisations,
+        icon: <WatchIcon size={20} />,
+    },
+    {
+        label: "Pending Listings",
+        route: routes.admin.pending.listings,
+        icon: <ClipboardCheck size={20} />,
     },
 ];
 

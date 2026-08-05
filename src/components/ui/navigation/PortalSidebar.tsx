@@ -7,7 +7,7 @@ import { Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import Logo from "../decorative/Logo";
 import DecorativeLeaf from "../decorative/DecorativeLeaf";
-import "./ShelterSidebar.css";
+import "./PortalSidebar.css";
 
 export type SidebarItem = {
     label: string;
@@ -29,20 +29,9 @@ export default function PortalSidebar({
 }: PortalSidebarProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    function closeMenu() {
-        setIsMenuOpen(false);
-    }
-
     return (
         <aside
-            className={[
-                "shelter-sidebar",
-                isMenuOpen
-                    ? "shelter-sidebar-open"
-                    : "",
-            ]
-                .filter(Boolean)
-                .join(" ")}
+            className={["shelter-sidebar", isMenuOpen ? "shelter-sidebar-open" : ""].join(" ")}
         >
             <div className="shelter-sidebar-decoration">
                 <DecorativeLeaf
@@ -76,12 +65,7 @@ export default function PortalSidebar({
                 <button
                     type="button"
                     className="shelter-sidebar-menu-button"
-                    onClick={() =>
-                        setIsMenuOpen(
-                            (current) =>
-                                !current
-                        )
-                    }
+                    onClick={() => setIsMenuOpen((current) => !current)}
                 >
                     {isMenuOpen ? (
                         <X size={24} />
@@ -94,14 +78,19 @@ export default function PortalSidebar({
             <nav
                 className="shelter-sidebar-navigation"
             >
+                {/*Create one navlink for each sidebar item */}
                 {items.map((item) => (
                     <NavLink
                         key={item.route}
                         to={item.route}
-                        end={item.route === dashboardRoute}
-                        onClick={closeMenu}
-                        className={({isActive}) => ["shelter-sidebar-link",
 
+                        //The dashboard link should only be active when it's route is being viewed
+                        end={item.route === dashboardRoute}
+                        onClick={() => {setIsMenuOpen(false)}}
+
+                        // NavLink adds isActive automatically
+                        // based on the current browser route.
+                        className={({isActive}) => ["shelter-sidebar-link",
                                 isActive
                                     ? "shelter-sidebar-link-active"
                                     : "",
@@ -109,7 +98,7 @@ export default function PortalSidebar({
                                 item.hasDivider
                                     ? "shelter-sidebar-link-divider"
                                     : "",
-                            ].filter(Boolean).join(" ")
+                            ].join(" ")
                         }
                     >
                         <span className="shelter-sidebar-icon">

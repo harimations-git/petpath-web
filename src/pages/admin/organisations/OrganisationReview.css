@@ -1,0 +1,593 @@
+/* Summary row */
+
+.admin-organisations-statistics {
+    display: grid;
+    grid-template-columns:
+        minmax(360px, 2fr) minmax(180px, 1fr) minmax(210px, 1fr);
+
+    align-items: stretch;
+    gap: var(--spacing-md);
+}
+
+
+/* Search and sorting card */
+
+.admin-organisations-controls {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr) 150px;
+
+    width: 100%;
+
+    align-items: end;
+    gap: 12px;
+
+    min-height: 92px;
+    padding: var(--spacing-md);
+}
+
+.admin-organisations-search,
+.admin-organisations-sort {
+    min-width: 0;
+}
+
+.admin-organisations-search label,
+.admin-organisations-sort label {
+    display: block;
+
+    margin: 0 0 5px;
+
+    color: var(--color-text);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+
+/* Search input */
+
+.admin-organisations-search-input {
+    display: flex;
+    height: 40px;
+
+    align-items: center;
+    gap: 8px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-background);
+    color: var(--color-muted);
+
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background-color 160ms ease;
+}
+
+.admin-organisations-search-input:focus-within {
+    border-color: var(--color-primary);
+    background: var(--color-card);
+
+    box-shadow:
+        0 0 0 3px rgba(47, 118, 85, 0.12);
+}
+
+.admin-organisations-search-input svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.admin-organisations-search-input input {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+    border-radius: 0;
+    outline: 0;
+    box-shadow: none;
+
+    background: transparent;
+    color: var(--color-text);
+
+    font-size: 13px;
+    line-height: 1;
+}
+
+.admin-organisations-search-input input::placeholder {
+    color: var(--color-muted);
+    opacity: 0.8;
+}
+
+
+/* Sort select */
+
+.admin-organisations-sort select {
+    width: 100%;
+    height: 40px;
+    min-height: 0;
+
+    margin: 0;
+    padding: 0 10px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-background);
+    color: var(--color-text);
+
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.admin-organisations-sort select:focus {
+    border-color: var(--color-primary);
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(47, 118, 85, 0.12);
+}
+
+
+/* Statistic cards */
+
+.admin-organisations-statistic-card {
+    display: flex;
+    min-height: 92px;
+
+    align-items: center;
+    gap: 12px;
+
+    padding: var(--spacing-md);
+}
+
+.admin-organisations-statistic-icon,
+.admin-organisation-icon {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+
+    place-items: center;
+
+    border-radius: var(--radius-md);
+
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
+}
+
+.admin-organisations-statistic-icon svg,
+.admin-organisation-icon svg {
+    display: block;
+}
+
+.admin-organisations-statistic-text {
+    display: flex;
+    min-width: 0;
+
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+
+.admin-organisations-statistic-text strong {
+    display: block;
+
+    margin: 0;
+
+    color: var(--color-primary-dark);
+    font-size: 19px;
+    font-weight: 900;
+    line-height: 1.15;
+}
+
+.admin-organisations-statistic-text span {
+    display: block;
+
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+
+/* Results */
+
+.admin-organisations-results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.admin-organisations-results-header h2 {
+    margin: 0 0 2px;
+
+    color: var(--color-primary-dark);
+    font-size: 20px;
+    line-height: 1.25;
+}
+
+.admin-organisations-results-header p {
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.admin-organisations-list {
+    display: flex;
+    max-height: clamp(320px, 60dvh, 700px);
+
+    flex-direction: column;
+    gap: var(--spacing-md);
+
+    padding-right: var(--spacing-xs);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.admin-organisations-list:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+}
+
+.admin-organisations-load-more {
+    display: flex;
+    justify-content: center;
+
+    padding-top: var(--spacing-sm);
+}
+
+.admin-organisations-load-more button {
+    width: auto;
+    min-height: 40px;
+
+    margin: 0;
+    padding: 0 18px;
+
+    border: 1px solid var(--color-primary-dark);
+    border-radius: var(--radius-pill);
+
+    background: var(--color-card);
+    color: var(--color-primary-dark);
+
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.admin-organisations-load-more button:hover {
+    background: var(--color-pale-green);
+}
+
+.admin-organisations-load-more button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+
+/* Organisation card */
+
+.admin-organisation-card {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+
+    padding: var(--spacing-lg);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+}
+
+.admin-organisation-card-main {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+
+    align-items: flex-start;
+    gap: var(--spacing-md);
+}
+
+.admin-organisation-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.admin-organisation-heading {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+}
+
+.admin-organisation-heading h2 {
+    margin: 4px 0 0;
+
+    overflow-wrap: anywhere;
+
+    color: var(--color-text);
+    font-size: 18px;
+    line-height: 1.25;
+}
+
+
+/* Status and submitted date */
+
+.admin-organisation-status,
+.admin-organisation-date {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 5px;
+
+    margin: 0;
+
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.admin-organisation-status svg,
+.admin-organisation-date svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.admin-organisation-status {
+    color: var(--color-primary-dark);
+    font-weight: 800;
+}
+
+.admin-organisation-date {
+    flex-shrink: 0;
+    color: var(--color-muted);
+}
+
+
+/* Organisation details */
+
+.admin-organisation-details {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: var(--spacing-md);
+
+    margin: var(--spacing-md) 0 0;
+}
+
+.admin-organisation-details div {
+    min-width: 0;
+}
+
+.admin-organisation-details dt {
+    display: flex;
+
+    align-items: center;
+    gap: 5px;
+
+    margin: 0 0 3px;
+
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.admin-organisation-details dt svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.admin-organisation-details dd {
+    margin: 0;
+
+    overflow-wrap: anywhere;
+
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+
+/* Review action */
+
+.admin-organisation-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.admin-organisation-action {
+    display: inline-flex;
+    min-height: 40px;
+
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    margin: 0;
+    padding: 0 16px;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.admin-organisation-action svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.admin-organisation-approve-button {
+    background: var(--color-primary-dark);
+    color: white;
+}
+
+.admin-organisation-approve-button:hover {
+    background: var(--color-primary);
+}
+
+.admin-organisation-reject-button {
+    border-color: var(--color-error);
+    background: transparent;
+    color: var(--color-error);
+}
+
+.admin-organisation-reject-button:hover {
+    background: rgba(217, 106, 106, 0.1);
+}
+
+.admin-organisation-action:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+/* Empty state */
+
+.admin-organisations-empty {
+    display: flex;
+    min-height: 260px;
+    width: 100%;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+
+    padding: var(--spacing-xl);
+
+    color: var(--color-muted);
+    text-align: center;
+}
+
+.admin-organisations-empty svg {
+    display: block;
+}
+
+.admin-organisations-empty strong {
+    color: var(--color-primary-dark);
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.admin-organisations-empty p {
+    max-width: 340px;
+
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* Tablet */
+
+@media (max-width: 1150px) {
+    .admin-organisations-statistics {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-organisations-controls {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+    .admin-organisations-list {
+        max-height: none;
+
+        padding-right: 0;
+
+        overflow-y: visible;
+        scrollbar-gutter: auto;
+    }
+    .admin-organisation-card {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
+
+/* Smaller tablets */
+
+@media (max-width: 800px) {
+    .admin-organisations-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-organisation-card {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-organisation-actions {
+        width: 100%;
+    }
+
+    .admin-organisation-review-button {
+        width: 100%;
+    }
+    .admin-organisation-actions {
+        width: 100%;
+    }
+
+    .admin-organisation-action {
+        flex: 1;
+    }
+    
+}
+
+
+/* Mobile */
+
+@media (max-width: 640px) {
+    .admin-organisations-statistics {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-organisations-controls {
+        grid-column: auto;
+    }
+
+    .admin-organisation-details {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+
+    .admin-organisation-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .admin-organisation-card-main {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

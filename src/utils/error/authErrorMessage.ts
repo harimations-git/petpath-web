@@ -1,7 +1,16 @@
+export type ErrorResponse = {
+  message?: string;
+};
+
 function getErrorName(error: unknown) {
   return error instanceof Error ? error.name : "";
 }
 
+/**
+ * Helper function used to turn complex aws errors into a readable user friendly format during signup
+ * @param error 
+ * @returns 
+ */
 export function getSignUpErrorMessage(error: unknown) {
   const errorName = getErrorName(error);
 
@@ -23,5 +32,24 @@ export function getSignUpErrorMessage(error: unknown) {
 
     default:
       return "We couldn't create your account. Please try again.";
+  }
+}
+
+/**
+ * Helper function gets and returns an error message with a fallback if there is an error
+ * @param response 
+ * @param fallbackMessage 
+ * @returns 
+ */
+export async function getErrorMessage(
+  response: Response,
+  fallbackMessage: string
+) {
+  try {
+    const data = await response.json() as ErrorResponse;
+
+    return data.message || fallbackMessage;
+  } catch {
+    return fallbackMessage;
   }
 }
