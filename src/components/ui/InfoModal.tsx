@@ -1,4 +1,4 @@
-import { useEffect, type CSSProperties } from "react";
+import { useEffect, type CSSProperties, type ReactNode } from "react";
 import { Info, type LucideIcon } from "lucide-react";
 import "./InfoModal.css";
 
@@ -14,6 +14,12 @@ type InfoModalProps = {
   onClose?: () => void;
   primaryButtonStyle?: CSSProperties;
   closeOnBackdrop?: boolean;
+  closeOnEscape?: boolean;
+
+  confirmDisabled?: boolean;
+  isLoading?: boolean;
+
+  children?: ReactNode;
 };
 
 export default function InfoModal({
@@ -28,24 +34,35 @@ export default function InfoModal({
   onClose,
   primaryButtonStyle,
   closeOnBackdrop = true,
+  closeOnEscape = true,
+
+  confirmDisabled = false,
+  isLoading = false,
+
+  children,
 }: InfoModalProps) {
+
+  const canClose = !isLoading;
+
   useEffect(() => {
     if (!visible) return;
 
     function handleEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && closeOnEscape && canClose) {
         onClose?.();
       }
     }
 
     document.addEventListener("keydown", handleEscape);
+
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
     };
-  }, [visible, onClose]);
+  }, [visible, closeOnEscape, canClose, onClose]);
 
   if (!visible) return null;
 
@@ -54,7 +71,7 @@ export default function InfoModal({
       className="info-modal-backdrop"
       role="presentation"
       onClick={() => {
-        if (closeOnBackdrop) onClose?.();
+        if (closeOnBackdrop && canClose) onClose?.();
       }}
     >
       <section
@@ -74,12 +91,19 @@ export default function InfoModal({
 
         {warning && <p className="info-modal-warning">{warning}</p>}
 
+        {children && (
+          <div className="info-modal-content">
+            {children}
+          </div>
+        )}
+
         <div className="info-modal-button-row">
           {buttonTextSecondary && (
             <button
               type="button"
               className="info-modal-button info-modal-secondary-button"
               onClick={onClose}
+              disabled={isLoading}
             >
               {buttonTextSecondary}
             </button>
@@ -89,6 +113,7 @@ export default function InfoModal({
             type="button"
             className="info-modal-button info-modal-primary-button"
             style={primaryButtonStyle}
+            disabled={confirmDisabled || isLoading}
             onClick={onConfirm}
           >
             {buttonText}

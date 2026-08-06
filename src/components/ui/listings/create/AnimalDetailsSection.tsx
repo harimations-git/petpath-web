@@ -53,12 +53,8 @@ export default function AnimalDetailsSection({
                             key={animal.id}
                             animal={animal}
                             index={index}
-                            listingType={
-                                listingType
-                            }
-                            onChange={
-                                onAnimalChange
-                            }
+                            listingType={listingType}
+                            onChange={onAnimalChange}
                         />
                     )
                 )}

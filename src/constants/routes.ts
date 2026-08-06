@@ -17,6 +17,12 @@ export const routes = {
         profileSetup: "/profile/setup",
     },
 
+    listings: {
+        view: "/listings/view/:listingId",
+        viewListing: (listingId: string) =>
+            `/listings/view/${listingId}`,
+    },
+
     help: {
         support: "/support",
     },
@@ -31,19 +37,20 @@ export const routes = {
 
     admin: {
         dashboard: "/admin/dashboard",
-        organisations: "/admin/organisations",
-        listings: "/admin/listings",
-        pending: {
-            organisations: "/admin/pending-organisations",
-            listings: "/admin/pending-listings",
-            listingReview: (listingId: string) =>
-                `/admin/listings/${encodeURIComponent(listingId)}`,
-        }
-    },
+        organisations: {
+            allOrganisations: "/admin/allOrganisations",
+            pendingOrganisations: "/admin/pending-organisations",
+            organisationReviewPath: "/admin/organisation/:organisationId",
+            organisationReview: (organisationId: string) =>
+                `/admin/organisation/${encodeURIComponent(organisationId)}`,
+        },
 
-    listings: {
-        view: "/listings/view/:listingId",
-        viewListing: (listingId: string) =>
-            `/listings/view/${listingId}`,
+        listings: {
+            allListings: "/admin/listings",
+            pendingListings: "/admin/pending-listings",
+            listingReviewPath: "/admin/listing/:listingId",
+            listingReview: (listingId: string) =>
+                `/admin/listing/${encodeURIComponent(listingId)}`,
+        }
     },
 } as const;

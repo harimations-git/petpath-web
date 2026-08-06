@@ -5,13 +5,10 @@ import {
     useState,
 } from "react";
 
-import type { 
-    OrganisationReviewDecision,  
-    PendingOrganisation 
-} from "../../types/admin/adminOrganisation";
-
+import type { PendingOrganisation } from "../../types/admin/adminOrganisation";
 import { getPendingOrganisations, reviewOrganisation } from "../../services/admin/adminOrganisationService";
 import type { SortOrder } from "../../types/filters";
+import type { AdminReviewDecision } from "../../types/admin/adminManagement";
 
 /*
  * Custom hook responsible for getting the pending organisation's page
@@ -61,6 +58,10 @@ export function usePendingOrganisations() {
                 setIsLoading(false);
             }
         }, [sortOrder]);
+
+    useEffect(() => {
+        document.title = "Pending Organisations | PetPath";
+    }, []);
 
     /*
     * Load the first page when the
@@ -147,7 +148,7 @@ export function usePendingOrganisations() {
         useCallback(
             async (
                 organisationId: string,
-                decision: OrganisationReviewDecision,
+                decision: AdminReviewDecision,
             ) => {
                 //stop another review request from starting while one is already running
                 if (updatingOrganisationId) {
@@ -261,7 +262,7 @@ export function usePendingOrganisations() {
 
         //helper function that submits the rejected decision with an optional reason
         rejectOrganisation:
-            (organisationId: string) => 
+            (organisationId: string) =>
                 submitReview(organisationId, "rejected",),
     };
 }

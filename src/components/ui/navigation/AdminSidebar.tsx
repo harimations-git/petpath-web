@@ -18,23 +18,23 @@ const adminSidebarItems: SidebarItem[] = [
     },
     {
         label: "Organisations",
-        route: routes.admin.organisations,
+        route: routes.admin.organisations.allOrganisations,
         icon: <Building2 size={20} />,
     },
     {
         label: "Listings",
-        route: routes.admin.listings,
+        route: routes.admin.listings.allListings,
         icon: <PawPrint size={20} />,
         hasDivider: true
     },
     {
         label: "Pending Organisations",
-        route: routes.admin.pending.organisations,
+        route: routes.admin.organisations.pendingOrganisations,
         icon: <WatchIcon size={20} />,
     },
     {
         label: "Pending Listings",
-        route: routes.admin.pending.listings,
+        route: routes.admin.listings.pendingListings,
         icon: <ClipboardCheck size={20} />,
     },
 ];

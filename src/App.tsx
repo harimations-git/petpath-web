@@ -26,8 +26,11 @@ import AdminDashboard from "./pages/admin/dashboard/Dashboard";
 import RoleProtectedRoute from "./components/routing/RoleProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 import OrganisationProvidersRoute from "./components/routing/OrganisationProvidersRoute";
-import OrganisationReview from "./pages/admin/organisations/OrganisationReview";
-import ListingReview from "./pages/admin/listings/ListingReview";
+import PendingListings from "./pages/admin/listings/PendingListings";
+import ListingReview from "./pages/admin/listings/ViewListing";
+import ApprovedListings from "./pages/admin/listings/ApprovedListings";
+import PendingOrganisationReview from "./pages/admin/organisations/PendingOrganisationReview";
+import ApprovedOrganisations from "./pages/admin/organisations/ApprovedOrganisations";
 
 export default function App() {
     return (
@@ -186,23 +189,30 @@ export default function App() {
                             element={<AdminDashboard />}
                         />
 
-
                         <Route
-                            path={routes.admin.pending.organisations}
-                            element={<OrganisationReview />}
+                            path={routes.admin.organisations.allOrganisations}
+                            element={<ApprovedOrganisations />}
+                        />
+                        
+                        <Route
+                            path={routes.admin.organisations.pendingOrganisations}
+                            element={<PendingOrganisationReview />}
                         />
 
                         <Route
-                            path={routes.admin.pending.listings}
+                            path={routes.admin.listings.allListings}
+                            element={<ApprovedListings />}
+                        />
+
+                        <Route
+                            path={routes.admin.listings.pendingListings}
+                            element={<PendingListings />}
+                        />
+
+                        <Route
+                            path={routes.admin.listings.listingReviewPath}
                             element={<ListingReview />}
                         />
-
-                        {/** 
-                        <Route
-                            path="listings/:listingId"
-                            element={<ListingReview />}
-                        />
-                        */}
                     </Route>
                 </Route>
             </Route>

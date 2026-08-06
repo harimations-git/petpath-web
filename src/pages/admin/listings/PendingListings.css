@@ -3,12 +3,85 @@
 .admin-listings-statistics {
     display: grid;
     grid-template-columns:
-        minmax(360px, 2fr)
-        minmax(180px, 1fr)
-        minmax(210px, 1fr);
+        minmax(360px, 2fr) minmax(180px, 1fr) minmax(210px, 1fr);
+
 
     align-items: stretch;
     gap: var(--spacing-md);
+}
+
+/* Approved listings overview */
+
+.approved-listings-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* Three statistic cards */
+
+.approved-listings-statistics {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    width: 100%;
+    min-width: 0;
+
+    gap: 16px;
+}
+
+.approved-listings-statistics .admin-listings-statistic-card {
+    width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* Full-width controls underneath */
+
+.approved-listings-controls {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr) minmax(190px, 240px);
+
+    width: 100%;
+    min-width: 0;
+
+    align-items: end;
+    gap: 18px;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+}
+
+.approved-listings-controls .admin-listings-search {
+    width: 100%;
+    min-width: 0;
+}
+
+.approved-listings-controls .admin-listings-search-input {
+    width: 100%;
+    min-width: 0;
+}
+
+.approved-listings-controls .admin-listings-search-input input {
+    width: 100%;
+    min-width: 0;
+}
+
+.approved-listings-controls .admin-listings-sort {
+    width: 100%;
+}
+
+.approved-listings-controls .admin-listings-sort select {
+    width: 100%;
 }
 
 
@@ -57,8 +130,7 @@
 
     padding: 0 12px;
 
-    border: 1px solid
-        var(--color-border);
+    border: 1px solid var(--color-border);
     border-radius:
         var(--radius-sm);
 
@@ -81,8 +153,7 @@
         var(--color-card);
 
     box-shadow:
-        0 0 0 3px
-        rgba(47, 118, 85, 0.12);
+        0 0 0 3px rgba(47, 118, 85, 0.12);
 }
 
 .admin-listings-search-input svg {
@@ -126,15 +197,11 @@
     margin: 0;
     padding: 0 10px;
 
-    border: 1px solid
-        var(--color-border);
-    border-radius:
-        var(--radius-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
 
-    background:
-        var(--color-background);
-    color:
-        var(--color-text);
+    background: var(--color-background);
+    color: var(--color-text);
 
     font-size: 13px;
     cursor: pointer;
@@ -147,8 +214,7 @@
     outline: none;
 
     box-shadow:
-        0 0 0 3px
-        rgba(47, 118, 85, 0.12);
+        0 0 0 3px rgba(47, 118, 85, 0.12);
 }
 
 
@@ -157,6 +223,7 @@
 .admin-listings-statistic-card {
     display: flex;
     min-height: 92px;
+    width: 100%;
 
     align-items: center;
     gap: 12px;
@@ -173,13 +240,10 @@
 
     place-items: center;
 
-    border-radius:
-        var(--radius-md);
+    border-radius: var(--radius-md);
 
-    background:
-        var(--color-pale-green);
-    color:
-        var(--color-primary-dark);
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
 }
 
 .admin-listings-statistic-icon svg,
@@ -226,6 +290,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+    width: 100%;
 }
 
 .admin-listings-results-header h2 {
@@ -247,14 +312,12 @@
 
 .admin-listings-list {
     display: flex;
-    max-height:
-        clamp(320px, 60dvh, 700px);
+    max-height: clamp(270px, 45dvh, 700px);
 
     flex-direction: column;
     gap: var(--spacing-md);
 
-    padding-right:
-        var(--spacing-xs);
+    padding-right: var(--spacing-xs);
 
     overflow-x: hidden;
     overflow-y: auto;
@@ -264,8 +327,7 @@
 }
 
 .admin-listings-list:focus-visible {
-    outline: 2px solid
-        var(--color-primary);
+    outline: 2px solid var(--color-primary);
     outline-offset: 4px;
 }
 
@@ -287,8 +349,7 @@
     margin: 0;
     padding: 0 18px;
 
-    border: 1px solid
-        var(--color-primary-dark);
+    border: 1px solid var(--color-primary-dark);
     border-radius:
         var(--radius-pill);
 
@@ -317,6 +378,7 @@
 
 .admin-listing-card {
     display: flex;
+    width: 100%;
 
     align-items: center;
     justify-content: space-between;
@@ -324,15 +386,11 @@
 
     padding: var(--spacing-lg);
 
-    border: 1px solid
-        var(--color-border);
-    border-radius:
-        var(--radius-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
 
-    background:
-        var(--color-card);
-    box-shadow:
-        var(--shadow-card);
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
 }
 
 .admin-listing-card-main {
@@ -367,6 +425,20 @@
     line-height: 1.25;
 }
 
+.admin-listing-card-status-available {
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
+}
+
+.admin-listing-card-status-reserved {
+    background: #fff3cd;
+    color: #775d00;
+}
+
+.admin-listing-card-status-rehomed {
+    background: var(--color-background);
+    color: var(--color-muted);
+}
 
 /* Status */
 
@@ -391,6 +463,39 @@
     flex-shrink: 0;
 }
 
+.admin-listing-availability-status {
+    display: inline-flex;
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 28px;
+
+    padding: 0 11px;
+
+    border-radius: var(--radius-pill);
+
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.admin-listing-card-status-available {
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
+}
+
+.admin-listing-card-status-reserved {
+    background: #fff3cd;
+    color: #775d00;
+}
+
+.admin-listing-card-status-rehomed {
+    background: var(--color-background);
+    color: var(--color-muted);
+}
 
 /* Details */
 
@@ -488,9 +593,19 @@
 }
 
 .admin-listing-view-button:focus-visible {
-    outline: 3px solid
-        rgba(47, 118, 85, 0.2);
+    outline: 3px solid rgba(47, 118, 85, 0.2);
     outline-offset: 2px;
+}
+
+.admin-listing-review-delete {
+    border-color: var(--color-error);
+
+    background: var(--color-error);
+    color: white;
+}
+
+.admin-listing-review-delete:hover {
+    background: #bd5656;
 }
 
 
@@ -572,6 +687,22 @@
     }
 }
 
+@media (max-width: 900px) {
+    .approved-listings-statistics {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 12px;
+    }
+
+    .approved-listings-controls {
+        grid-template-columns:
+            minmax(0, 1fr) 200px;
+
+        padding: 16px;
+    }
+}
+
 
 /* Smaller tablet */
 
@@ -615,5 +746,14 @@
     .admin-listing-card-main {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .approved-listings-statistics {
+        grid-template-columns: 1fr;
+    }
+
+    .approved-listings-controls {
+        grid-template-columns: 1fr;
+        gap: 14px;
     }
 }

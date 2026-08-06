@@ -46,6 +46,10 @@ export function useAdminDashboard() {
         );
 
     useEffect(() => {
+        document.title = "Admin Dashboard | PetPath";
+    }, []);
+
+    useEffect(() => {
         void loadDashboard();
     }, [loadDashboard]);
 

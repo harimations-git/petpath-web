@@ -1,4 +1,5 @@
-import type { PendingOrganisationsResponse, ReviewOrganisationRequest } from "../../types/admin/adminOrganisation";
+import type { GetListingsQueryParams } from "../../types/admin/adminManagement";
+import type { ApprovedOrganisationsResponse, PendingOrganisationsResponse, ReviewOrganisationRequest } from "../../types/admin/adminOrganisation";
 import type { SortOrder } from "../../types/filters";
 import { getErrorMessage } from "../../utils/error/authErrorMessage";
 import { getAdminIdToken } from "../../utils/user/userUtils";
@@ -46,6 +47,52 @@ export async function getPendingOrganisations(
     return await response.json() as PendingOrganisationsResponse;
 }
 
+
+/**
+ * GET request that returns all organisations that have been approved
+ * @param param0 
+ */
+export async function getApprovedOrganisations({
+    sortOrder,
+    nextToken,
+}: GetListingsQueryParams): Promise<ApprovedOrganisationsResponse> {
+
+    const idToken = await getAdminIdToken();
+
+    const searchParams = new URLSearchParams({sortOrder});
+
+    if (nextToken) {
+        searchParams.set("nextToken", nextToken);
+    }
+
+    const response = await fetch(
+        `${API_BASE_URL}/admin/organisations/approved?${searchParams.toString()}`,
+        {
+            headers: {
+                Authorization: `Bearer ${idToken}`,
+            },
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.message ||
+            "Unable to load approved organisations."
+        );
+    }
+
+    return {
+        organisations:
+            Array.isArray(data.organisations)
+                ? data.organisations
+                : [],
+
+        nextToken: data.nextToken ?? null,
+    };
+}
+
 /**
  * Function used by the PetPath Admin when a decision has been made on
  * an organisation's account, approve or reject with an optional reason
@@ -57,21 +104,21 @@ export async function reviewOrganisation({
 }: ReviewOrganisationRequest) {
     const idToken = await getAdminIdToken();
 
-    const response =await fetch(
+    const response = await fetch(
         `${API_BASE_URL}/admin/organisations/${encodeURIComponent(organisationId)}/review`,
-            {
-                method: "PATCH",
+        {
+            method: "PATCH",
 
-                headers: {
-                    Authorization: `Bearer ${idToken}`,
-                    "Content-Type": "application/json",
-                },
+            headers: {
+                Authorization: `Bearer ${idToken}`,
+                "Content-Type": "application/json",
+            },
 
-                body: JSON.stringify({
-                    decision,
-                }),
-            }
-        );
+            body: JSON.stringify({
+                decision,
+            }),
+        }
+    );
 
     if (!response.ok) {
         throw new Error(

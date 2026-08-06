@@ -1,30 +1,19 @@
-import {
-    Building2,
-    Check,
-    Clock3,
-    Mail,
-    ShieldCheck,
-    X,
-} from "lucide-react";
-
+import { Building2, Clock3, Eye, Mail, ShieldCheck } from "lucide-react";
 import { formatDate } from "../../../../utils/listings/displayFormatting";
-import type { PendingOrganisation } from "../../../../types/admin/adminOrganisation";
+import type { ApprovedOrganisation } from "../../../../types/admin/adminOrganisation";
 
-type AdminOrganisationCardProps = {
-    organisation: PendingOrganisation;
+type ApprovedOrganisationCardProps = {
+    organisation: ApprovedOrganisation;
 
-    isUpdating?: boolean;
-
-    onApprove: (organisation: PendingOrganisation) => void;
-    onReject: (organisation: PendingOrganisation) => void;
+    onView: (organisation: ApprovedOrganisation) => void;
 };
 
-export default function AdminOrganisationCard({
+export default function ApprovedOrganisationCard({
     organisation,
-    isUpdating = false,
-    onApprove,
-    onReject,
-}: AdminOrganisationCardProps) {
+    onView,
+}: ApprovedOrganisationCardProps) {
+    const approvedAt = organisation.reviewedAt ?? organisation.updatedAt;
+
     return (
         <article className="admin-organisation-card">
             <div className="admin-organisation-card-main">
@@ -36,19 +25,15 @@ export default function AdminOrganisationCard({
                     <div className="admin-organisation-heading">
                         <div>
                             <span className="admin-organisation-status">
-                                <ShieldCheck size={14} />
+                                <ShieldCheck size={14}/>
 
-                                Pending review
+                                Approved organisation
                             </span>
 
                             <h2>
                                 {organisation.charityName}
                             </h2>
                         </div>
-
-                        <span className="admin-organisation-date">
-
-                        </span>
                     </div>
 
                     <dl className="admin-organisation-details">
@@ -72,14 +57,17 @@ export default function AdminOrganisationCard({
                                 {organisation.email}
                             </dd>
                         </div>
+
                         <div>
                             <dt>
-                                <Clock3 size={15} />
-                                Submitted
-
+                                <Clock3
+                                    size={15}
+                                />
+                                Approved
                             </dt>
+
                             <dd>
-                                {formatDate(organisation.submittedAt)}
+                                {approvedAt ? formatDate(approvedAt) : "Not provided"}
                             </dd>
                         </div>
                     </dl>
@@ -89,26 +77,12 @@ export default function AdminOrganisationCard({
             <div className="admin-organisation-actions">
                 <button
                     type="button"
-                    className="admin-organisation-action admin-organisation-reject-button"
-                    disabled={isUpdating}
-                    onClick={() =>
-                        onReject(organisation)
-                    }
+                    className="admin-organisation-action admin-organisation-view-button"
+                    onClick={() => onView(organisation)}
                 >
-                    <X size={17} />
+                    <Eye size={17} />
 
-                    {isUpdating ? "Updating..." : "Reject"}
-                </button>
-
-                <button
-                    type="button"
-                    className="admin-organisation-action admin-organisation-approve-button"
-                    disabled={isUpdating}
-                    onClick={() => onApprove(organisation)}
-                >
-                    <Check size={17} />
-
-                    {isUpdating ? "Updating..." : "Approve"}
+                    View details
                 </button>
             </div>
         </article>

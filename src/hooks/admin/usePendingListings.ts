@@ -52,6 +52,10 @@ export function usePendingListings() {
             }
         }, [sortOrder]);
 
+    useEffect(() => {
+        document.title = "Pending Listings | PetPath";
+    }, []);
+
     /**
      * Loads the first page when the hook mounts
      * and whenever the sort order changes.

@@ -1,34 +1,24 @@
 import {
-    ClipboardCheck,
-    Clock3,
     Search,
     ShieldCheck,
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
-
 import Card from "../../../components/ui/Card";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
-
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
-import PendingListingCard from "../../../components/ui/admin/listings/PendingListingCard";
-
-import { usePendingListings } from "../../../hooks/admin/usePendingListings";
-import { formatDate } from "../../../utils/listings/displayFormatting";
+import { useApprovedListings } from "../../../hooks/admin/useApprovedListings";
 import { routes } from "../../../constants/routes";
-import type { PendingListing } from "../../../types/admin/adminListing";
 
-import "./ListingReview.css";
+import "./PendingListings.css";
+import type { ApprovedListing } from "../../../types/admin/adminListing";
+import ApprovedListingCard from "../../../components/ui/admin/listings/details/pet_card/ApprovedListingCards";
 
-export default function ListingReview() {
-    const navigate =
-        useNavigate();
+export default function ApprovedListings() {
+    const navigate = useNavigate();
 
     const {
         displayedListings,
-
-        pendingCount,
-        oldestSubmittedAt,
 
         searchQuery,
         setSearchQuery,
@@ -44,10 +34,14 @@ export default function ListingReview() {
 
         loadMore,
         retry,
-    } = usePendingListings();
+    } = useApprovedListings();
 
-    function handleViewListing(listing: PendingListing) {
-        navigate(routes.admin.pending.listingReview(listing.listingId));
+    function handleViewListing(
+        listing: ApprovedListing
+    ) {
+        navigate(
+            routes.admin.listings.listingReview(listing.listingId)
+        );
     }
 
     return (
@@ -55,13 +49,14 @@ export default function ListingReview() {
             <header className="page-header">
                 <div className="page-heading">
                     <h1>
-                        Pending Pet Listings
+                        Approved Pet Listings
                     </h1>
 
                     <p>
-                        Review submitted pet listings
-                        before they become visible to
-                        PetPath users.
+                        View all approved pet
+                        listings, including
+                        available, reserved and
+                        rehomed listings.
                     </p>
                 </div>
 
@@ -70,10 +65,10 @@ export default function ListingReview() {
                 </div>
             </header>
 
-            <section className="admin-listings-statistics">
-                <Card className="admin-listings-controls">
+            <div className="approved-listings-overview">
+                <Card className="approved-listings-controls">
                     <div className="admin-listings-search">
-                        <label htmlFor="listing-search">
+                        <label htmlFor="approved-listing-search">
                             Search listings
                         </label>
 
@@ -81,84 +76,62 @@ export default function ListingReview() {
                             <Search size={18} />
 
                             <input
-                                id="listing-search"
+                                id="approved-listing-search"
                                 type="search"
                                 value={searchQuery}
                                 placeholder="Search loaded listings"
-                                onChange={(event) => setSearchQuery(event.target.value)}
+                                onChange={(event) =>
+                                    setSearchQuery(
+                                        event.target.value
+                                    )
+                                }
                             />
                         </div>
                     </div>
 
                     <div className="admin-listings-sort">
-                        <label htmlFor="listing-sort">
+                        <label htmlFor="approved-listing-sort">
                             Sort listings
                         </label>
 
                         <select
-                            id="listing-sort"
+                            id="approved-listing-sort"
                             value={sortOrder}
                             onChange={(event) =>
-                                 setSortOrder(event.target.value === "newest" ? "newest" : "oldest")
+                                setSortOrder(
+                                    event.target.value ===
+                                        "oldest"
+                                        ? "oldest"
+                                        : "newest"
+                                )
                             }
                         >
-                            <option value="oldest">
-                                Oldest first
-                            </option>
-
                             <option value="newest">
                                 Newest first
+                            </option>
+
+                            <option value="oldest">
+                                Oldest first
                             </option>
                         </select>
                     </div>
                 </Card>
-
-                <Card className="admin-listings-statistic-card">
-                    <div className="admin-listings-statistic-icon">
-                        <ClipboardCheck
-                            size={22}
-                        />
-                    </div>
-
-                    <div className="admin-listings-statistic-text">
-                        <span>
-                            Awaiting review
-                        </span>
-
-                        <strong>
-                            {pendingCount}
-                        </strong>
-                    </div>
-                </Card>
-
-                <Card className="admin-listings-statistic-card">
-                    <div className="admin-listings-statistic-icon">
-                        <Clock3 size={22} />
-                    </div>
-
-                    <div className="admin-listings-statistic-text">
-                        <span>
-                            Oldest submission
-                        </span>
-
-                        <strong>
-                            {oldestSubmittedAt ? formatDate(oldestSubmittedAt) : "None"}
-                        </strong>
-                    </div>
-                </Card>
-            </section>
+            </div>
 
             <section className="admin-listings-results">
                 <div className="admin-listings-results-header">
                     <div>
                         <h2>
-                            Pending listings
+                            Approved listings
                         </h2>
 
                         <p>
-                            {displayedListings.length}{" "}
-                            {displayedListings.length === 1 ? "listing" : "listings"}{" "}
-                            awaiting review
+                            {displayedListings.length}
+                            {" "}
+                            {displayedListings.length === 1
+                                ? "listing"
+                                : "listings"}
+                            {" "}loaded
                         </p>
                     </div>
                 </div>
@@ -178,16 +151,17 @@ export default function ListingReview() {
 
                 {isLoading ? (
                     <Card className="admin-listings-empty">
-                        <LoadingSpinner size="large"/>
+                        <LoadingSpinner size="large" />
 
                         <p>Loading listings...</p>
                     </Card>
-                ) : displayedListings.length > 0 ? (
+                ) : displayedListings.length >
+                    0 ? (
                     <>
                         <div className="admin-listings-list">
                             {displayedListings.map(
                                 (listing) => (
-                                    <PendingListingCard
+                                    <ApprovedListingCard
                                         key={listing.listingId}
                                         listing={listing}
                                         onView={handleViewListing}
@@ -210,17 +184,16 @@ export default function ListingReview() {
                     </>
                 ) : (
                     <Card className="admin-listings-empty">
-                        <ShieldCheck
-                            size={34}
-                        />
+                        <ShieldCheck size={34} />
 
                         <strong>
                             No listings found
                         </strong>
 
                         <p>
-                            No pending listings
-                            match your current search.
+                            No approved listings
+                            match your current
+                            search.
                         </p>
                     </Card>
                 )}

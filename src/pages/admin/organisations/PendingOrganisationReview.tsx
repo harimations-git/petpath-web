@@ -8,18 +8,18 @@ import {
 
 import Card from "../../../components/ui/Card";
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
-import AdminOrganisationCard from "../../../components/ui/admin/organisations/OrganisationCard";
 
 import { formatDate } from "../../../utils/listings/displayFormatting";
 
-import "./OrganisationReview.css";
+import "./OrganisationPages.css";
 import { usePendingOrganisations } from "../../../hooks/admin/usePendingOrganisation";
 import type { PendingOrganisation } from "../../../types/admin/adminOrganisation";
 import InfoModal from "../../../components/ui/InfoModal";
 import { useState } from "react";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
+import PendingOrganisationCard from "../../../components/ui/admin/organisations/PendingOrganisationCard";
 
-export default function OrganisationReview() {
+export default function PendingOrganisationReview() {
     const {
         displayedOrganisations,
 
@@ -222,7 +222,7 @@ export default function OrganisationReview() {
                             {displayedOrganisations.map(
                                 (organisation) => (
                                     <div key={organisation.organisationId}>
-                                        <AdminOrganisationCard
+                                        <PendingOrganisationCard
                                             organisation={organisation}
                                             isUpdating={updatingOrganisationId === organisation.organisationId}
                                             onApprove={handleApproveOrganisation}

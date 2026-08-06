@@ -13,8 +13,6 @@ import CustomButton from "../../../components/ui/CustomButton";
 import InfoModal from "../../../components/ui/InfoModal";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 
-
-
 import "../dashboard/CreateListing.css";
 import "../dashboard/PageHeading.css";
 import DeleteListingOption from "../../../components/ui/listings/delete/DeleteListingOption";

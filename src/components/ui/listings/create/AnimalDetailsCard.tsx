@@ -148,6 +148,7 @@ export default function AnimalDetailsCard({
                                 event.target.value
                             )
                         }
+                        maxLength={20}
                         placeholder="e.g. Calm and friendly"
                     />
                 </label>
