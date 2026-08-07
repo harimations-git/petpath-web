@@ -164,12 +164,6 @@ export default function AdminDashboard() {
                                         label: "Listing",
                                         value: `${formatDisplayValue(listing.animalType)} · ${formatDisplayValue(listing.listingType)}`,
                                     },
-                                    {
-                                        label: "Documents",
-                                        value: listing.documentCount === 1
-                                            ? "1 uploaded"
-                                            : `${listing.documentCount} uploaded`,
-                                    },
                                 ]}
                                 submittedAt={formatDate(listing.submittedAt)}
                             />

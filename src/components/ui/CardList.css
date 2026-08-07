@@ -1,0 +1,99 @@
+.admin-card-list {
+    display: flex;
+
+    width: 100%;
+
+    max-height: clamp(360px, 58dvh, 720px);
+
+    flex-direction: column;
+    gap: var(--spacing-md);
+
+    padding-right: var(--spacing-xs);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    overscroll-behavior-y: contain;
+
+    scrollbar-gutter: stable;
+
+    /*
+     * Helps browsers understand that
+     * vertical touch gestures are intended.
+     */
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* Items inside the list */
+
+.admin-card-list > * {
+    flex-shrink: 0;
+}
+
+
+/* Load more */
+
+.admin-card-list-load-more {
+    display: flex;
+
+    width: 100%;
+
+    justify-content: center;
+
+    padding-top: var(--spacing-sm);
+}
+
+.admin-card-list-load-more button {
+    width: auto;
+    min-height: 40px;
+
+    padding: 0 18px;
+
+    border: 1px solid var(--color-primary-dark);
+
+    border-radius: var(--radius-pill);
+
+    background: var(--color-card);
+    color: var(--color-primary-dark);
+
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.admin-card-list-load-more button:hover {
+    background: var(--color-pale-green);
+}
+
+.admin-card-list-load-more button:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.6;
+}
+
+
+/*
+ * Tablet/mobile
+ *
+ * Do not create a second vertical scroll
+ * area inside the page.
+ *
+ * The list grows normally and the main
+ * page becomes the scroll container.
+ */
+@media (max-width: 900px) {
+    .admin-card-list {
+        max-height: none;
+
+        padding-right: 0;
+
+        overflow: visible;
+
+        scrollbar-gutter: auto;
+
+        overscroll-behavior: auto;
+    }
+}

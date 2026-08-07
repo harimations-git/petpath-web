@@ -66,6 +66,11 @@ export async function getAuthToken() {
 }
 
 export async function getCurrentOrganisationProfile() {
+
+  if (!API_BASE_URL) {
+    throw new Error("API URL is not configured");
+  }
+
   const token = await getAuthToken();
 
   const response = await fetch(`${API_BASE_URL}/organisation-profile/me`, {
@@ -78,7 +83,6 @@ export async function getCurrentOrganisationProfile() {
   const body = await response.json().catch(() => null);
 
   if (!response.ok) {
-    console.log("Organisation profile response:", response.status, body);
     throw new Error(body?.message || "Unable to get organisation profile.");
   }
 
@@ -88,6 +92,10 @@ export async function getCurrentOrganisationProfile() {
 export async function completeOrganisationProfile(
   input: CompleteOrganisationProfileInput
 ): Promise<OrganisationProfile> {
+  if (!API_BASE_URL) {
+    throw new Error("API URL is not configured");
+  }
+
   //Get current user cognito access token
   const token = await getAuthToken();
 
@@ -109,10 +117,7 @@ export async function completeOrganisationProfile(
   const body = await response.json().catch(() => null);
 
   if (!response.ok) {
-    throw new Error(
-      body?.message ||
-      "Unable to complete your organisation profile."
-    );
+    throw new Error(body?.message || "Unable to complete your organisation profile.");
   }
 
   return body.organisationProfile;
@@ -121,6 +126,10 @@ export async function completeOrganisationProfile(
 export async function getProfileImageUploadUrl(
   file: File
 ): Promise<ProfileImageUploadUrlResponse> {
+
+  if (!API_BASE_URL) {
+    throw new Error("API URL is not configured");
+  }
 
   const token = await getAuthToken();
 
@@ -135,33 +144,32 @@ export async function getProfileImageUploadUrl(
       },
 
       //send selected image's MIME type so Lambda can validate it and generate a matching S3 presigned URL
-      body: JSON.stringify({
-        contentType: file.type,
-      }),
+      body: JSON.stringify({ contentType: file.type }),
     }
   );
 
   const body = await response.json().catch(() => null);
 
   if (!response.ok) {
-    throw new Error(
-      body?.message ||
-      "Unable to prepare the profile image upload."
-    );
+    throw new Error(body?.message || "Unable to prepare the profile image upload.");
   }
 
   return body;
 }
 
+
+
+/**
+ * Function uploads the shelter user's profile picture
+ * @param file 
+ * @returns 
+ */
 export async function uploadOrganisationProfileImage(
   file: File
 ): Promise<string> {
 
   //request temp upload url and the final s3 object key
-  const {
-    uploadUrl,
-    profileImageKey,
-  } = await getProfileImageUploadUrl(file);
+  const { uploadUrl, profileImageKey } = await getProfileImageUploadUrl(file);
 
   //upload the image file to S3
   const uploadResponse = await fetch(uploadUrl, {
@@ -173,14 +181,15 @@ export async function uploadOrganisationProfileImage(
   });
 
   if (!uploadResponse.ok) {
-    throw new Error(
-      "Unable to upload the profile picture."
-    );
+    throw new Error("Unable to upload the profile picture.");
   }
 
   // return the S3 object key so it can be saved in DynamoDB
   return profileImageKey;
 }
+
+
+
 /**
  * Function verifies that the profile is complete and able to update it's profile picture
  * Returns the complete organisation profile
@@ -192,8 +201,7 @@ export async function updateOrganisationProfileImage(
   file: File,
   currentProfile: OrganisationProfile
 ): Promise<OrganisationProfile> {
-  const profileImageKey =
-    await uploadOrganisationProfileImage(file);
+  const profileImageKey = await uploadOrganisationProfileImage(file);
 
   const requiredValues = {
     websiteUrl: currentProfile.websiteUrl,
@@ -218,34 +226,25 @@ export async function updateOrganisationProfileImage(
   }
 
   return completeOrganisationProfile({
-    websiteUrl:
-      requiredValues.websiteUrl,
+    websiteUrl: requiredValues.websiteUrl,
 
-    websiteDomain:
-      requiredValues.websiteDomain,
+    websiteDomain: requiredValues.websiteDomain,
 
     profileImageKey,
 
-    description:
-      currentProfile.description ?? "",
+    description: currentProfile.description ?? "",
 
-    addressLine1:
-      requiredValues.addressLine1,
+    addressLine1: requiredValues.addressLine1,
 
-    addressLine2:
-      currentProfile.addressLine2,
+    addressLine2: currentProfile.addressLine2,
 
-    townCity:
-      requiredValues.townCity,
+    townCity: requiredValues.townCity,
 
-    county:
-      currentProfile.county,
+    county: currentProfile.county,
 
-    postcode:
-      requiredValues.postcode,
+    postcode: requiredValues.postcode,
 
-    country:
-      requiredValues.country,
+    country: requiredValues.country,
   });
 }
 
@@ -257,6 +256,11 @@ export async function updateOrganisationProfileImage(
 export async function updateOrganisationDescription(
   description: string
 ): Promise<OrganisationProfile> {
+
+  if (!API_BASE_URL) {
+    throw new Error("API URL is not configured");
+  }
+
   const token = await getAuthToken();
 
   const response = await fetch(`${API_BASE_URL}/organisation-profile/me/description`,
@@ -266,9 +270,7 @@ export async function updateOrganisationDescription(
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        description,
-      }),
+      body: JSON.stringify({description}),
     }
   );
 
@@ -276,9 +278,7 @@ export async function updateOrganisationDescription(
 
   if (!response.ok) {
     throw new Error(
-      body?.message ||
-      "Unable to update the description."
-    );
+      body?.message || "Unable to update the description.");
   }
 
   return body.organisationProfile;
@@ -288,6 +288,11 @@ export async function updateOrganisationDescription(
  * Deletes the users account and information (petlistings, profile, s3 files, cognito user)
  */
 export async function deleteOrganisationAccount(): Promise<void> {
+
+  if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
   const token = await getAuthToken();
 
   const response = await fetch(
@@ -312,10 +317,7 @@ export async function deleteOrganisationAccount(): Promise<void> {
 
   if (!response.ok) {
     throw new Error(
-      body?.errorMessage ||
-      body?.message ||
-      response.statusText ||
-      "Unable to delete your shelter account."
+      body?.errorMessage || body?.message || response.statusText || "Unable to delete your shelter account."
     );
   }
 }

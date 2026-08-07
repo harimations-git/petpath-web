@@ -182,18 +182,6 @@ export default function Dashboard() {
                                 </small>
                             </span>
                         </div>
-
-                        {!needsProfileSetup &&
-                            listingStatistics.pendingReview === 0 &&
-                            listingStatistics.reservedPets === 0 && (
-                                <div className="dashboard-empty-attention">
-                                    <ShieldCheck size={22} />
-
-                                    <span>
-                                        Everything looks up to date.
-                                    </span>
-                                </div>
-                            )}
                     </div>
                 </article>
 

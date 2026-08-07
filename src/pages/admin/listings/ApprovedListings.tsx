@@ -13,6 +13,7 @@ import { routes } from "../../../constants/routes";
 import "./PendingListings.css";
 import type { ApprovedListing } from "../../../types/admin/adminListing";
 import ApprovedListingCard from "../../../components/ui/admin/listings/details/pet_card/ApprovedListingCards";
+import CardList from "../../../components/ui/CardList";
 
 export default function ApprovedListings() {
     const navigate = useNavigate();
@@ -36,12 +37,8 @@ export default function ApprovedListings() {
         retry,
     } = useApprovedListings();
 
-    function handleViewListing(
-        listing: ApprovedListing
-    ) {
-        navigate(
-            routes.admin.listings.listingReview(listing.listingId)
-        );
+    function handleViewListing(listing: ApprovedListing) {
+        navigate(routes.admin.listings.listingReview(listing.listingId));
     }
 
     return (
@@ -155,33 +152,22 @@ export default function ApprovedListings() {
 
                         <p>Loading listings...</p>
                     </Card>
-                ) : displayedListings.length >
-                    0 ? (
-                    <>
-                        <div className="admin-listings-list">
-                            {displayedListings.map(
-                                (listing) => (
-                                    <ApprovedListingCard
-                                        key={listing.listingId}
-                                        listing={listing}
-                                        onView={handleViewListing}
-                                    />
-                                )
-                            )}
-                        </div>
-
-                        {hasMore && (
-                            <div className="admin-listings-load-more">
-                                <button
-                                    type="button"
-                                    disabled={isLoadingMore}
-                                    onClick={() => void loadMore()}
-                                >
-                                    {isLoadingMore ? "Loading..." : "Load more"}
-                                </button>
-                            </div>
+                ) : displayedListings.length > 0 ? (
+                    <CardList
+                        hasMore={hasMore}
+                        isLoadingMore={isLoadingMore}
+                        onLoadMore={() => void loadMore()}
+                    >
+                        {displayedListings.map(
+                            (listing) => (
+                                <ApprovedListingCard
+                                    key={listing.listingId}
+                                    listing={listing}
+                                    onView={handleViewListing}
+                                />
+                            )
                         )}
-                    </>
+                    </CardList>
                 ) : (
                     <Card className="admin-listings-empty">
                         <ShieldCheck size={34} />

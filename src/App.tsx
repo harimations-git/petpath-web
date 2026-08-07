@@ -31,6 +31,7 @@ import ListingReview from "./pages/admin/listings/ViewListing";
 import ApprovedListings from "./pages/admin/listings/ApprovedListings";
 import PendingOrganisationReview from "./pages/admin/organisations/PendingOrganisationReview";
 import ApprovedOrganisations from "./pages/admin/organisations/ApprovedOrganisations";
+import ViewOrganisation from "./pages/admin/organisations/ViewOrganisation";
 
 export default function App() {
     return (
@@ -192,6 +193,11 @@ export default function App() {
                         <Route
                             path={routes.admin.organisations.allOrganisations}
                             element={<ApprovedOrganisations />}
+                        />
+
+                        <Route
+                            path={routes.admin.organisations.viewProfile}
+                            element={<ViewOrganisation />}
                         />
                         
                         <Route

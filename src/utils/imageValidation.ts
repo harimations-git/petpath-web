@@ -34,3 +34,13 @@ export function validateImageFile(
 
     return null;
 }
+
+
+/**
+ * List of allowed image types
+ */
+export const allowedImageTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+];

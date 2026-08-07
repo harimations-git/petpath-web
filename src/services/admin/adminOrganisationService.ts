@@ -1,5 +1,5 @@
 import type { GetListingsQueryParams } from "../../types/admin/adminManagement";
-import type { ApprovedOrganisationsResponse, PendingOrganisationsResponse, ReviewOrganisationRequest } from "../../types/admin/adminOrganisation";
+import type { ApprovedOrganisationsResponse, PendingOrganisationsResponse, PublicOrganisationProfile, ReviewOrganisationRequest } from "../../types/admin/adminOrganisation";
 import type { SortOrder } from "../../types/filters";
 import { getErrorMessage } from "../../utils/error/authErrorMessage";
 import { getAdminIdToken } from "../../utils/user/userUtils";
@@ -18,7 +18,15 @@ export async function getPendingOrganisations(
     nextToken?: string | null
 ): Promise<PendingOrganisationsResponse> {
 
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const idToken = await getAdminIdToken();
+
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
 
     const query = new URLSearchParams({ sortOrder });
 
@@ -57,9 +65,17 @@ export async function getApprovedOrganisations({
     nextToken,
 }: GetListingsQueryParams): Promise<ApprovedOrganisationsResponse> {
 
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const idToken = await getAdminIdToken();
 
-    const searchParams = new URLSearchParams({sortOrder});
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
+
+    const searchParams = new URLSearchParams({ sortOrder });
 
     if (nextToken) {
         searchParams.set("nextToken", nextToken);
@@ -102,7 +118,16 @@ export async function reviewOrganisation({
     organisationId,
     decision,
 }: ReviewOrganisationRequest) {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const idToken = await getAdminIdToken();
+
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
 
     const response = await fetch(
         `${API_BASE_URL}/admin/organisations/${encodeURIComponent(organisationId)}/review`,
@@ -122,10 +147,84 @@ export async function reviewOrganisation({
 
     if (!response.ok) {
         throw new Error(
-            await getErrorMessage(
-                response,
-                "Unable to review the organisation."
-            )
+            await getErrorMessage(response, "Unable to review the organisation.")
         );
     }
+}
+
+export async function getAdminOrganisationDetails(
+    organisationId: string
+): Promise<PublicOrganisationProfile> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
+    const idToken = await getAdminIdToken();
+
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
+
+    const response =
+        await fetch(
+            `${API_BASE_URL}/admin/organisations/${encodeURIComponent(
+                organisationId
+            )}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Unable to load organisation.");
+    }
+
+    return data.organisation;
+}
+
+/**
+ * DELETE route that removes the organisation account 
+ * and related database & s3 files 
+ * @param organisationId 
+ * @returns 
+ */
+export async function deleteAdminOrganisation(
+    organisationId: string
+) {
+    if (!API_BASE_URL) {
+        throw new Error("API base URL is missing.");
+    }
+
+    const idToken = await getAdminIdToken();
+
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
+
+    const response =
+        await fetch(
+            `${API_BASE_URL}/admin/organisations/${encodeURIComponent(organisationId)}`,
+            {
+                method: "DELETE",
+
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.message || "Unable to delete organisation account."
+        );
+    }
+
+    return data;
 }

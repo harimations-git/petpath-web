@@ -14,7 +14,15 @@ export async function getPendingListings(
     nextToken?: string | null
 ): Promise<PendingListingsResponse> {
 
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const idToken = await getAdminIdToken();
+
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
 
     const searchParameters = new URLSearchParams({ sortOrder });
 
@@ -52,6 +60,11 @@ export async function getPendingListings(
 export async function getAdminListingDetails(
     listingId: string
 ): Promise<AdminListingDetails> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     if (!listingId.trim()) {
         throw new Error(
             "Listing ID is required."
@@ -59,6 +72,10 @@ export async function getAdminListingDetails(
     }
 
     const idToken = await getAdminIdToken();
+
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
 
     const response = await fetch(
         `${API_BASE_URL}/admin/listings/${encodeURIComponent(listingId)}`,
@@ -96,7 +113,16 @@ export async function reviewListing({
     decision,
     reason,
 }: ReviewListingRequest) {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const idToken = await getAdminIdToken();
+
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
 
     const response = await fetch(
         `${API_BASE_URL}/admin/listings/${encodeURIComponent(listingId)}/review`,
@@ -135,14 +161,22 @@ export async function deleteAdminListing(
     listingId: string
 ) {
 
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const idToken = await getAdminIdToken();
+
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
 
     const response = await fetch(
         `${API_BASE_URL}/admin/listings/${encodeURIComponent(listingId)}`,
         {
             method: "DELETE",
 
-            headers: {Authorization: `Bearer ${idToken}`},
+            headers: { Authorization: `Bearer ${idToken}` },
         }
     );
 
@@ -166,9 +200,17 @@ export async function getApprovedListings({
     nextToken,
 }: GetApprovedListingsOptions): Promise<ApprovedListingsResponse> {
 
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const idToken = await getAdminIdToken();
 
-    const searchParams = new URLSearchParams({sortOrder});
+    if (!idToken) {
+        throw new Error("You must be logged in.");
+    }
+
+    const searchParams = new URLSearchParams({ sortOrder });
 
     if (nextToken) {
         searchParams.set("nextToken", nextToken);

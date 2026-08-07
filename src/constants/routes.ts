@@ -39,18 +39,22 @@ export const routes = {
         dashboard: "/admin/dashboard",
         organisations: {
             allOrganisations: "/admin/allOrganisations",
+
+            viewProfile: "/admin/organisations/:organisationId",
+            details: (organisationId: string) =>
+                `/admin/organisations/${encodeURIComponent(organisationId)}`,
+
             pendingOrganisations: "/admin/pending-organisations",
-            organisationReviewPath: "/admin/organisation/:organisationId",
-            organisationReview: (organisationId: string) =>
-                `/admin/organisation/${encodeURIComponent(organisationId)}`,
         },
 
         listings: {
             allListings: "/admin/listings",
-            pendingListings: "/admin/pending-listings",
+
             listingReviewPath: "/admin/listing/:listingId",
             listingReview: (listingId: string) =>
                 `/admin/listing/${encodeURIComponent(listingId)}`,
+
+            pendingListings: "/admin/pending-listings",
         }
     },
 } as const;

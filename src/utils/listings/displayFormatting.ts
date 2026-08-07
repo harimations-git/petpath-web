@@ -136,10 +136,7 @@ export function formatAdoptionFee(adoptionFee?: number | string | null) {
 export function formatLocation(
     values: Array<string | undefined>
 ) {
-    const location =
-        values
-            .filter(Boolean)
-            .join(", ");
+    const location = values.filter(Boolean).join(", ");
 
     return location || "Not provided";
 }

@@ -46,3 +46,30 @@ export type ReviewOrganisationRequest = {
     organisationId: string;
     decision: AdminReviewDecision;
 };
+
+/**
+ * Type used to display the organisation's public information to the admin user
+ */
+export type PublicOrganisationProfile = {
+    organisationId: string;
+
+    charityName: string;
+    charityId?: string;
+    email: string;
+
+    description?: string;
+    websiteUrl?: string;
+
+    profileImageUrl?: string | null;
+
+    addressLineOne?: string;
+    addressLineTwo?: string;
+    townCity?: string;
+    postcode?: string;
+    locationCounty?: string;
+    locationCountry?: string;
+
+    createdAt: string;
+    reviewedAt?: string;
+    updatedAt?: string;
+};

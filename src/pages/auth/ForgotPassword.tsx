@@ -21,6 +21,7 @@ import Logo from "../../components/ui/decorative/Logo";
 import Card from "../../components/ui/Card";
 import ImageSlideshow from "../../components/ui/decorative/ImageSlideShow";
 import { loginSlideshowContent } from "../../data/assets/imageContent";
+import { signOut } from "aws-amplify/auth";
 
 type PasswordResetStep =
     | "email"
@@ -28,7 +29,6 @@ type PasswordResetStep =
 
 type ForgotPasswordRouteState = {
     initialEmail?: string;
-    returnTo?: string;
 };
 
 export default function ForgotPassword() {
@@ -48,21 +48,14 @@ export default function ForgotPassword() {
 
     const [step, setStep] = useState<PasswordResetStep>("email");
 
-    const [ confirmationCode, setConfirmationCode] = useState("");
-    const [ newPassword, setNewPassword] = useState("");
-    const [ confirmPassword, setConfirmPassword] = useState("");
+    const [confirmationCode, setConfirmationCode] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const [formError, setFormError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const [ showSuccessModal, setShowSuccessModal] = useState(false);
-
-    //Makes sure the redirect only sends them to these two locations
-    const returnTo =
-        routeState?.returnTo ===
-            routes.home.settings
-            ? routes.home.settings
-            : routes.auth.login;
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     async function handleSendCode(
         event: SubmitEvent<HTMLFormElement>
@@ -155,12 +148,14 @@ export default function ForgotPassword() {
                 newPassword,
             });
 
+            try {
+                await signOut();
+            } catch {
+                // The user may already be signed out.
+            }
+
             setShowSuccessModal(true);
         } catch (error) {
-            console.error(
-                "Unable to confirm password reset:",
-                error
-            );
 
             setFormError(
                 getPasswordResetError(error)
@@ -194,9 +189,10 @@ export default function ForgotPassword() {
     function handleSuccessContinue() {
         setShowSuccessModal(false);
 
-        navigate(returnTo, {
-            replace: true,
-        });
+        navigate(
+            routes.auth.login,
+            { replace: true }
+        );
     }
 
     return (
@@ -214,7 +210,7 @@ export default function ForgotPassword() {
                     {step === "email" ? (
                         <>
                             <div className="forgot-password-heading">
-                        
+
 
                                 <h1>Reset your password</h1>
                                 <p>
@@ -222,7 +218,7 @@ export default function ForgotPassword() {
                                     we will send you a verification
                                     code.
                                 </p>
-                                
+
 
                             </div>
 
@@ -415,15 +411,11 @@ export default function ForgotPassword() {
             <InfoModal
                 visible={showSuccessModal}
                 title="Password updated"
-                message="Your password has been changed successfully."
+                message="Your password has been changed successfully. Please sign in again using your new password."
                 icon={ShieldCheck}
-                buttonText={"Continue"}
-                onConfirm={
-                    handleSuccessContinue
-                }
-                onClose={
-                    handleSuccessContinue
-                }
+                buttonText="Continue to login"
+                onConfirm={handleSuccessContinue}
+                onClose={handleSuccessContinue}
             />
         </main>
     );

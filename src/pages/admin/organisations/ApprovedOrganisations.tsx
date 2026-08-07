@@ -11,6 +11,7 @@ import { formatDate } from "../../../utils/listings/displayFormatting";
 import { routes } from "../../../constants/routes";
 
 import "./OrganisationPages.css";
+import CardList from "../../../components/ui/CardList";
 
 export default function ApprovedOrganisations() {
     const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function ApprovedOrganisations() {
     } = useApprovedOrganisations();
 
     function handleViewOrganisation(organisation: ApprovedOrganisation) {
-        navigate(routes.admin.organisations.organisationReview(organisation.organisationId));
+        navigate(routes.admin.organisations.details(organisation.organisationId));
     }
 
     return (
@@ -174,36 +175,26 @@ export default function ApprovedOrganisations() {
 
                 {isLoading ? (
                     <Card className="admin-organisations-empty">
-                        <LoadingSpinner size="large"/>
+                        <LoadingSpinner size="large" />
 
                         <p>Loading organisations...</p>
                     </Card>
                 ) : displayedOrganisations.length > 0 ? (
-                    <>
-                        <div className="admin-organisations-list">
-                            {displayedOrganisations.map(
-                                (organisation) => (
-                                    <ApprovedOrganisationCard
-                                        key={organisation.organisationId}
-                                        organisation={organisation}
-                                        onView={handleViewOrganisation}
-                                    />
-                                )
-                            )}
-                        </div>
-
-                        {hasMore && (
-                            <div className="admin-organisations-load-more">
-                                <button
-                                    type="button"
-                                    disabled={isLoadingMore}
-                                    onClick={() => void loadMore()}
-                                >
-                                    {isLoadingMore ? "Loading..." : "Load more"}
-                                </button>
-                            </div>
+                    <CardList
+                        hasMore={hasMore}
+                        isLoadingMore={isLoadingMore}
+                        onLoadMore={() => void loadMore()}
+                    >
+                        {displayedOrganisations.map(
+                            (organisation) => (
+                                <ApprovedOrganisationCard
+                                    key={organisation.organisationId}
+                                    organisation={organisation}
+                                    onView={handleViewOrganisation}
+                                />
+                            )
                         )}
-                    </>
+                    </CardList>
                 ) : (
                     <Card className="admin-organisations-empty">
                         <ShieldCheck

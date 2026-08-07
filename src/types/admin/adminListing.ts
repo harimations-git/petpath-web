@@ -13,7 +13,6 @@ export type PendingListing = {
     organisationName: string;
     animalType: string;
     listingType: string;
-    documentCount: number;
     submittedAt: string;
 };
 
