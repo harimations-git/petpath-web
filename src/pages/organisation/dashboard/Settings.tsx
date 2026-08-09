@@ -202,13 +202,8 @@ export default function Settings() {
                     </>
                 ) : (
                     <ProfilePictureCard
-                        imageUrl={
-                            profileImagePreview ||
-                            organisationProfile?.profileImageUrl
-                        }
-                        organisationName={
-                            organisationProfile?.charityName
-                        }
+                        imageUrl={profileImagePreview || organisationProfile?.profileImageUrl}
+                        organisationName={ organisationProfile?.charityName}
                         onChangeImage={changeProfileImage}
                         isDisabled={isUploadingProfileImage}
                     />
@@ -250,15 +245,11 @@ export default function Settings() {
                             {organisationProfile?.websiteUrl ? (
                                 <a
                                     className="account-detail-value"
-                                    href={
-                                        organisationProfile.websiteUrl
-                                    }
+                                    href={organisationProfile.websiteUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    {
-                                        organisationProfile.websiteUrl
-                                    }
+                                    { organisationProfile.websiteUrl}
                                 </a>
                             ) : (
                                 <span className="account-detail-value">
@@ -299,11 +290,7 @@ export default function Settings() {
                                     id="shelter-description"
                                     className="shelter-description-input"
                                     value={descriptionDraft}
-                                    onChange={(event) =>
-                                        setDescriptionDraft(
-                                            event.target.value
-                                        )
-                                    }
+                                    onChange={(event) => setDescriptionDraft(event.target.value)}
                                     placeholder="Tell adopters about your shelter..."
                                     maxLength={1000}
                                 />

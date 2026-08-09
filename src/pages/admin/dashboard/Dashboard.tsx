@@ -117,7 +117,7 @@ export default function AdminDashboard() {
                     itemsLabel="Pending organisation applications"
                     isEmpty={pendingOrganisations.length === 0}
                     emptyMessage="There are no organisation applications awaiting review."
-                    viewAllRoute={routes.admin.organisations}
+                    viewAllRoute={routes.admin.organisations.pendingOrganisations}
                     viewAllLabel="View all pending organisations"
                 >
                     {pendingOrganisations.map(
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
                     itemsLabel="Pending pet listings"
                     isEmpty={pendingListings.length === 0}
                     emptyMessage="There are no pet listings awaiting review."
-                    viewAllRoute={routes.admin.listings}
+                    viewAllRoute={routes.admin.listings.pendingListings}
                     viewAllLabel="View all pending listings"
                 >
                     {pendingListings.map(
@@ -158,25 +158,11 @@ export default function AdminDashboard() {
                                 key={listing.listingId}
                                 icon={ClipboardCheck}
                                 title={listing.title}
-                                subtitle={
-                                    listing.organisationName
-                                }
+                                subtitle={listing.organisationName}
                                 details={[
                                     {
-                                        label:
-                                            "Listing",
-
-                                        value:
-                                            `${formatDisplayValue(listing.animalType)} · ${formatDisplayValue(listing.listingType)}`,
-                                    },
-                                    {
-                                        label: "Documents",
-
-                                        value:
-                                            listing.documentCount ===
-                                                1
-                                                ? "1 uploaded"
-                                                : `${listing.documentCount} uploaded`,
+                                        label: "Listing",
+                                        value: `${formatDisplayValue(listing.animalType)} · ${formatDisplayValue(listing.listingType)}`,
                                     },
                                 ]}
                                 submittedAt={formatDate(listing.submittedAt)}
@@ -184,7 +170,7 @@ export default function AdminDashboard() {
                         )
                     )}
                 </AdminReviewSection>
-            </section>          
+            </section>
         </main>
     );
 }

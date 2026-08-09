@@ -1,9 +1,4 @@
-import type { SortOrder } from "../filters";
-
-//Options the admin has when reviewing a organisation account
-export type OrganisationReviewDecision =
-    | "approved"
-    | "rejected";
+import type { AdminReviewDecision } from "./adminManagement";
 
 //A pending organisation requires the following to display on the frontend
 export type PendingOrganisation = {
@@ -26,9 +21,22 @@ export type PendingOrganisationsResponse = {
     nextToken: string | null; //pagination token
 };
 
-//Get request type for the response sent to the backend lambda
-export type GetPendingOrganisationsOptions = {
-    sortOrder: SortOrder;
+export type ApprovedOrganisation = {
+    organisationId: string;
+
+    charityName: string;
+    charityId: string;
+    email: string;
+
+    reviewStatus: "approved";
+
+    submittedAt: string;
+    reviewedAt?: string;
+    updatedAt?: string;
+};
+
+export type ApprovedOrganisationsResponse = {
+    organisations: ApprovedOrganisation[];
     nextToken?: string | null;
 };
 
@@ -36,5 +44,32 @@ export type GetPendingOrganisationsOptions = {
 //the decision that was made.
 export type ReviewOrganisationRequest = {
     organisationId: string;
-    decision: OrganisationReviewDecision;
+    decision: AdminReviewDecision;
+};
+
+/**
+ * Type used to display the organisation's public information to the admin user
+ */
+export type PublicOrganisationProfile = {
+    organisationId: string;
+
+    charityName: string;
+    charityId?: string;
+    email: string;
+
+    description?: string;
+    websiteUrl?: string;
+
+    profileImageUrl?: string | null;
+
+    addressLineOne?: string;
+    addressLineTwo?: string;
+    townCity?: string;
+    postcode?: string;
+    locationCounty?: string;
+    locationCountry?: string;
+
+    createdAt: string;
+    reviewedAt?: string;
+    updatedAt?: string;
 };

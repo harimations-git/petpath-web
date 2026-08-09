@@ -43,71 +43,38 @@ export default function CreateListing() {
 
             <form
                 className="create-listing-form"
-                onSubmit={
-                    form.handleSubmit
-                }
+                onSubmit={form.handleSubmit}
             >
                 <ListingBasicsSection
-                    listingTitle={
-                        form.listingTitle 
-                    }
-                    onListingTitleChange={
-                        form.setListingTitle
-                    }
-                    listingType={
-                        form.listingType
-                    }
-                    onListingTypeChange={
-                        form.handleListingTypeChange
-                    }
-                    listingAnimalType={
-                        form.listingAnimalType
-                    }
-                    onAnimalTypeChange={
-                        form.setListingAnimalType
-                    }
-                    numberOfAnimals={
-                        form.numberOfAnimals
-                    }
-                    onNumberOfAnimalsChange={
-                        form.handleNumberOfAnimalsChange
-                    }
-                    description={
-                        form.description
-                    }
-                    onDescriptionChange={
-                        form.setDescription
-                    }
-                    listingUrl={
-                        form.listingUrl
-                    }
-                    onListingUrlChange={
-                        form.setListingUrl
-                    }
-                    listingUrlMatchesOrganisation={
-                        form.listingUrlMatchesOrganisation
-                    }
-                    organisationDomain={
-                        form.organisationDomain
-                    }
-                    adoptionFee={
-                        form.adoptionFee
-                    }
-                    onAdoptionFeeChange={
-                        form.handleAdoptionFeeChange
-                    }
-                    organisationLocation={
-                        form.organisationLocation
-                    }
+                    listingTitle={form.listingTitle }
+                    onListingTitleChange={form.setListingTitle}
+
+                    listingType={form.listingType}
+                    onListingTypeChange={form.handleListingTypeChange}
+
+                    listingAnimalType={form.listingAnimalType}
+                    onAnimalTypeChange={form.setListingAnimalType}
+
+                    numberOfAnimals={form.numberOfAnimals}
+                    onNumberOfAnimalsChange={form.handleNumberOfAnimalsChange}
+
+                    description={form.description}
+                    onDescriptionChange={form.setDescription}
+
+                    listingUrl={form.listingUrl}
+                    onListingUrlChange={form.setListingUrl}
+                    listingUrlMatchesOrganisation={form.listingUrlMatchesOrganisation}
+                    organisationDomain={form.organisationDomain}
+
+                    adoptionFee={form.adoptionFee}
+                    onAdoptionFeeChange={form.handleAdoptionFeeChange}
+
+                    organisationLocation={form.organisationLocation}
                 />
 
                 <ListingPhotoUpload
-                    photos={
-                        form.listingPhotos
-                    }
-                    onChange={
-                        form.setListingPhotos
-                    }
+                    photos={form.listingPhotos}
+                    onChange={form.setListingPhotos}
                     sectionNumber={2}
                     maxPhotos={5}
                     maxFileSizeMb={10}
@@ -115,54 +82,29 @@ export default function CreateListing() {
 
                 <AnimalDetailsSection
                     animals={form.animals}
-                    listingType={
-                        form.listingType
-                    }
-                    onAnimalChange={
-                        form.updateAnimal
-                    }
+                    listingType={form.listingType}
+                    onAnimalChange={form.updateAnimal}
                 />
 
                 <MatchingProfileSection
-                    value={
-                        form.matchingProfile
-                    }
-                    onChange={
-                        form.setMatchingProfile
-                    }
+                    value={form.matchingProfile}
+                    onChange={form.setMatchingProfile}
                     sectionNumber={4}
                 />
 
                 <HealthCareSection
-                    vaccinationStatus={
-                        form.vaccinationStatus
-                    }
-                    microchipStatus={ form.microchipStatus
-                    }
-                    neuteredStatus={
-                        form.neuteredStatus
-                    }
-                    healthNotes={
-                        form.healthNotes
-                    }
-                    documents={
-                        form.veterinaryDocuments
-                    }
-                    onVaccinationChange={
-                        form.setVaccinationStatus
-                    }
-                    onMicrochipChange={
-                        form.setMicrochipStatus
-                    }
-                    onNeuteredChange={
-                        form.setNeuteredStatus
-                    }
-                    onHealthNotesChange={
-                        form.setHealthNotes
-                    }
-                    onDocumentsChange={
-                        form.setVeterinaryDocuments
-                    }
+                    vaccinationStatus={form.vaccinationStatus}
+                    microchipStatus={form.microchipStatus}
+                    neuteredStatus={ form.neuteredStatus}
+                    healthNotes={form.healthNotes}
+
+                    documents={form.veterinaryDocuments}
+
+                    onVaccinationChange={form.setVaccinationStatus}
+                    onMicrochipChange={form.setMicrochipStatus}
+                    onNeuteredChange={form.setNeuteredStatus}
+                    onHealthNotesChange={form.setHealthNotes}
+                    onDocumentsChange={form.setVeterinaryDocuments}
                 />
 
                 {form.formError && (
@@ -184,9 +126,7 @@ export default function CreateListing() {
                     }
                     type="submit"
                     className="create-listing-continue"
-                    disabled={
-                        form.isSubmitting
-                    }
+                    disabled={form.isSubmitting}
                 />
             </form>
 
@@ -197,12 +137,9 @@ export default function CreateListing() {
                 warning="You can view this listings current status from the review updates page."
                 icon={Shield}
                 buttonText="Continue"
-                onClose={
-                    form.handleModalContinue
-                }
-                onConfirm={
-                    form.handleModalContinue
-                }
+                
+                onClose={form.handleModalContinue}
+                onConfirm={form.handleModalContinue}
             />
         </main>
     );

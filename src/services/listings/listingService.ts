@@ -98,8 +98,12 @@ export function createFileMetadata(
 export async function prepareListingUploads(
     input: PrepareListingUploadsInput
 ): Promise<PrepareListingUploadsResponse> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const token = await getAuthToken();
-    
 
     const response = await fetch(
         `${API_BASE_URL}/pet-listings/upload-urls`,
@@ -186,19 +190,13 @@ export async function uploadPreparedListingFiles({
     veterinaryDocuments,
     preparedUploads,
 }: UploadPreparedListingFilesInput): Promise<void> {
-    if (
-        listingPhotos.length !==
-        preparedUploads.photos.length
-    ) {
+    if (listingPhotos.length !== preparedUploads.photos.length) {
         throw new Error(
             "The number of prepared photo uploads does not match the selected photos."
         );
     }
 
-    if (
-        veterinaryDocuments.length !==
-        preparedUploads.documents.length
-    ) {
+    if (veterinaryDocuments.length !== preparedUploads.documents.length) {
         throw new Error(
             "The number of prepared document uploads does not match the selected documents."
         );
@@ -235,6 +233,11 @@ export async function uploadPreparedListingFiles({
 export async function createPetListing(
     input: CreatePetListingRequest
 ): Promise<CreatePetListingResponse> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const token = await getAuthToken();
 
     const response = await fetch(
@@ -242,30 +245,23 @@ export async function createPetListing(
         {
             method: "POST",
             headers: {
-                Authorization:
-                    `Bearer ${token}`,
-                "Content-Type":
-                    "application/json",
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(input),
         }
     );
 
-    const body = await response
-        .json()
-        .catch(() => null);
+    const body = await response.json().catch(() => null);
 
     if (!response.ok) {
         throw new Error(
-            body?.message ||
-            "Unable to create the pet listing."
+            body?.message || "Unable to create the pet listing."
         );
     }
 
     if (!body?.listingId) {
-        throw new Error(
-            "The server did not return the new listing ID."
-        );
+        throw new Error("The server did not return the new listing ID.");
     }
 
     return body;
@@ -286,18 +282,16 @@ export async function getOrganisationListings({
     nextToken,
 }: GetOrganisationListingsOptions = {}):
     Promise<GetOrganisationListingsResponse> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
     const token = await getAuthToken();
 
-    const searchParams =
-        new URLSearchParams({
-            limit: String(limit),
-        });
+    const searchParams = new URLSearchParams({ limit: String(limit) });
 
     if (nextToken) {
-        searchParams.set(
-            "nextToken",
-            nextToken
-        );
+        searchParams.set("nextToken", nextToken);
     }
 
     const response = await fetch(
@@ -305,34 +299,24 @@ export async function getOrganisationListings({
         {
             method: "GET",
             headers: {
-                Authorization:
-                    `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
         }
     );
 
-    const body = await response
-        .json()
-        .catch(() => null);
+    const body = await response.json().catch(() => null);
 
     if (!response.ok) {
-        throw new Error(
-            body?.message ||
-            "Unable to load your pet listings."
-        );
+        throw new Error(body?.message || "Unable to load your pet listings.");
     }
 
     return {
         listings:
-            Array.isArray(body?.listings)
-                ? body.listings
-                : [],
+            Array.isArray(body?.listings) ? body.listings : [],
 
-        nextToken:
-            typeof body?.nextToken === "string" &&
-                body.nextToken.trim() !== ""
-                ? body.nextToken
-                : null,
+        nextToken: typeof body?.nextToken === "string" && body.nextToken.trim() !== ""
+            ? body.nextToken
+            : null,
     };
 }
 /*
@@ -346,6 +330,11 @@ export async function getOrganisationListings({
 export async function getOrganisationListing(
     listingId: string
 ): Promise<OrganisationListingDetails> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const token = await getAuthToken();
 
     const response = await fetch(
@@ -354,10 +343,9 @@ export async function getOrganisationListing(
         {
             method: "GET",
 
-            //Backedn checks the header to confirm user is authorised
+            //Backend checks the header to confirm user is authorised
             headers: {
-                Authorization:
-                    `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
         }
     );
@@ -365,36 +353,28 @@ export async function getOrganisationListing(
     const body = await response.json().catch(() => null); //if response is not valid return null instead
 
     if (!response.ok) {
-        throw new Error(
-            body?.message ||
-            "Unable to load this pet listing."
-        );
+        throw new Error(body?.message || "Unable to load this pet listing.");
     }
 
     if (!body?.listingId) {
-        throw new Error(
-            "The server returned an invalid listing."
-        );
+        throw new Error("The server returned an invalid listing.");
     }
 
     return {
         ...body,
 
         //return empty arrays if server did not return valid arrays
-        animals:
-            Array.isArray(body.animals)
-                ? body.animals
-                : [],
+        animals: Array.isArray(body.animals)
+            ? body.animals
+            : [],
 
-        photos:
-            Array.isArray(body.photos)
-                ? body.photos
-                : [],
+        photos: Array.isArray(body.photos)
+            ? body.photos
+            : [],
 
-        documents:
-            Array.isArray(body.documents)
-                ? body.documents
-                : [],
+        documents: Array.isArray(body.documents)
+            ? body.documents
+            : [],
     };
 }
 
@@ -406,6 +386,11 @@ export async function prepareListingUpdateUploads(
     listingId: string,
     input: PrepareListingUploadsInput
 ): Promise<PrepareListingUploadsResponse> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const token = await getAuthToken();
 
     const response = await fetch(
@@ -413,8 +398,7 @@ export async function prepareListingUpdateUploads(
         {
             method: "POST",
             headers: {
-                Authorization:
-                    `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(input),
@@ -424,20 +408,11 @@ export async function prepareListingUpdateUploads(
     const body = await response.json().catch(() => null);
 
     if (!response.ok) {
-        throw new Error(
-            body?.message ||
-            "Unable to prepare listing update uploads."
-        );
+        throw new Error(body?.message || "Unable to prepare listing update uploads.");
     }
 
-    if (
-        !body?.listingId ||
-        !Array.isArray(body.photos) ||
-        !Array.isArray(body.documents)
-    ) {
-        throw new Error(
-            "The server returned an invalid upload response."
-        );
+    if (!body?.listingId || !Array.isArray(body.photos) || !Array.isArray(body.documents)) {
+        throw new Error("The server returned an invalid upload response.");
     }
 
     return body;
@@ -461,9 +436,7 @@ function createListingAnimalInputs(
             !animal.sex ||
             !animal.ageText
         ) {
-            throw new Error(
-                `Please complete all required details for animal ${index + 1}.`
-            );
+            throw new Error(`Please complete all required details for animal ${index + 1}.`);
         }
 
         return {
@@ -493,6 +466,10 @@ function createListingAnimalInputs(
 export async function updateOrganisationListing(
     input: UpdateOrganisationListingInput
 ): Promise<CreatePetListingResponse> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
 
     //extract input fields
     const {
@@ -525,27 +502,21 @@ export async function updateOrganisationListing(
     } = input;
 
     //request upload urls
-    const preparedUploads =
-        await prepareListingUpdateUploads(
-            listingId,
-            {
-                /**
-                 * createFileMetadata() gives the backend enough information 
-                 * to prepare a secure upload location without sending the large file 
-                 * itself through your API and Lambda.
-                */
-                photos: createFileMetadata(newPhotos),
-                documents: createFileMetadata(newDocuments),
-            }
-        );
+    const preparedUploads = await prepareListingUpdateUploads(listingId,
+        {
+            /**
+             * createFileMetadata() gives the backend enough information 
+             * to prepare a secure upload location without sending the large file 
+             * itself through your API and Lambda.
+            */
+            photos: createFileMetadata(newPhotos),
+            documents: createFileMetadata(newDocuments),
+        }
+    );
 
 
     //the actual files are uploaded here
-    await uploadPreparedListingFiles({
-        listingPhotos: newPhotos,
-        veterinaryDocuments: newDocuments,
-        preparedUploads,
-    });
+    await uploadPreparedListingFiles({ listingPhotos: newPhotos, veterinaryDocuments: newDocuments, preparedUploads });
 
     //converts the s3 upload information into the file objects 
     const uploadedNewPhotos: UploadedListingPhoto[] =
@@ -557,9 +528,7 @@ export async function updateOrganisationListing(
                 contentType: photo.contentType,
                 sizeBytes: photo.sizeBytes,
 
-                photoOrder:
-                    existingPhotoKeys.length +
-                    index,
+                photoOrder: existingPhotoKeys.length + index,
             })
         );
 
@@ -617,15 +586,10 @@ export async function updateOrganisationListing(
         }
     );
 
-    const body = await response
-        .json()
-        .catch(() => null);
+    const body = await response.json().catch(() => null);
 
     if (!response.ok) {
-        throw new Error(
-            body?.message ||
-            "Unable to update the pet listing."
-        );
+        throw new Error(body?.message || "Unable to update the pet listing.");
     }
 
     return {
@@ -646,32 +610,29 @@ export async function updateListingAvailability(
     listingId: string,
     availabilityStatus: ListingAvailabilityStatus
 ): Promise<void> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const token = await getAuthToken();
 
     const response = await fetch(
-        `${API_BASE_URL}/pet-listings/me/${encodeURIComponent(
-            listingId
-        )}/availability`,
+        `${API_BASE_URL}/pet-listings/me/${encodeURIComponent(listingId)}/availability`,
         {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                availabilityStatus,
-            }),
+            body: JSON.stringify({ availabilityStatus }),
         }
     );
 
-    const body =
-        await response.json().catch(() => null);
+    const body = await response.json().catch(() => null);
 
     if (!response.ok) {
-        throw new Error(
-            body?.message ||
-            "Unable to update listing availability."
-        );
+        throw new Error(body?.message || "Unable to update listing availability.");
     }
 }
 
@@ -682,6 +643,11 @@ export async function updateListingAvailability(
 export async function deleteOrganisationListing(
     listingId: string
 ): Promise<void> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const token = await getAuthToken();
 
     const response = await fetch(
@@ -689,7 +655,7 @@ export async function deleteOrganisationListing(
         {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`
             },
         }
     );
@@ -697,10 +663,7 @@ export async function deleteOrganisationListing(
     const body = await response.json().catch(() => null);
 
     if (!response.ok) {
-        throw new Error(
-            body?.message ||
-            "Unable to delete this listing."
-        );
+        throw new Error(body?.message || "Unable to delete this listing.");
     }
 }
 
@@ -710,6 +673,11 @@ export async function deleteOrganisationListing(
  * @returns 
  */
 export async function getReviewUpdates(): Promise<GetReviewUpdatesResponse> {
+
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     const token = await getAuthToken();
 
     const response = await fetch(
@@ -722,14 +690,10 @@ export async function getReviewUpdates(): Promise<GetReviewUpdatesResponse> {
         }
     );
 
-    const body =
-        await response.json().catch(() => null);
+    const body = await response.json().catch(() => null);
 
     if (!response.ok) {
-        throw new Error(
-            body?.message ||
-            "Unable to load review updates."
-        );
+        throw new Error(body?.message || "Unable to load review updates.");
     }
 
     return {

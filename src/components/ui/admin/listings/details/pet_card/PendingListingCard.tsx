@@ -6,13 +6,12 @@ import {
     ShieldCheck,
 } from "lucide-react";
 
-import { formatDate, formatDisplayValue } from "../../../../utils/listings/displayFormatting";
+import { formatDate, formatDisplayValue } from "../../../../../../utils/listings/displayFormatting";
 
-import type { PendingListing } from "../../../../types/admin/adminListing";
+import type { PendingListing } from "../../../../../../types/admin/adminListing";
 
 type PendingListingCardProps = {
     listing: PendingListing;
-
     onView: (listing: PendingListing) => void;
 };
 
@@ -88,9 +87,7 @@ export default function PendingListingCard({
                 <button
                     type="button"
                     className="admin-listing-action admin-listing-view-button"
-                    onClick={() =>
-                        onView(listing)
-                    }
+                    onClick={() => onView(listing)}
                 >
                     <Eye size={17} />
 

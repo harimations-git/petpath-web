@@ -11,18 +11,18 @@ import Card from "../../../components/ui/Card";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
-import PendingListingCard from "../../../components/ui/admin/listings/PendingListingCard";
+import PendingListingCard from "../../../components/ui/admin/listings/details/pet_card/PendingListingCard";
 
 import { usePendingListings } from "../../../hooks/admin/usePendingListings";
 import { formatDate } from "../../../utils/listings/displayFormatting";
 import { routes } from "../../../constants/routes";
 import type { PendingListing } from "../../../types/admin/adminListing";
 
-import "./ListingReview.css";
+import "./PendingListings.css";
+import CardList from "../../../components/ui/CardList";
 
-export default function ListingReview() {
-    const navigate =
-        useNavigate();
+export default function PendingListings() {
+    const navigate = useNavigate();
 
     const {
         displayedListings,
@@ -47,7 +47,7 @@ export default function ListingReview() {
     } = usePendingListings();
 
     function handleViewListing(listing: PendingListing) {
-        navigate(routes.admin.pending.listingReview(listing.listingId));
+        navigate(routes.admin.listings.listingReview(listing.listingId));
     }
 
     return (
@@ -99,7 +99,7 @@ export default function ListingReview() {
                             id="listing-sort"
                             value={sortOrder}
                             onChange={(event) =>
-                                 setSortOrder(event.target.value === "newest" ? "newest" : "oldest")
+                                setSortOrder(event.target.value === "newest" ? "newest" : "oldest")
                             }
                         >
                             <option value="oldest">
@@ -178,36 +178,26 @@ export default function ListingReview() {
 
                 {isLoading ? (
                     <Card className="admin-listings-empty">
-                        <LoadingSpinner size="large"/>
+                        <LoadingSpinner size="large" />
 
                         <p>Loading listings...</p>
                     </Card>
                 ) : displayedListings.length > 0 ? (
-                    <>
-                        <div className="admin-listings-list">
-                            {displayedListings.map(
-                                (listing) => (
-                                    <PendingListingCard
-                                        key={listing.listingId}
-                                        listing={listing}
-                                        onView={handleViewListing}
-                                    />
-                                )
-                            )}
-                        </div>
-
-                        {hasMore && (
-                            <div className="admin-listings-load-more">
-                                <button
-                                    type="button"
-                                    disabled={isLoadingMore}
-                                    onClick={() => void loadMore()}
-                                >
-                                    {isLoadingMore ? "Loading..." : "Load more"}
-                                </button>
-                            </div>
+                    <CardList
+                        hasMore={hasMore}
+                        isLoadingMore={isLoadingMore}
+                        onLoadMore={() => void loadMore()}
+                    >
+                        {displayedListings.map(
+                            (listing) => (
+                                <PendingListingCard
+                                    key={listing.listingId}
+                                    listing={listing}
+                                    onView={handleViewListing}
+                                />
+                            )
                         )}
-                    </>
+                    </CardList>
                 ) : (
                     <Card className="admin-listings-empty">
                         <ShieldCheck

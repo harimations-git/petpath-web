@@ -1,0 +1,1227 @@
+/* Page */
+
+.admin-listing-review-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 100%;
+
+    margin: 0;
+    padding: 16px 20px 32px;
+
+    box-sizing: border-box;
+}
+
+
+/* Header */
+
+.admin-listing-review-page .page-header {
+    width: 100%;
+}
+
+.admin-listing-review-page .page-heading {
+    min-width: 0;
+}
+
+.admin-listing-review-page .page-heading h1 {
+    margin: 0 0 5px;
+
+    overflow-wrap: anywhere;
+
+    color: var(--color-primary-dark);
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.admin-listing-review-page .page-heading p {
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.admin-listing-review-page .page-heading p strong {
+    color: var(--color-text);
+    font-weight: 800;
+}
+
+
+/* Back button */
+
+.admin-listing-review-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    margin: 0 0 10px;
+    padding: 0;
+
+    border: 0;
+    outline: none;
+
+    background: transparent;
+    color: var(--color-primary-dark);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        color 160ms ease,
+        transform 160ms ease;
+}
+
+.admin-listing-review-back svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.admin-listing-review-back:hover {
+    color: var(--color-primary);
+    transform: translateX(-2px);
+}
+
+.admin-listing-review-back:focus-visible {
+    border-radius: 4px;
+
+    outline: 3px solid rgba(47, 118, 85, 0.2);
+    outline-offset: 3px;
+}
+
+
+/* Review summary */
+
+.admin-listing-review-summary {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+
+    align-items: center;
+    gap: 16px;
+
+    padding: 20px;
+
+    border: 1px solid rgba(47, 118, 85, 0.22);
+    border-radius: var(--radius-md);
+
+    background: var(--color-pale-green);
+    box-shadow: var(--shadow-card);
+
+    box-sizing: border-box;
+}
+
+.admin-listing-review-summary-icon {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+
+    place-items: center;
+
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    color: var(--color-primary-dark);
+}
+
+.admin-listing-review-summary-icon svg {
+    display: block;
+}
+
+.admin-listing-review-summary-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.admin-listing-review-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 10px;
+
+    border-radius: var(--radius-pill);
+
+    background: var(--color-card);
+    color: var(--color-primary-dark);
+
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.admin-listing-review-summary h2 {
+    margin: 8px 0 3px;
+
+    color: var(--color-primary-dark);
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.3;
+}
+
+.admin-listing-review-summary p {
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* Review section list */
+
+.admin-listing-review-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* Individual review section */
+
+.admin-listing-review-section {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 20px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+
+    box-sizing: border-box;
+}
+
+
+/* Section heading */
+
+.admin-listing-review-section-heading {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+
+    align-items: flex-start;
+    gap: 12px;
+
+    margin: 0 0 18px;
+}
+
+.admin-listing-review-section-number {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+
+    place-items: center;
+
+    border-radius: var(--radius-pill);
+
+    background: var(--color-primary-dark);
+    color: white;
+
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.admin-listing-review-section-icon {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+
+    place-items: center;
+
+    border-radius: var(--radius-md);
+
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
+}
+
+.admin-listing-review-section-icon svg {
+    display: block;
+}
+
+.admin-listing-review-section-heading > div:last-child {
+    min-width: 0;
+    flex: 1;
+}
+
+.admin-listing-review-section-heading h2 {
+    margin: 0 0 4px;
+
+    color: var(--color-primary-dark);
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.3;
+}
+
+.admin-listing-review-section-heading p {
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.admin-listing-review-section-content {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* Shared read-only fields */
+
+.admin-listing-review-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(190px, 1fr)
+        minmax(260px, 1.3fr)
+        minmax(170px, 0.75fr);
+
+    width: 100%;
+    min-width: 0;
+
+    align-items: start;
+    gap: 18px;
+}
+
+.admin-listing-review-field {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    gap: 8px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 76px;
+
+    margin: 0;
+    padding: 13px 14px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-background);
+
+    box-sizing: border-box;
+}
+
+.admin-listing-review-field-full {
+    grid-column: 1 / -1;
+}
+
+.admin-listing-review-field > span {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 18px;
+
+    margin: 0;
+    padding: 0;
+
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 18px;
+}
+
+.admin-listing-review-field-value {
+    display: block;
+    width: 100%;
+    min-width: 0;
+
+    margin: 0;
+
+    overflow-wrap: anywhere;
+
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+
+/* Description */
+
+.admin-listing-review-description {
+    width: 100%;
+    min-height: 84px;
+
+    margin: 0;
+    padding: 0;
+
+    white-space: pre-line;
+
+    color: var(--color-text);
+
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.65;
+}
+
+
+/* External link */
+
+.admin-listing-review-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    width: fit-content;
+    max-width: 100%;
+
+    color: var(--color-primary-dark);
+
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+
+    overflow-wrap: anywhere;
+}
+
+.admin-listing-review-link svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.admin-listing-review-link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.admin-listing-review-link:focus-visible {
+    border-radius: 4px;
+
+    outline: 3px solid rgba(47, 118, 85, 0.2);
+    outline-offset: 3px;
+}
+
+
+/* Photos */
+
+.admin-listing-review-photos {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    width: 100%;
+    min-width: 0;
+
+    gap: 14px;
+}
+
+.admin-listing-review-photo {
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-background);
+}
+
+.admin-listing-review-photo img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform 200ms ease;
+}
+
+.admin-listing-review-photo:hover img {
+    transform: scale(1.025);
+}
+
+
+/* Animal list */
+
+.admin-listing-review-animals {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    width: 100%;
+    min-width: 0;
+}
+
+.admin-listing-review-animal {
+    width: 100%;
+    min-width: 0;
+
+    padding: 16px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-background);
+
+    box-sizing: border-box;
+}
+
+.admin-listing-review-animal-heading {
+    display: flex;
+    width: 100%;
+
+    align-items: center;
+    gap: 10px;
+
+    margin: 0 0 14px;
+}
+
+.admin-listing-review-animal-icon {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+
+    place-items: center;
+
+    border-radius: var(--radius-md);
+
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
+}
+
+.admin-listing-review-animal-icon svg {
+    display: block;
+}
+
+.admin-listing-review-animal-heading > div:last-child {
+    min-width: 0;
+    flex: 1;
+}
+
+.admin-listing-review-animal-heading span {
+    display: block;
+
+    margin: 0 0 2px;
+
+    color: var(--color-muted);
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.admin-listing-review-animal-heading h3 {
+    margin: 0;
+
+    overflow-wrap: anywhere;
+
+    color: var(--color-primary-dark);
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.3;
+}
+
+.admin-listing-review-animal-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    width: 100%;
+    min-width: 0;
+
+    align-items: start;
+    gap: 14px;
+}
+
+.admin-listing-review-animal-grid
+    .admin-listing-review-field {
+    background: var(--color-card);
+}
+
+
+/* Veterinary documents */
+
+.admin-listing-review-documents {
+    width: 100%;
+
+    margin-top: 20px;
+}
+
+.admin-listing-review-documents h3 {
+    margin: 0 0 12px;
+
+    color: var(--color-primary-dark);
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.3;
+}
+
+.admin-listing-review-document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    width: 100%;
+}
+
+.admin-listing-review-document {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+
+    align-items: center;
+    gap: 9px;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-card);
+    color: var(--color-primary-dark);
+
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.4;
+    text-decoration: none;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.admin-listing-review-document svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.admin-listing-review-document span {
+    min-width: 0;
+    flex: 1;
+
+    overflow-wrap: anywhere;
+}
+
+.admin-listing-review-document:hover {
+    border-color: var(--color-primary);
+
+    background: var(--color-pale-green);
+}
+
+.admin-listing-review-document:focus-visible {
+    outline: none;
+
+    border-color: var(--color-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(47, 118, 85, 0.12);
+}
+
+.admin-listing-review-no-documents {
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* Empty section */
+
+.admin-listing-review-empty-section {
+    display: flex;
+    min-height: 160px;
+    width: 100%;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 20px;
+
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-background);
+    color: var(--color-muted);
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+.admin-listing-review-empty-section svg {
+    display: block;
+    color: var(--color-primary);
+}
+
+.admin-listing-review-empty-section p {
+    max-width: 340px;
+
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* Organisation summary */
+
+.admin-listing-review-organisation {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+
+    align-items: center;
+    gap: 14px;
+
+    padding: 20px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+
+    box-sizing: border-box;
+}
+
+.admin-listing-review-organisation-icon {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    place-items: center;
+
+    border-radius: var(--radius-md);
+
+    background: var(--color-pale-green);
+    color: var(--color-primary-dark);
+}
+
+.admin-listing-review-organisation-icon svg {
+    display: block;
+}
+
+.admin-listing-review-organisation
+    > div:nth-child(2) {
+    min-width: 0;
+    flex: 1;
+}
+
+.admin-listing-review-organisation span {
+    display: block;
+
+    margin: 0 0 2px;
+
+    color: var(--color-muted);
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.admin-listing-review-organisation strong {
+    display: block;
+
+    margin: 0 0 3px;
+
+    overflow-wrap: anywhere;
+
+    color: var(--color-primary-dark);
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.3;
+}
+
+.admin-listing-review-organisation p {
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.admin-listing-review-organisation
+    > svg:last-child {
+    display: block;
+    flex-shrink: 0;
+
+    color: var(--color-muted);
+}
+
+
+/* Error page */
+
+.page-body-admin-error {
+    display: flex;
+    width: 100%;
+    min-height: 100dvh;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--spacing-md);
+
+    box-sizing: border-box;
+}
+
+.admin-listing-review-error {
+    display: flex;
+    width: min(100%, 500px);
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: var(--spacing-xl);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+.admin-listing-review-error > svg {
+    color: var(--color-primary-dark);
+}
+
+.admin-listing-review-error h2 {
+    margin: 0;
+
+    color: var(--color-primary-dark);
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.admin-listing-review-error p {
+    max-width: 420px;
+
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.admin-listing-review-error-actions {
+    display: flex;
+    width: 100%;
+    max-width: 380px;
+
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.admin-listing-review-error-actions > * {
+    flex: 1;
+}
+
+.admin-listing-review-error-actions
+    > button {
+    min-height: 42px;
+
+    padding: 0 16px;
+
+    border: 1px solid var(--color-primary-dark);
+    border-radius: var(--radius-sm);
+
+    background: transparent;
+    color: var(--color-primary-dark);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background-color 160ms ease,
+        color 160ms ease;
+}
+
+.admin-listing-review-error-actions
+    > button:hover {
+    background: var(--color-primary-dark);
+    color: white;
+}
+
+.admin-listing-review-error-actions
+    > button:focus-visible {
+    outline: 3px solid rgba(47, 118, 85, 0.2);
+    outline-offset: 2px;
+}
+
+.admin-listing-review-actions {
+    display: flex;
+    width: 100%;
+
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+
+    padding: 20px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    background: var(--color-card);
+    box-shadow: var(--shadow-card);
+
+    box-sizing: border-box;
+}
+
+.admin-listing-review-actions-text {
+    min-width: 0;
+    flex: 1;
+}
+
+.admin-listing-review-actions-text h2 {
+    margin: 0 0 4px;
+
+    color: var(--color-primary-dark);
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.admin-listing-review-actions-text p {
+    max-width: 620px;
+
+    margin: 0;
+
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.admin-listing-review-action-buttons {
+    display: flex;
+    flex-shrink: 0;
+
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.admin-listing-review-action {
+    display: inline-flex;
+    min-height: 44px;
+
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 0 18px;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background-color 160ms ease,
+        color 160ms ease,
+        border-color 160ms ease,
+        transform 160ms ease;
+}
+
+.admin-listing-review-action:hover {
+    transform: translateY(-1px);
+}
+
+.admin-listing-review-approve {
+    background: var(--color-primary-dark);
+    color: white;
+}
+
+.admin-listing-review-approve:hover {
+    background: var(--color-primary);
+}
+
+.admin-listing-review-reject {
+    border-color: var(--color-error);
+
+    background: transparent;
+    color: var(--color-error);
+}
+
+.admin-listing-review-reject:hover {
+    background: rgba(217, 106, 106, 0.1);
+}
+
+.admin-listing-review-action:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.55;
+    transform: none;
+}
+
+
+/* Rejection reason */
+
+.admin-listing-rejection-field {
+    display: flex;
+    width: 100%;
+
+    flex-direction: column;
+    gap: 7px;
+
+    text-align: left;
+}
+
+.admin-listing-rejection-field label {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.admin-listing-rejection-field textarea {
+    width: 100%;
+    min-height: 110px;
+
+    padding: 12px 13px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    outline: none;
+
+    background: var(--color-card);
+    color: var(--color-text);
+
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.admin-listing-rejection-field textarea:focus {
+    border-color: var(--color-primary);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(47, 118, 85, 0.12);
+}
+
+.admin-listing-rejection-field small {
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.admin-listing-rejection-error {
+    margin: 0;
+
+    color: var(--color-error);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-listing-review-request-error {
+    margin: 0;
+
+    color: var(--color-error);
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Large tablet */
+
+@media (max-width: 1200px) {
+    .admin-listing-review-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-listing-review-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .admin-listing-review-animal-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-listing-review-photos {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* Tablet */
+
+@media (max-width: 900px) {
+    .page-body-admin-error {
+        min-height:
+            calc(
+                100dvh -
+                var(--admin-mobile-navbar-height)
+            );
+    }
+
+    .admin-listing-review-page {
+        padding-top: 12px;
+    }
+
+    .admin-listing-review-page
+        .page-heading h1 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 760px) {
+    .admin-listing-review-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-listing-review-action-buttons {
+        width: 100%;
+    }
+
+    .admin-listing-review-action {
+        flex: 1;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
+    .admin-listing-review-page {
+        gap: 16px;
+
+        padding:
+            12px
+            var(--spacing-md)
+            var(--spacing-lg);
+    }
+
+    .admin-listing-review-page
+        .page-heading h1 {
+        font-size: 25px;
+    }
+
+    .admin-listing-review-page
+        .page-heading p {
+        font-size: 13px;
+    }
+
+    .admin-listing-review-summary {
+        align-items: flex-start;
+
+        padding: 16px;
+    }
+
+    .admin-listing-review-summary-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .admin-listing-review-section {
+        padding: 16px;
+    }
+
+    .admin-listing-review-section-heading {
+        display: grid;
+        grid-template-columns:
+            auto auto minmax(0, 1fr);
+
+        gap: 8px;
+
+        margin-bottom: 16px;
+    }
+
+    .admin-listing-review-section-heading
+        > div:last-child {
+        grid-column: 1 / -1;
+
+        width: 100%;
+    }
+
+    .admin-listing-review-grid,
+    .admin-listing-review-animal-grid,
+    .admin-listing-review-photos {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+    .admin-listing-review-field-full {
+        grid-column: auto;
+    }
+
+    .admin-listing-review-animal {
+        padding: 14px;
+    }
+
+    .admin-listing-review-organisation {
+        align-items: flex-start;
+
+        padding: 16px;
+    }
+
+    .admin-listing-review-error {
+        padding: var(--spacing-lg);
+    }
+
+    .admin-listing-review-error-actions {
+        flex-direction: column;
+    }
+
+    .admin-listing-review-error-actions > * {
+        width: 100%;
+        flex: none;
+    }
+}
+
+@media (max-width: 520px) {
+    .admin-listing-review-action-buttons {
+        flex-direction: column;
+    }
+
+    .admin-listing-review-action {
+        width: 100%;
+    }
+}

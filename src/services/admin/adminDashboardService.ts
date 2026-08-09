@@ -1,6 +1,6 @@
-import { fetchAuthSession } from "aws-amplify/auth";
 import type { AdminDashboardData } from "../../types/admin/adminDashboard";
 import type { ErrorResponse } from "../../utils/error/authErrorMessage";
+import { getAdminIdToken } from "../../utils/user/userUtils";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -46,6 +46,10 @@ export async function getAdminDashboard(
     forceRefresh = false
 ): Promise<AdminDashboardData> {
 
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
     if (!forceRefresh && memoryCache) {
         // Calculates how long ago the dashboard data was cached.
         const cacheAge = Date.now() - memoryCache.cachedAt;
@@ -84,12 +88,12 @@ export async function getAdminDashboard(
  */
 async function fetchAdminDashboard():
     Promise<AdminDashboardData> {
-    const session = await fetchAuthSession();
 
-    const idToken =
-        session.tokens
-            ?.idToken
-            ?.toString();
+    if (!API_BASE_URL) {
+        throw new Error("API URL is not configured");
+    }
+
+    const idToken = await getAdminIdToken();
 
     if (!idToken) {
         throw new Error(

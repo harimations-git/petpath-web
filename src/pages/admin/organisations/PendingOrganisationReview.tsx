@@ -1,25 +1,20 @@
-import {
-    Building2,
-    Clock3,
-    Search,
-    ShieldCheck,
-    XCircle,
-} from "lucide-react";
+import { Building2, Clock3, Search, ShieldCheck, XCircle } from "lucide-react";
+
+import { useState } from "react";
+import { formatDate } from "../../../utils/listings/displayFormatting";
+import { usePendingOrganisations } from "../../../hooks/admin/usePendingOrganisation";
+import type { PendingOrganisation } from "../../../types/admin/adminOrganisation";
+
+import "./OrganisationPages.css";
 
 import Card from "../../../components/ui/Card";
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
-import AdminOrganisationCard from "../../../components/ui/admin/organisations/OrganisationCard";
-
-import { formatDate } from "../../../utils/listings/displayFormatting";
-
-import "./OrganisationReview.css";
-import { usePendingOrganisations } from "../../../hooks/admin/usePendingOrganisation";
-import type { PendingOrganisation } from "../../../types/admin/adminOrganisation";
 import InfoModal from "../../../components/ui/InfoModal";
-import { useState } from "react";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
+import PendingOrganisationCard from "../../../components/ui/admin/organisations/PendingOrganisationCard";
+import CardList from "../../../components/ui/CardList";
 
-export default function OrganisationReview() {
+export default function PendingOrganisationReview() {
     const {
         displayedOrganisations,
 
@@ -213,40 +208,27 @@ export default function OrganisationReview() {
 
                 {isLoading ? (
                     <Card className="admin-organisations-empty">
-                        <LoadingSpinner size="large"/>
+                        <LoadingSpinner size="large" />
                         <p>Loading organisations... </p>
                     </Card>
                 ) : displayedOrganisations.length > 0 ? (
-                    <>
-                        <div className="admin-organisations-list">
-                            {displayedOrganisations.map(
-                                (organisation) => (
-                                    <div key={organisation.organisationId}>
-                                        <AdminOrganisationCard
-                                            organisation={organisation}
-                                            isUpdating={updatingOrganisationId === organisation.organisationId}
-                                            onApprove={handleApproveOrganisation}
-                                            onReject={handleRejectOrganisation}
-                                        />
-                                    </div>
-                                )
-                            )}
-                        </div>
-
-                        {hasMore && (
-                            <div className="admin-organisations-load-more">
-                                <button
-                                    type="button"
-                                    disabled={isLoadingMore}
-                                    onClick={() => void loadMore()}
-                                >
-                                    {isLoadingMore
-                                        ? "Loading..."
-                                        : "Load more"}
-                                </button>
-                            </div>
+                    <CardList
+                        hasMore={hasMore}
+                        isLoadingMore={isLoadingMore}
+                        onLoadMore={() => void loadMore()}
+                    >
+                        {displayedOrganisations.map(
+                            (organisation) => (
+                                <PendingOrganisationCard
+                                    key={organisation.organisationId}
+                                    organisation={organisation}
+                                    isUpdating={updatingOrganisationId === organisation.organisationId}
+                                    onApprove={handleApproveOrganisation}
+                                    onReject={handleRejectOrganisation}
+                                />
+                            )
                         )}
-                    </>
+                    </CardList>
                 ) : (
                     <Card className="admin-organisations-empty">
                         <ShieldCheck size={34} />
@@ -263,28 +245,28 @@ export default function OrganisationReview() {
                 visible={modalType === "approve" && selectedOrganisation !== null}
                 title="Approve organisation?"
                 message={selectedOrganisation
-                        ? `Are you sure you want to approve ${selectedOrganisation.charityName}? They will be able to create and publish pet listings.`
-                        : ""
+                    ? `Are you sure you want to approve ${selectedOrganisation.charityName}? They will be able to create and publish pet listings.`
+                    : ""
                 }
                 icon={ShieldCheck}
                 buttonText="Approve"
                 buttonTextSecondary="Cancel"
                 onClose={closeReviewModal}
-                onConfirm={() => {void confirmApproveOrganisation()}}
+                onConfirm={() => { void confirmApproveOrganisation() }}
             />
 
             <InfoModal
                 visible={modalType === "reject" && selectedOrganisation !== null}
                 title="Reject organisation?"
                 message={selectedOrganisation
-                        ? `Are you sure you want to reject ${selectedOrganisation.charityName}? Their organisation account will not be approved.`
-                        : ""
+                    ? `Are you sure you want to reject ${selectedOrganisation.charityName}? Their organisation account will not be approved.`
+                    : ""
                 }
                 icon={XCircle}
                 buttonText="Reject"
                 buttonTextSecondary="Cancel"
                 onClose={closeReviewModal}
-                onConfirm={() => {void confirmRejectOrganisation()}}
+                onConfirm={() => { void confirmRejectOrganisation() }}
             />
         </div>
     );

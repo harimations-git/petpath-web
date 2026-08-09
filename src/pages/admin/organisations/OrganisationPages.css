@@ -474,6 +474,23 @@
     width: 100%
 }
 
+.admin-organisation-view-button {
+    background: var(--color-primary-dark);
+    color: white;
+}
+
+.admin-organisation-view-button:hover {
+    background: var(--color-primary);
+}
+
+.admin-organisation-view-button:focus-visible {
+    outline:
+        3px solid
+        rgba(47, 118, 85, 0.2);
+
+    outline-offset: 2px;
+}
+
 /* Empty state */
 
 .admin-organisations-empty {

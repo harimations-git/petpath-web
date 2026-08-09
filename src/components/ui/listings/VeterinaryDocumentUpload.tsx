@@ -198,7 +198,7 @@ export default function VeterinaryDocumentUpload({
                         )}
                     </span>
                     <p>
-                        Upload vaccination records, health checks or other supporting documents.
+                        These documents will not be shared publicly and will only be reviewed by PetPath administrators as part of the listing approval process.
                     </p>
                 </div>
 
