@@ -113,7 +113,7 @@ export default function AdminDashboard() {
                 <AdminReviewSection
                     icon={Building2}
                     title="Organisation applications"
-                    description="Pending applications submitted during the last seven days."
+                    description="Pending applications awaiting a decision."
                     itemsLabel="Pending organisation applications"
                     isEmpty={pendingOrganisations.length === 0}
                     emptyMessage="There are no organisation applications awaiting review."
@@ -145,7 +145,7 @@ export default function AdminDashboard() {
                 <AdminReviewSection
                     icon={ClipboardCheck}
                     title="Pet listings"
-                    description="Pending listings submitted during the last seven days."
+                    description="Pending listings awaiting a decision."
                     itemsLabel="Pending pet listings"
                     isEmpty={pendingListings.length === 0}
                     emptyMessage="There are no pet listings awaiting review."

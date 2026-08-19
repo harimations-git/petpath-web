@@ -6,6 +6,7 @@ import {
 
 import {
     ChevronDown,
+    Download,
     LogOut,
     ShieldCheck
 } from "lucide-react";
@@ -13,10 +14,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { signOut } from "aws-amplify/auth";
 
-
 import "./AdminAccountMenu.css";
 import { clearAdminDashboardCache } from "../../../../services/admin/adminDashboardService";
 import { routes } from "../../../../constants/routes";
+import { exportAdminAuditLogs } from "../../../../services/admin/adminAuditLogService";
 
 export default function AdminAccountMenu() {
     const navigate = useNavigate();
@@ -24,6 +25,7 @@ export default function AdminAccountMenu() {
     const menuRef = useRef<HTMLDivElement | null>(null);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isExporting, setIsExporting,] = useState(false);
 
     /*
      * Close the menu when the admin
@@ -42,6 +44,31 @@ export default function AdminAccountMenu() {
             document.removeEventListener("mousedown", handleOutsideClick);
         };
     }, []);
+
+    //request and download all admin audit logs
+    async function handleExportAuditLogs() {
+        if (isExporting) {
+            return;
+        }
+
+
+        try {
+            setIsExporting(true);
+
+            await exportAdminAuditLogs();
+
+            setIsMenuOpen(false);
+
+        } catch (error) {
+            console.error(
+                "Unable to export audit logs:",
+                error
+            );
+
+        } finally {
+            setIsExporting(false);
+        }
+    }
 
     async function handleLogout() {
         try {
@@ -72,8 +99,6 @@ export default function AdminAccountMenu() {
             <button
                 type="button"
                 className="admin-account-trigger"
-                aria-expanded={isMenuOpen}
-                aria-controls="admin-account-dropdown"
                 onClick={() =>
                     setIsMenuOpen((current) => !current)
                 }
@@ -98,17 +123,26 @@ export default function AdminAccountMenu() {
                     size={18}
                     className={[
                         "admin-account-chevron",
-                        isMenuOpen ? "admin-account-chevron-open": "",
+                        isMenuOpen ? "admin-account-chevron-open" : "",
                     ].filter(Boolean).join(" ")}
                 />
             </button>
 
             {isMenuOpen && (
                 <div
-                    id="admin-account-dropdown"
                     className="admin-account-dropdown"
-                    role="menu"
                 >
+                    <button
+                        type="button"
+                        className="admin-account-export"
+                        disabled={isExporting}
+                        onClick={handleExportAuditLogs}
+                    >
+                        <Download size={17} />
+                        
+                        {isExporting ? "Exporting..." : "Export audit logs"}
+                    </button>
+
                     <button
                         type="button"
                         role="menuitem"
