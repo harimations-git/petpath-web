@@ -125,6 +125,7 @@
     box-shadow: var(--shadow-card);
 }
 
+.admin-account-export,
 .admin-account-dropdown button {
     display: flex;
     width: 100%;
@@ -151,12 +152,18 @@
     cursor: pointer;
 }
 
+.admin-account-export:hover,
 .admin-account-dropdown button:hover {
     background: var(--color-pale-green);
 }
 
 .admin-account-dropdown .admin-account-logout {
     color: var(--color-error);
+}
+
+.admin-account-export:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* Optional loading state */

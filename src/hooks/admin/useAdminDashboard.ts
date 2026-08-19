@@ -50,7 +50,7 @@ export function useAdminDashboard() {
     }, []);
 
     useEffect(() => {
-        void loadDashboard();
+        void loadDashboard(true);
     }, [loadDashboard]);
 
     return {
