@@ -158,7 +158,7 @@ export default function PendingListings() {
                         <p>
                             {displayedListings.length}{" "}
                             {displayedListings.length === 1 ? "listing" : "listings"}{" "}
-                            awaiting review
+                            loaded
                         </p>
                     </div>
                 </div>

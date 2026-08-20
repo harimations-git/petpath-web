@@ -188,7 +188,7 @@ export default function PendingOrganisationReview() {
                         <p>
                             {displayedOrganisations.length}{" "}
                             {displayedOrganisations.length === 1 ? "organisation" : "organisations"}{" "}
-                            awating approval
+                            loaded
                         </p>
                     </div>
                 </div>
