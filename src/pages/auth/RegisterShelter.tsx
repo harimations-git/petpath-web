@@ -52,7 +52,7 @@ export default function RegisterShelter() {
                 <button
                     type="button"
                     className="account-type-back"
-                    onClick={() => goBack}
+                    onClick={() => goBack()}
                 >
                     <ArrowLeft size={22} />
                 </button>
