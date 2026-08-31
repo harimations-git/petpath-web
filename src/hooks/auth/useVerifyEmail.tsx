@@ -1,23 +1,7 @@
-import {
-    useEffect,
-    useState,
-    type SubmitEvent,
-} from "react";
-
-import {
-    useLocation,
-    useNavigate,
-} from "react-router-dom";
-
-import {
-    autoSignIn,
-    confirmSignUp,
-    getCurrentUser,
-    resendSignUpCode,
-    signIn,
-} from "aws-amplify/auth";
-
-import {routes} from "../../constants/routes";
+import { useEffect, useState, type SubmitEvent } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { confirmSignUp, resendSignUpCode, signIn, signOut } from "aws-amplify/auth";
+import { routes } from "../../constants/routes";
 
 type VerifyEmailState = {
     email?: string;
@@ -85,7 +69,6 @@ export function useVerifyEmail() {
     async function handleVerifyEmail(
         event: SubmitEvent<HTMLFormElement>
     ) {
-        //prevents the browser from refreshing
         event.preventDefault();
 
         setFormError("");
@@ -106,40 +89,30 @@ export function useVerifyEmail() {
         try {
             setIsLoading(true);
 
-            const confirmResult =
-                await confirmSignUp({
-                    username: normalisedEmail,
-                    confirmationCode: verificationCode,
-                });
+            await confirmSignUp({
+                username: normalisedEmail,
+                confirmationCode: verificationCode,
+            });
 
             /*
-             * The user may already be authenticated.
-             * In that case, do not call autoSignIn or signIn again.
+             * Clear any existing session first.
+             * This prevents an old admin or shelter session
+             * from being reused.
              */
-            try {
-                await getCurrentUser();
-
-                goToAccountReview();
-                return;
-            } catch {
-                // No existing session, continue with sign-in flow.
-            }
+            await signOut();
 
             /*
-             * User arrived from the login page.
-             * Confirm the email and then sign in using the password
-             * they entered on the login page.
+             * If the password is available, explicitly sign
+             * into the account that was just verified.
              */
             if (passwordForSignIn) {
-                const signInResult =
-                    await signIn({
-                        username: normalisedEmail,
-                        password: passwordForSignIn,
-                    });
+                const signInResult = await signIn({
+                    username: normalisedEmail,
+                    password: passwordForSignIn,
+                });
 
                 if (!signInResult.isSignedIn) {
-                    throw new Error("Your email was verified, but sign-in was not completed."
-                    );
+                    throw new Error("Your email was verified, but sign-in was not completed.");
                 }
 
                 goToAccountReview();
@@ -147,54 +120,16 @@ export function useVerifyEmail() {
             }
 
             /*
-             * User arrived directly from registration.
-             * Only call autoSignIn when Cognito explicitly requests it.
-             */
-            if (
-                confirmResult.nextStep.signUpStep === "COMPLETE_AUTO_SIGN_IN"
-            ) {
-                try {
-                    const autoSignInResult = await autoSignIn();
-
-                    if (!autoSignInResult.isSignedIn) {
-                        throw new Error("Automatic sign-in was not completed.");
-                    }
-
-                    goToAccountReview();
-                    return;
-                } catch (error) {
-                    const errorName = error instanceof Error ? error.name : "";
-
-                    /*
-                     * This means the user is already signed in,
-                     * so they can continue to the review page.
-                     */
-                    if (
-                        errorName === "UserAlreadyAuthenticatedException"
-                    ) {
-                        goToAccountReview();
-                        return;
-                    }
-
-                    throw error;
-                }
-            }
-
-            /*
-             * Email was confirmed, but there is no active sign-in flow.
-             * Send the user to login.
+             * If the password is unavailable, require the
+             * user to log in normally.
              */
             goToLoginAfterVerification();
-        } catch (error) {
-            console.log( "Verify email error:", error
-            );
 
+        } catch (error) {
             if (error instanceof Error) {
                 setFormError(error.message);
             } else {
-                setFormError(
-                    "Unable to verify your email. Please try again."
-                );
+                setFormError("Unable to verify your email. Please try again.");
             }
         } finally {
             setIsLoading(false);
@@ -208,15 +143,14 @@ export function useVerifyEmail() {
         const normalisedEmail = email.trim().toLowerCase();
 
         if (!normalisedEmail) {
-            setFormError("No email address was found. Please register again."
-            );
+            setFormError("No email address was found. Please register again.");
             return;
         }
 
         try {
             setIsResending(true);
 
-            await resendSignUpCode({username: normalisedEmail,});
+            await resendSignUpCode({ username: normalisedEmail, });
 
             setSuccessMessage("A new verification code has been sent to your email.");
         } catch (error) {
