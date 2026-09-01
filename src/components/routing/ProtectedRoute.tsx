@@ -1,14 +1,12 @@
-import {
-    Navigate,
-    Outlet,
-    useLocation,
-} from "react-router-dom";
-
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import { routes } from "../../constants/routes";
 import { useAuthSessionCheck } from "../../hooks/organisation/dashboard/useAuthSessionCheck";
 
-
+/**
+ * Protects routes that should only be accessible to signed-in users.
+ * Redirects unauthenticated users to the login page.
+ */
 export default function ProtectedRoute() {
     const location = useLocation();
 

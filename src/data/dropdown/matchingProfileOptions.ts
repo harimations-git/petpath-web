@@ -7,9 +7,12 @@ import type {
     SpaceNeeded,
 } from "../../types/matchingProfile";
 
+/**
+ * Reusable type for matching profile dropdown options.
+ */
 export type SelectOption<T extends string = string> = {
     label: string;
-    value: T;
+    value: T; //generic type placeholder
 };
 
 /**
@@ -32,6 +35,7 @@ export const petCostOptions: SelectOption<Exclude<PetCost, "">>[] = [
     },
 ];
 
+//Outdoor space options used in the matching profile
 export const spaceNeededOptions: SelectOption<Exclude<SpaceNeeded, "">>[] = [
     {
         label: "Private garden",
@@ -47,6 +51,7 @@ export const spaceNeededOptions: SelectOption<Exclude<SpaceNeeded, "">>[] = [
     },
 ];
 
+//Activity level options used in the matching profile
 export const experienceNeededOptions: SelectOption<Exclude<ExperienceNeeded, "">>[] = [
     {
         label: "Suitable for first-time owners",
@@ -62,7 +67,7 @@ export const experienceNeededOptions: SelectOption<Exclude<ExperienceNeeded, "">
     },
 ];
 
-
+//Activity level options used in the matching profile
 export const activityNeededOptions: SelectOption<Exclude<ActivityNeeded, "">>[] = [
     {
         label: "Low",
@@ -78,6 +83,7 @@ export const activityNeededOptions: SelectOption<Exclude<ActivityNeeded, "">>[] 
     },
 ];
 
+// Attention level options used in the matching profile
 export const attentionNeededOptions: SelectOption<Exclude<AttentionNeeded, "">>[] = [
     {
         label: "Low",
@@ -93,6 +99,7 @@ export const attentionNeededOptions: SelectOption<Exclude<AttentionNeeded, "">>[
     },
 ];
 
+//Home type options used in the matching profile
 export const matchingHomeTypeOptions: SelectOption<Exclude<MatchingHomeType, "">>[] = [
     {
         label: "Flat",

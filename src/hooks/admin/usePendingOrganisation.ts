@@ -1,18 +1,12 @@
-import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
-
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PendingOrganisation } from "../../types/admin/adminOrganisation";
 import { getPendingOrganisations, reviewOrganisation } from "../../services/admin/adminOrganisationService";
 import type { SortOrder } from "../../types/filters";
 import type { AdminReviewDecision } from "../../types/admin/adminManagement";
 
-/*
- * Custom hook responsible for getting the pending organisation's page
- *
+/**
+ * Manages the pending organisations page.
+ * Handles loading, pagination, searching, sorting and review actions.
  */
 export function usePendingOrganisations() {
     const [organisations, setOrganisations] = useState<PendingOrganisation[]>([]);
@@ -146,10 +140,7 @@ export function usePendingOrganisations() {
      */
     const submitReview =
         useCallback(
-            async (
-                organisationId: string,
-                decision: AdminReviewDecision,
-            ) => {
+            async (organisationId: string, decision: AdminReviewDecision) => {
                 //stop another review request from starting while one is already running
                 if (updatingOrganisationId) {
                     return false;
@@ -162,10 +153,7 @@ export function usePendingOrganisations() {
 
                 try {
                     //send the review decision to the api
-                    await reviewOrganisation({
-                        organisationId,
-                        decision,
-                    });
+                    await reviewOrganisation({organisationId, decision});
 
                     //reload the first page
                     await loadOrganisations();

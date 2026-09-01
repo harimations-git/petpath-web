@@ -19,7 +19,10 @@ import ProfileAboutSection from "../../../components/ui/profile/setup/ProfileAbo
 import ProfileAddressSection from "../../../components/ui/profile/setup/ProfileAddressSection";
 import ProfileSetupActions from "../../../components/ui/profile/setup/ProfileSetupActions";
 
-
+/**
+ * Displays the organisation profile setup page.
+ * Collects the public profile information required before listing pets.
+ */
 export default function ProfileSetup() {
     useBackButtonRedirect(routes.home.dashboard);
 

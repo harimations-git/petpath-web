@@ -1,21 +1,20 @@
-import {
-    ArrowLeft,
-    CheckCircle2,
-    FileText,
-    Mail,
-    ShieldCheck,
-} from "lucide-react";
-
+import { ArrowLeft, CheckCircle2, FileText, Mail, ShieldCheck } from "lucide-react";
 import OrganisationAccountMenu from "../../../components/ui/profile/OrganisationAccountMenu";
-
 import "../dashboard/PageHeading.css";
 import "./LegalPage.css";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * Controls which page layout is used for the Privacy Policy.
+ */
 type TermsOfServiceProps = {
     layout?: "public" | "shelter";
 };
 
+/**
+ * Displays the PetPath Terms of Service.
+ * Supports both the public layout and the authenticated shelter portal layout.
+ */
 export default function TermsOfService({
     layout = "public",
 }: TermsOfServiceProps) {

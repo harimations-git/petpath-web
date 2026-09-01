@@ -14,8 +14,11 @@ import Spacer from "../../../components/layout/Spacer";
 import DeleteAccountOption from "../../../components/ui/profile/delete/DeleteAccountOption";
 import { useSettings } from "../../../hooks/organisation/dashboard/useSettings";
 
-
-
+/**
+ * Displays the organisation settings page.
+ * Allows organisations to view account information, update their public
+ * profile details and delete their account.
+ */
 export default function Settings() {
 
     const {
@@ -150,18 +153,14 @@ export default function Settings() {
                                     </span>
 
                                     <div className="password-value-row">
-                                        <span
-                                            className="fake-password-value"
-
-                                        >
+                                        <span className="fake-password-value">
                                             ************
                                         </span>
 
                                         <Link
                                             to={routes.auth.forgotPassword}
                                             state={{
-                                                initialEmail:
-                                                    organisationProfile?.email ?? "",
+                                                initialEmail: organisationProfile?.email ?? "",
                                                 returnTo: routes.home.settings,
                                             }}
                                             className="password-change-link"
@@ -304,9 +303,7 @@ export default function Settings() {
                                         <button
                                             type="button"
                                             className="description-cancel-button"
-                                            onClick={
-                                                handleCancelDescriptionEdit
-                                            }
+                                            onClick={handleCancelDescriptionEdit}
                                             disabled={isSavingDescription}
                                         >
                                             Cancel
@@ -315,9 +312,7 @@ export default function Settings() {
                                         <button
                                             type="button"
                                             className="description-save-button"
-                                            onClick={
-                                                handleSaveDescription
-                                            }
+                                            onClick={handleSaveDescription}
                                             disabled={isSavingDescription}
                                         >
                                             {!isSavingDescription ? "Save Description" : "Saving..."}
@@ -350,9 +345,7 @@ export default function Settings() {
                                     onClick={startDescriptionEdit}
                                     disabled={isSavingDescription}
                                 >
-                                    <Pencil
-                                        size={14}
-                                    />
+                                    <Pencil size={14}/>
 
                                     {!isSavingDescription ? "Edit" : "Saving..."}
                                 </button>

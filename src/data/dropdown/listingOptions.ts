@@ -1,14 +1,5 @@
-import type {
-    AnimalSex,
-    AnimalType,
-    ListingAnimalCategory,
-} from "../../types/listing";
-
-import type {
-    MicrochipStatus,
-    NeuteredStatus,
-    VaccinationStatus,
-} from "../../types/vetInformation";
+import type { AnimalSex, AnimalType, ListingAnimalCategory } from "../../types/listing";
+import type { MicrochipStatus, NeuteredStatus, VaccinationStatus } from "../../types/vetInformation";
 
 //type used for dropdown or select options
 export type SelectOption<T extends string = string> = {
@@ -16,10 +7,7 @@ export type SelectOption<T extends string = string> = {
     value: T;
 };
 
-/**
- * Turns dropdown options (labels) and maps them to values
- * Used in 
- * */
+// Animal type options used for the main listing
 export const listingAnimalTypeOptions:
     SelectOption<ListingAnimalCategory>[] = [
         {
@@ -48,7 +36,7 @@ export const listingAnimalTypeOptions:
         },
     ];
 
-
+// Animal type options used for individual animals within a listing
 export const individualAnimalTypeOptions:
     SelectOption<AnimalType>[] = [
         {
@@ -73,7 +61,7 @@ export const individualAnimalTypeOptions:
         },
     ];
 
-
+//Sex options used for individual animals
 export const animalSexOptions:
     SelectOption<AnimalSex>[] = [
         {
@@ -86,7 +74,7 @@ export const animalSexOptions:
         },
     ];
 
-
+//Vaccination status options used in the listing form
 export const vaccinationStatusOptions:
     SelectOption<Exclude<VaccinationStatus, "">>[] = [
         {
@@ -107,7 +95,7 @@ export const vaccinationStatusOptions:
         },
     ];
 
-
+//Microchip status options used in the listing form
 export const microchipStatusOptions:
     SelectOption<Exclude<MicrochipStatus, "">>[] = [
         {
@@ -124,7 +112,7 @@ export const microchipStatusOptions:
         },
     ];
 
-
+//Neutering status options used in the listing form
 export const neuteredStatusOptions:
     SelectOption<Exclude<NeuteredStatus, "">>[] = [
         {

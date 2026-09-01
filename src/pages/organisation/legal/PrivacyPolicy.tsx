@@ -1,30 +1,25 @@
-import {
-    ArrowLeft,
-    Database,
-    FileText,
-    LockKeyhole,
-    Mail,
-    ShieldCheck,
-    UserRound,
-} from "lucide-react";
-
+import { ArrowLeft, Database, FileText, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
 import OrganisationAccountMenu from "../../../components/ui/profile/OrganisationAccountMenu";
-
 import "./LegalPage.css";
 import "../dashboard/PageHeading.css";
 import { useNavigate } from "react-router-dom";
 
-
+/**
+ * Controls which page layout is used for the Privacy Policy.
+ */
 type PrivacyPolicyProps = {
     layout?: "public" | "shelter";
 };
 
-export default function PrivacyPolicy({
-    layout = "public",
-}: PrivacyPolicyProps) {
+/**
+ * Displays the PetPath Privacy Policy.
+ * Supports both the public layout and the authenticated shelter portal layout.
+ */
+export default function PrivacyPolicy({layout = "public"}: PrivacyPolicyProps) {
 
     const navigate = useNavigate();
 
+    //Use different page styling depending on where the policy is displayed
     const isPublic = layout === "public";
     const pageClass = isPublic ? "legal-page" : "page";
 

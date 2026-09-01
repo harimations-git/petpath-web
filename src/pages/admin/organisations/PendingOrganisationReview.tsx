@@ -1,12 +1,9 @@
 import { Building2, Clock3, Search, ShieldCheck, XCircle } from "lucide-react";
-
 import { useState } from "react";
 import { formatDate } from "../../../utils/listings/displayFormatting";
 import { usePendingOrganisations } from "../../../hooks/admin/usePendingOrganisation";
 import type { PendingOrganisation } from "../../../types/admin/adminOrganisation";
-
 import "./OrganisationPages.css";
-
 import Card from "../../../components/ui/Card";
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
 import InfoModal from "../../../components/ui/InfoModal";
@@ -14,6 +11,10 @@ import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 import PendingOrganisationCard from "../../../components/ui/admin/organisations/PendingOrganisationCard";
 import CardList from "../../../components/ui/CardList";
 
+/**
+ * Displays organisation applications that are waiting for admin review.
+ * Handles searching, sorting, pagination and approving or rejecting applications.
+ */
 export default function PendingOrganisationReview() {
     const {
         displayedOrganisations,
@@ -45,25 +46,25 @@ export default function PendingOrganisationReview() {
     const [selectedOrganisation, setSelectedOrganisation] = useState<PendingOrganisation | null>(null);
     const [modalType, setModalType] = useState<"approve" | "reject" | null>(null);
 
-    function handleApproveOrganisation(
-        organisation: PendingOrganisation
-    ) {
+    //Select an organisation and open the approval modal
+    function handleApproveOrganisation(organisation: PendingOrganisation) {
         setSelectedOrganisation(organisation);
         setModalType("approve");
     }
 
-    function handleRejectOrganisation(
-        organisation: PendingOrganisation
-    ) {
+    //Select an organisation and open the rejection modal
+    function handleRejectOrganisation(organisation: PendingOrganisation) {
         setSelectedOrganisation(organisation);
         setModalType("reject");
     }
 
+    //Close the current modal and clear the selected organisation
     function closeReviewModal() {
         setModalType(null);
         setSelectedOrganisation(null);
     }
 
+    //Approve the selected organisation
     async function confirmApproveOrganisation() {
         if (!selectedOrganisation) {
             return;
@@ -74,6 +75,7 @@ export default function PendingOrganisationReview() {
         closeReviewModal();
     }
 
+    //Reject the selected organisation
     async function confirmRejectOrganisation() {
         if (!selectedOrganisation) {
             return;

@@ -1,7 +1,4 @@
-import {
-    confirmResetPassword,
-    resetPassword,
-} from "aws-amplify/auth";
+import { confirmResetPassword, resetPassword } from "aws-amplify/auth";
 
 export type SendPasswordResetCodeResult = {
     isComplete: boolean;

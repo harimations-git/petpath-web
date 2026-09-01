@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState, type ChangeEvent, type SubmitEvent } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { useOrganisationProfile } from "../../../context/OrganisationProfileContext";
 import { completeOrganisationProfile, getCurrentOrganisationProfile, uploadOrganisationProfileImage, type OrganisationProfile } from "../../../services/organisation/organisationService";
@@ -7,17 +6,17 @@ import { normaliseUrl } from "../../../utils/listings/listingUrlUtils";
 import { routes } from "../../../constants/routes";
 import { allowedImageTypes } from "../../../utils/imageValidation";
 
+/**
+ * Manages the organisation profile setup process.
+ * Handles loading existing profile data, image selection,
+ * validation and completing the organisation profile.
+ */
 export function useProfileSetup() {
     const navigate = useNavigate();
 
-    const {
-        updateCachedOrganisationProfile,
-        refreshOrganisationProfile,
-    } = useOrganisationProfile();
-
+    const { updateCachedOrganisationProfile, refreshOrganisationProfile } = useOrganisationProfile();
 
     const [organisationProfile, setOrganisationProfile] = useState<OrganisationProfile | null>(null);
-
 
     const [websiteUrl, setWebsiteUrl] = useState("");
     const [description, setDescription] = useState("");
@@ -46,15 +45,17 @@ export function useProfileSetup() {
 
             try {
                 const formattedUrl = normaliseUrl(websiteUrl)
-
                 return new URL(formattedUrl).hostname.replace(/^www\./, "");
-
             } catch {
                 return "";
             }
         }, [websiteUrl]);
 
 
+    /*
+    * Load the current organisation profile and populate the setup form.
+    * Redirect the user if their account is not allowed to complete setup.
+    */
     useEffect(() => {
         let isMounted = true;
 
@@ -149,6 +150,7 @@ export function useProfileSetup() {
     }, [profileImagePreview]);
 
 
+    // Validate and preview the selected organisation profile image
     function handleProfileImageChange(event: ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];
 
@@ -185,7 +187,7 @@ export function useProfileSetup() {
         setFormError("");
     }
 
-
+    // Validate and submit the completed organisation profile
     async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
         //Prevents normal clicking behaviour
         event.preventDefault();
@@ -198,7 +200,7 @@ export function useProfileSetup() {
 
         const formattedWebsiteUrl = normaliseUrl(websiteUrl.trim());
 
-        // Security measure, legitimate sites will be https secure
+         // Only allow secure HTTPS organisation websites
         if (!formattedWebsiteUrl.startsWith("https://")) {
             setFormError("Please enter a secure website. PetPath only allows HTTPS websites.");
 
@@ -224,9 +226,7 @@ export function useProfileSetup() {
         try {
             setIsSaving(true);
 
-
             let profileImageKey = organisationProfile?.profileImageKey ?? "";
-
 
             if (profileImage) {
                 profileImageKey = await uploadOrganisationProfileImage(profileImage);

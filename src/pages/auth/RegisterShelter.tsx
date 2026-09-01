@@ -16,6 +16,10 @@ import { routes } from "../../constants/routes";
 import AuthProgressStepper from "../../components/ui/auth/AuthProgressStepper";
 import { useRegisterShelter } from "../../hooks/auth/useRegisterShelter";
 
+/**
+ * Displays the shelter registration form.
+ * Uses the registration hook to manage form state, validation and account creation.
+ */
 export default function RegisterShelter() {
     const {
         charityId,

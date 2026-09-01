@@ -1,12 +1,9 @@
 
 /**
- * function takes a URL or domain entered by the user and returns only the domain name.
+ * Function takes a URL or domain entered by the user and returns only the domain name.
  * @param value 
- * @returns 
  */
-export function getDomainFromUrl(
-    value: string
-) {
+export function getDomainFromUrl(value: string) {
     const trimmedValue = value.trim();
 
     if (!trimmedValue) {
@@ -30,13 +27,10 @@ export function getDomainFromUrl(
 }
 
 /**
- * function makes sure a URL starts with either http:// or https://.
+ * Function makes sure a URL starts with either http:// or https://.
  * @param value 
- * @returns 
  */
-export function normaliseUrl(
-    value: string
-) {
+export function normaliseUrl(value: string) {
     const trimmedValue = value.trim();
 
     if (trimmedValue.startsWith("http://") || trimmedValue.startsWith("https://")

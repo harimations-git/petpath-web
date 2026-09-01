@@ -152,6 +152,10 @@ export async function reviewOrganisation({
     }
 }
 
+/**
+ * Retrieves the full organisation profile for the admin details page.
+ * @param organisationId
+ */
 export async function getAdminOrganisationDetails(
     organisationId: string
 ): Promise<PublicOrganisationProfile> {

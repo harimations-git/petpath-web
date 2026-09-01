@@ -1,3 +1,6 @@
+/**
+ * Routes used throughout the PetPath web portal.
+ */
 export const routes = {
     auth: {
         login: "/login",
@@ -19,6 +22,8 @@ export const routes = {
 
     listings: {
         view: "/listings/view/:listingId",
+
+        //Route for viewing a specific listing
         viewListing: (listingId: string) =>
             `/listings/view/${listingId}`,
     },
@@ -41,6 +46,8 @@ export const routes = {
             allOrganisations: "/admin/allOrganisations",
 
             viewProfile: "/admin/organisations/:organisationId",
+
+            //Route for viewing a specific organisation
             details: (organisationId: string) =>
                 `/admin/organisations/${encodeURIComponent(organisationId)}`,
 
@@ -51,6 +58,8 @@ export const routes = {
             allListings: "/admin/listings",
 
             listingReviewPath: "/admin/listing/:listingId",
+            
+            //Route for viewing a specific listing
             listingReview: (listingId: string) =>
                 `/admin/listing/${encodeURIComponent(listingId)}`,
 

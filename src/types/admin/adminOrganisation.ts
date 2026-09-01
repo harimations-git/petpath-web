@@ -21,6 +21,8 @@ export type PendingOrganisationsResponse = {
     nextToken: string | null; //pagination token
 };
 
+
+//Stores information about an organisation that has been approved by an admin.
 export type ApprovedOrganisation = {
     organisationId: string;
 
@@ -35,6 +37,7 @@ export type ApprovedOrganisation = {
     updatedAt?: string;
 };
 
+//Loads all of the approved organisations, includes a pagination token
 export type ApprovedOrganisationsResponse = {
     organisations: ApprovedOrganisation[];
     nextToken?: string | null;

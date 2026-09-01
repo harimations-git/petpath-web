@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useOrganisationProfile } from "../../../context/OrganisationProfileContext";
 import { routes } from "../../../constants/routes";
 
-export function useApprovedOrganisationRoute(
-    documentTitle: string
-) {
+/**
+ * Protects organisation routes that should only be accessible
+ * to organisations with an approved account.
+ */
+export function useApprovedOrganisationRoute(documentTitle: string) {
     const navigate = useNavigate();
 
     const {
@@ -19,10 +20,7 @@ export function useApprovedOrganisationRoute(
         document.title = documentTitle;
     }, [documentTitle]);
 
-    /**
-     * checks whether the organisation is allowed to stay on the 
-     * current page
-     */
+    //Redirect organisations that are not approved
     useEffect(() => {
         if (!organisationProfile) {
             return;
@@ -42,7 +40,7 @@ export function useApprovedOrganisationRoute(
         navigate,
     ]);
 
-    //the hook returns the profile information to the component.
+    //Return the profile state for the page to use
     return {
         organisationProfile,
         isLoadingProfile,

@@ -1,28 +1,16 @@
-import {
-    useEffect,
-    useState,
-    type SubmitEvent,
-} from "react";
-
-import {
-    resendSignUpCode,
-    signIn,
-    signOut,
-} from "aws-amplify/auth";
-
+import { useEffect, useState, type SubmitEvent } from "react";
+import { resendSignUpCode, signIn, signOut } from "aws-amplify/auth";
 import { routes } from "../../constants/routes";
 import { useNavigate } from "react-router-dom";
 import { getCurrentOrganisationProfile } from "../../services/organisation/organisationService";
 import { getRouteForOrganisation } from "../../services/organisation/organisationRedirect";
 import { getCurrentPortalRole } from "../../services/auth/portalRole";
 
-
 // Describe the parts of an authentication error that this file uses.
 type AuthError = {
     name?: string;
     message?: string;
 };
-
 
 // Check whether an unknown error means the account has not been confirmed.
 function isUnconfirmedAccountError(error: unknown) {
@@ -34,6 +22,10 @@ function isUnconfirmedAccountError(error: unknown) {
     );
 }
 
+/**
+ * Manages login for organisation and admin portal users.
+ * Handles authentication, email verification and role-based redirects.
+ */
 export function useShelterLogin() {
     const navigate = useNavigate();
 
@@ -48,9 +40,8 @@ export function useShelterLogin() {
     }, []);
 
     // Send an unconfirmed user to the email verification page.
-    async function sendUserToVerification(
-        normalisedEmail: string
-    ) {
+    async function sendUserToVerification(normalisedEmail: string) {
+
         // Save the email temporarily in the browser.
         sessionStorage.setItem("pendingVerificationEmail", normalisedEmail);
 
@@ -74,9 +65,8 @@ export function useShelterLogin() {
     }
 
     //handles the login submission
-    async function handleLogin(
-        event: SubmitEvent<HTMLFormElement>
-    ) {
+    async function handleLogin(event: SubmitEvent<HTMLFormElement>) {
+
         //stop the browser from refreshing the page
         event.preventDefault();
 
@@ -93,11 +83,7 @@ export function useShelterLogin() {
             }
 
             //try to sign in with details
-            const signInResult =
-                await signIn({
-                    username: normalisedEmail,
-                    password,
-                });
+            const signInResult = await signIn({username: normalisedEmail, password});
 
             //get the next step cognito says is required
             const signInStep = signInResult.nextStep.signInStep;
@@ -121,6 +107,7 @@ export function useShelterLogin() {
             //admin or organisation account
             const portalRole = await getCurrentPortalRole();
 
+            //Redirect to the admin portal
             if (portalRole === "admin") {
                 navigate(
                     routes.admin.dashboard,
@@ -132,6 +119,7 @@ export function useShelterLogin() {
                 return;
             }
 
+            //Redirect to the organisation portal
             if (portalRole === "organisation") {
                 const organisationProfile = await getCurrentOrganisationProfile();
 

@@ -1,27 +1,9 @@
-import {
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-    type ChangeEvent,
-    type DragEvent,
-} from "react";
-
-import {
-    ImagePlus,
-    UploadCloud,
-    X,
-} from "lucide-react";
-
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type DragEvent } from "react";
+import { ImagePlus, UploadCloud, X } from "lucide-react";
 import "./ListingPhotoUpload.css";
-
-import {
-    getFileKey,
-} from "../../../utils/fileUtils";
-
-import type {
-    ExistingListingPhoto,
-} from "../../../types/listing";
+import { getFileKey } from "../../../utils/fileUtils";
+import type { ExistingListingPhoto } from "../../../types/listing";
+import { allowedImageTypes } from "../../../utils/imageValidation";
 
 type ListingPhotoUploadProps = {
     photos: File[];
@@ -37,13 +19,6 @@ type ListingPhotoUploadProps = {
     maxFileSizeMb?: number;
 };
 
-
-
-const allowedImageTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/webp", //I think these work on mobile
-];
 
 export default function ListingPhotoUpload({
     photos,
@@ -115,9 +90,7 @@ export default function ListingPhotoUpload({
 
         const validFiles = selectedFiles.filter((file) => {
             if (
-                !allowedImageTypes.includes(
-                    file.type
-                )
+                !allowedImageTypes.includes(file.type)
             ) {
                 errors.push(
                     `${file.name} is not a support image type`

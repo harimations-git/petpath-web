@@ -42,16 +42,25 @@ export type ApprovedListing = {
     updatedAt?: string;
 };
 
+/**
+ * Response returned when loading approved listings.
+ */
 export type ApprovedListingsResponse = {
     listings: ApprovedListing[];
     nextToken?: string | null;
 };
 
+/**
+ * Response returned when loading listings waiting for admin review.
+ */
 export type PendingListingsResponse = {
     listings: PendingListing[];
     nextToken: string | null;
 };
 
+/**
+ * Stores information about an individual animal shown in the admin listing view.
+ */
 export type AdminListingAnimal = {
     animalId: string;
     animalOrder: number;
@@ -63,11 +72,17 @@ export type AdminListingAnimal = {
     temperament?: string;
 };
 
+/**
+ * Stores information about a veterinary document shown to an admin.
+ */
 export type AdminListingDocument = {
     name: string;
     url: string;
 };
 
+/**
+ * Stores the full pet listing information shown to an admin.
+ */
 export type AdminListingDetails = {
     listingId: string;
 
@@ -108,6 +123,9 @@ export type AdminListingDetails = {
     updatedAt?: string;
 };
 
+/**
+ * Response returned when loading the details of a single listing.
+ */
 export type AdminListingDetailsResponse = {
     listing: AdminListingDetails;
 };
@@ -122,12 +140,18 @@ export const MATCHING_PROFILE_FIELD_ORDER = [
     "homeType",
 ] as const;
 
+/**
+ * Request used when an admin approves or rejects a listing.
+ */
 export type ReviewListingRequest = {
     listingId: string;
     decision: AdminReviewDecision;
     reason?: string;
 };
 
+/**
+ * Options used when requesting approved listings.
+ */
 export type GetApprovedListingsOptions = {
     sortOrder: SortOrder
     nextToken?: string | null;

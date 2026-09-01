@@ -1,5 +1,4 @@
 import { Building2, Clock3, Search, ShieldCheck } from "lucide-react";
-
 import { useNavigate } from "react-router-dom";
 import Card from "../../../components/ui/Card";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
@@ -9,10 +8,13 @@ import { useApprovedOrganisations } from "../../../hooks/admin/useApprovedOrgani
 import type { ApprovedOrganisation } from "../../../types/admin/adminOrganisation";
 import { formatDate } from "../../../utils/listings/displayFormatting";
 import { routes } from "../../../constants/routes";
-
 import "./OrganisationPages.css";
 import CardList from "../../../components/ui/CardList";
 
+/**
+ * Displays approved organisations for admins.
+ * Handles searching, sorting, pagination and navigation to organisation details.
+ */
 export default function ApprovedOrganisations() {
     const navigate = useNavigate();
 
@@ -38,6 +40,7 @@ export default function ApprovedOrganisations() {
         retry,
     } = useApprovedOrganisations();
 
+    //Open the selected organisation's admin details page
     function handleViewOrganisation(organisation: ApprovedOrganisation) {
         navigate(routes.admin.organisations.details(organisation.organisationId));
     }

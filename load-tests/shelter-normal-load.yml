@@ -1,3 +1,6 @@
+# Run the load test against the API URL provided through the environment
+# Gradually increase shelter dashboard traffic during warm-up and matinain a steady level of normal shelter traffic
+
 config:
   target: "{{ $env.API_BASE_URL }}"
   phases:

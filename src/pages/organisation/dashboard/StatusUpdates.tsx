@@ -1,15 +1,5 @@
-import {
-    Bell,
-    ListFilter,
-    PawPrint,
-} from "lucide-react";
-
-import {
-    sortFilterOptions,
-    speciesFilterOptions,
-    reviewStatusFilterOptions,
-} from "../../../data/dropdown/listingFilters";
-
+import { Bell, ListFilter, PawPrint } from "lucide-react";
+import { sortFilterOptions, speciesFilterOptions, reviewStatusFilterOptions } from "../../../data/dropdown/listingFilters";
 import { useNavigate } from "react-router-dom";
 
 import SearchBar from "../../../components/ui/filters/SearchBar";
@@ -25,6 +15,10 @@ import "./MyListings.css";
 import "./PageHeading.css";
 import "./StatusUpdates.css";
 
+/**
+ * Displays listing review updates for the organisation.
+ * Shows pending, approved and rejected listings with filtering and sorting.
+ */
 export default function StatusUpdates() {
     const navigate = useNavigate();
 
@@ -124,9 +118,7 @@ export default function StatusUpdates() {
                             value={reviewStatusFilter}
                             options={reviewStatusFilterOptions}
                             onChange={(value) =>
-                                setReviewStatusFilter(
-                                    value as typeof reviewStatusFilter
-                                )
+                                setReviewStatusFilter(value as typeof reviewStatusFilter)
                             }
                             icon={<Bell />}
                         />

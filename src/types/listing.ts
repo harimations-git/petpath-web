@@ -1,10 +1,7 @@
 import type { MatchingProfileForm } from "./matchingProfile";
+import type { MicrochipStatus, NeuteredStatus, VaccinationStatus } from "./vetInformation";
 
-import type {
-    MicrochipStatus,
-    NeuteredStatus,
-    VaccinationStatus,
-} from "./vetInformation";
+// Types used for the main pet listing status and category fields
 
 export type ListingType =
     | "individual"
@@ -21,7 +18,7 @@ export type ListingAvailabilityStatus =
     | "rehomed";
 
 /**
- * Used on the main PetListing
+ * Animal category used on the main pet listing.
  * "Mixed" is included because group listings can contain different types of animals.
  */
 export type ListingAnimalCategory =
@@ -32,9 +29,8 @@ export type ListingAnimalCategory =
     | "mixed"
     | "other";
 
-/**
- * Used for each individual animal.
- */
+// Types used for individual animals within a listing
+
 export type AnimalType =
     | "dog"
     | "cat"
@@ -46,6 +42,10 @@ export type AnimalSex =
     | "male"
     | "female";
 
+
+/**
+ * Stores the form values for an individual animal.
+ */
 export type ListingAnimalForm = {
     id: string;
     name: string;
@@ -56,6 +56,9 @@ export type ListingAnimalForm = {
     temperament: string;
 };
 
+/**
+ * Values collected when creating a new pet listing.
+ */
 export type CreateListingInput = {
     title: string;
     listingType: ListingType;
@@ -75,6 +78,10 @@ export type CreateListingInput = {
     animals: ListingAnimalForm[];
 };
 
+
+/**
+ * Stores information about a photo uploaded for a listing.
+ */
 export type UploadedListingPhoto = {
     key: string;
     fileName: string;
@@ -83,6 +90,9 @@ export type UploadedListingPhoto = {
     photoOrder: number;
 };
 
+/**
+ * Stores information about an uploaded veterinary document.
+ */
 export type UploadedVeterinaryDocument = {
     key: string;
     fileName: string;
@@ -90,6 +100,9 @@ export type UploadedVeterinaryDocument = {
     sizeBytes: number;
 };
 
+/**
+ * Represents an individual animal sent to the backend when creating a listing.
+ */
 export type CreateListingAnimalInput = {
     animalId: string;
     name: string;
@@ -101,6 +114,9 @@ export type CreateListingAnimalInput = {
     animalOrder: number;
 };
 
+/**
+ * Request sent to the backend when creating a new pet listing.
+ */
 export type CreatePetListingRequest = {
     listingId: string;
 
@@ -128,6 +144,9 @@ export type CreatePetListingRequest = {
     animals: CreateListingAnimalInput[];
 };
 
+/**
+ * Stores the main information needed when displaying a listing in a list.
+ */
 export type PetListingSummary = {
     listingId: string;
     organisationId: string;
@@ -167,11 +186,17 @@ export type PetListingSummary = {
     primaryPhotoUrl?: string;
 };
 
+/**
+ * Response returned when loading an organisation's listings.
+ */
 export type GetOrganisationListingsResponse = {
     listings: PetListingSummary[];
     nextToken: string | null;
 };
 
+/**
+ * Stores the full details of an organisation's pet listing.
+ */
 export type OrganisationListingDetails = {
     listingId: string;
 
@@ -203,6 +228,10 @@ export type OrganisationListingDetails = {
     updatedAt: string;
 };
 
+/**
+ * Values used when updating an existing organisation listing.
+ * Includes the listing form values and changes to uploaded files.
+ */
 export type UpdateOrganisationListingInput =
     CreateListingInput & {
         listingId: string;
@@ -216,11 +245,17 @@ export type UpdateOrganisationListingInput =
         newDocuments: File[];
     };
 
+/**
+* Represents an existing photo attached to a listing.
+*/
 export type ExistingListingPhoto = {
     key: string;
     url: string;
 };
 
+/**
+ * Represents an existing veterinary document attached to a listing.
+ */
 export type ExistingListingDocument = {
     key: string;
     fileName: string;

@@ -11,24 +11,19 @@ export function useAdminListingReview(listingId?: string) {
     const [listing, setListing] = useState<AdminListingDetails | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
-
     const [isReviewing, setIsReviewing] = useState(false);
-
     const [error, setError] = useState("");
-
     const [reviewError, setReviewError] = useState("");
 
     const [isDeleting, setIsDeleting] = useState(false);
-
     const [deleteError, setDeleteError] = useState("");
 
+    //Load the listing details from the backend
     const loadListing =
         useCallback(async () => {
             if (!listingId) {
                 setListing(null);
-
                 setError("Listing ID is missing.");
-
                 setIsLoading(false);
 
                 return;
@@ -58,16 +53,15 @@ export function useAdminListingReview(listingId?: string) {
         document.title = "Listing Review | PetPath";
     }, []);
 
+    //Load the listing when the listing ID changes
     useEffect(() => {
         void loadListing();
     }, [loadListing]);
 
+    //Submit an approve or reject decision for the listing
     const submitReview =
         useCallback(
-            async (
-                decision: AdminReviewDecision,
-                reason?: string
-            ) => {
+            async (decision: AdminReviewDecision, reason?: string) => {
                 if (!listingId || isReviewing) {
                     return false;
                 }
@@ -97,6 +91,7 @@ export function useAdminListingReview(listingId?: string) {
             [listingId, isReviewing]
         );
 
+    //Approve the current listing
     const approveListing =
         useCallback(
             () =>
@@ -104,13 +99,15 @@ export function useAdminListingReview(listingId?: string) {
             [submitReview]
         );
 
+    //Reject the current listing with a reason
     const rejectListing =
         useCallback(
             (reason: string) =>
                 submitReview("rejected", reason),
             [submitReview]
         );
-
+        
+    //Delete the current listing
     const deleteListing =
         useCallback(async () => {
             if (

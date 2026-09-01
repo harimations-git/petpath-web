@@ -18,6 +18,10 @@ import DecorativeLeaf from "../../components/ui/decorative/DecorativeLeaf";
 import VerificationCodeInput from "../../components/ui/auth/VerificationCodeInput";
 import { useVerifyEmail } from "../../hooks/auth/useVerifyEmail";
 
+/**
+ * Displays the email verification page for shelter registration.
+ * Uses the verification hook to confirm the code and resend verification emails.
+ */
 export default function VerifyEmail() {
     const {
         email,

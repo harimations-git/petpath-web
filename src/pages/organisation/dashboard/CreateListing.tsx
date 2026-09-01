@@ -9,18 +9,17 @@ import OrganisationAccountMenu from "../../../components/ui/profile/Organisation
 import CustomButton from "../../../components/ui/CustomButton";
 import InfoModal from "../../../components/ui/InfoModal";
 
-import {
-    useCreateListing,
-} from "../../../hooks/organisation/dashboard/useCreateListing";
+import { useCreateListing } from "../../../hooks/organisation/dashboard/useCreateListing";
 
 import "./CreateListing.css";
 import "./PageHeading.css";
 
-import {
-    Send,
-    Shield,
-} from "lucide-react";
+import { Send, Shield } from "lucide-react";
 
+/**
+ * Displays the create listing form for organisations.
+ * Uses the create listing hook to manage form state, validation and submission.
+ */
 export default function CreateListing() {
     const form = useCreateListing();
 

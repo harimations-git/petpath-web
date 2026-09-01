@@ -1,18 +1,13 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useOrganisationProfile } from "../../../context/OrganisationProfileContext";
 import { useOrganisationListings } from "../../../context/OrganisationListingsContext";
-
 import { getListingStatistics } from "../../../utils/listings/getListingStatistics";
 import { useBackButtonRedirect } from "./useBackButtonRedirect";
-
 import { routes } from "../../../constants/routes";
 
 export function useDashboard() {
-    useBackButtonRedirect(
-        routes.home.dashboard
-    );
+    useBackButtonRedirect(routes.home.dashboard);
 
     const navigate = useNavigate();
 
@@ -59,29 +54,19 @@ export function useDashboard() {
             return;
         }
 
-        if (
-            organisationProfile.accountStatus ===
-            "pending"
-        ) {
+        if (organisationProfile.accountStatus === "pending") {
             navigate(
                 routes.auth.accountReview,
-                {
-                    replace: true,
-                }
+                {replace: true}
             );
 
             return;
         }
 
-        if (
-            organisationProfile.accountStatus !==
-            "approved"
-        ) {
+        if (organisationProfile.accountStatus !== "approved") {
             navigate(
                 routes.auth.login,
-                {
-                    replace: true,
-                }
+                {replace: true}
             );
         }
     }, [
@@ -91,24 +76,15 @@ export function useDashboard() {
 
     //calculate stats
     const listingStatistics = useMemo( //useMemo only recalculates when the listings change
-        () =>
-            getListingStatistics(
-                listings,
-                reviewUpdates
-            ),
-        [
-            listings,
-            reviewUpdates,
-        ]
+        () => getListingStatistics(listings, reviewUpdates),
+        [listings, reviewUpdates]
     );
 
     //checks if profile is setup
     const needsProfileSetup = organisationProfile?.profileComplete !== true;
 
     function goToProfileSetup() {
-        navigate(
-            routes.home.profileSetup
-        );
+        navigate(routes.home.profileSetup);
     }
 
     return {

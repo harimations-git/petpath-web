@@ -1,18 +1,10 @@
-import {
-    Building2,
-    ClipboardCheck,
-    ShieldCheck,
-} from "lucide-react";
-
+import { Building2, ClipboardCheck, ShieldCheck } from "lucide-react";
 import Card from "../../../components/ui/Card";
 import AdminDashboardStatistics from "../../../components/ui/admin/dashboard/AdminDashboardStatistics";
 import AdminReviewItem from "../../../components/ui/admin/dashboard/AdminReviewItem";
 import AdminReviewSection from "../../../components/ui/admin/dashboard/AdminReviewSection";
-
 import { useAdminDashboard } from "../../../hooks/admin/useAdminDashboard";
-
 import { routes } from "../../../constants/routes";
-
 import "./Dashboard.css";
 import "../../organisation/dashboard/PageHeading.css";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
@@ -20,8 +12,11 @@ import CustomButton from "../../../components/ui/CustomButton";
 import { formatDate, formatDisplayValue, formatOldestWaiting } from "../../../utils/listings/displayFormatting";
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
 
+/**
+ * Displays the admin dashboard.
+ * Shows pending organisation and listing reviews, along with review statistics.
+ */
 export default function AdminDashboard() {
-
     const {
         dashboard,
         isLoading,
@@ -60,6 +55,7 @@ export default function AdminDashboard() {
         );
     }
 
+    //Destruct the main dashboard sections for easier use below
     const {
         pendingOrganisations,
         pendingListings,

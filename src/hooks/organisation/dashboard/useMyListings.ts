@@ -1,18 +1,16 @@
-import {
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-
 import { useOrganisationProfile } from "../../../context/OrganisationProfileContext";
 import { useOrganisationListings } from "../../../context/OrganisationListingsContext";
 import { updateListingAvailability } from "../../../services/listings/listingService";
 import type { ListingAvailabilityStatus } from "../../../types/listing";
-
 import { routes } from "../../../constants/routes";
 
+/**
+ * Manages the organisation's approved listings page.
+ * Handles loading, filtering, sorting and availability updates.
+ */
 export function useMyListings() {
     const navigate = useNavigate();
 
@@ -95,40 +93,28 @@ export function useMyListings() {
             return;
         }
 
-        if (
-            organisationProfile.accountStatus ===
-            "pending"
-        ) {
+        if (organisationProfile.accountStatus === "pending") {
             navigate(
                 routes.auth.accountReview,
-                {
-                    replace: true,
-                }
+                {replace: true}
             );
 
             return;
         }
 
-        if (
-            organisationProfile.accountStatus !==
-            "approved"
-        ) {
+        if (organisationProfile.accountStatus !== "approved") {
             navigate(
                 routes.auth.login,
-                {
-                    replace: true,
-                }
+                {replace: true}
             );
         }
     },
         [organisationProfile, navigate]
     );
 
+
     useEffect(() => {
-        if (
-            organisationProfile?.accountStatus ===
-            "approved"
-        ) {
+        if (organisationProfile?.accountStatus === "approved") {
             loadListings();
         }
     },
@@ -160,8 +146,9 @@ export function useMyListings() {
     ]);
 
 
-    /*Filter and searching
-     *useMemo stores the calculated result until one of the dependencies change 
+    /*
+     * Filter and searching
+     * useMemo stores the calculated result until one of the dependencies change 
      */
     const filteredListings = useMemo(() => {
         const search = searchQuery.trim().toLowerCase();
@@ -220,41 +207,29 @@ export function useMyListings() {
                 switch (sortOrder) {
                     case "oldest":
                         return (
-                            new Date(
-                                firstListing.createdAt
-                            ).getTime() -
-                            new Date(
-                                secondListing.createdAt
-                            ).getTime()
+                            new Date(firstListing.createdAt).getTime() -
+                            new Date(secondListing.createdAt).getTime()
                         );
 
                     case "name-asc":
                         return firstListing.title.localeCompare(
                             secondListing.title,
-                            undefined,
-                            {
-                                sensitivity: "base",
-                            }
+                            undefined, // means we are not providing a specific locale/language
+                            {sensitivity: "base"} // makes the comparison less sensitive to things like capitalisation and accents
                         );
 
                     case "name-desc":
                         return secondListing.title.localeCompare(
                             firstListing.title,
                             undefined,
-                            {
-                                sensitivity: "base",
-                            }
+                            {sensitivity: "base"}
                         );
 
                     case "newest":
                     default:
                         return (
-                            new Date(
-                                secondListing.createdAt
-                            ).getTime() -
-                            new Date(
-                                firstListing.createdAt
-                            ).getTime()
+                            new Date(secondListing.createdAt).getTime() -
+                            new Date(firstListing.createdAt).getTime()
                         );
                 }
             }

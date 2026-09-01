@@ -1,10 +1,4 @@
-import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
-
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getPendingListings } from "../../services/admin/adminListingService";
 import type { PendingListing } from "../../types/admin/adminListing";
 import type { SortOrder } from "../../types/filters";

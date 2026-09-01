@@ -1,6 +1,4 @@
-import type {
-    ListingAnimalForm,
-} from "../../types/listing";
+import type { ListingAnimalForm } from "../../types/listing";
 
 /**
  * Creates and returns an empty animal form object

@@ -1,7 +1,12 @@
+//Error type to display error messages
 export type ErrorResponse = {
   message?: string;
 };
 
+/**
+ * Gets the name of an error when the provided value is an Error object.
+ * @param error Error value to check.
+ */
 function getErrorName(error: unknown) {
   return error instanceof Error ? error.name : "";
 }
@@ -41,13 +46,9 @@ export function getSignUpErrorMessage(error: unknown) {
  * @param fallbackMessage 
  * @returns 
  */
-export async function getErrorMessage(
-  response: Response,
-  fallbackMessage: string
-) {
+export async function getErrorMessage(response: Response, fallbackMessage: string) {
   try {
     const data = await response.json() as ErrorResponse;
-
     return data.message || fallbackMessage;
   } catch {
     return fallbackMessage;

@@ -1,26 +1,20 @@
-import {
-    ClipboardCheck,
-    Clock3,
-    Search,
-    ShieldCheck,
-} from "lucide-react";
-
+import { ClipboardCheck, Clock3, Search, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
 import Card from "../../../components/ui/Card";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
-
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
 import PendingListingCard from "../../../components/ui/admin/listings/details/pet_card/PendingListingCard";
-
 import { usePendingListings } from "../../../hooks/admin/usePendingListings";
 import { formatDate } from "../../../utils/listings/displayFormatting";
 import { routes } from "../../../constants/routes";
 import type { PendingListing } from "../../../types/admin/adminListing";
-
 import "./PendingListings.css";
 import CardList from "../../../components/ui/CardList";
 
+/**
+ * Displays pet listings that are waiting for admin review.
+ * Handles searching, sorting, pagination and navigation to listing details.
+ */
 export default function PendingListings() {
     const navigate = useNavigate();
 
@@ -46,6 +40,7 @@ export default function PendingListings() {
         retry,
     } = usePendingListings();
 
+    //Open the selected listing in the admin review page
     function handleViewListing(listing: PendingListing) {
         navigate(routes.admin.listings.listingReview(listing.listingId));
     }

@@ -1,10 +1,6 @@
 import { useState, type SubmitEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import {
-    Lock,
-    ShieldCheck,
-} from "lucide-react";
+import { Lock, ShieldCheck } from "lucide-react";
 
 import "./Login.css";
 import "./ForgotPassword.css";
@@ -23,20 +19,27 @@ import ImageSlideshow from "../../components/ui/decorative/ImageSlideShow";
 import { loginSlideshowContent } from "../../data/assets/imageContent";
 import { signOut } from "aws-amplify/auth";
 
+//Steps used during the password reset process
 type PasswordResetStep =
     | "email"
     | "confirmation";
 
+/**
+ * Route state used to pre-fill the user's email address.
+ */
 type ForgotPasswordRouteState = {
     initialEmail?: string;
 };
 
+/**
+ * Manages the forgot password flow.
+ * Handles sending a verification code and creating a new password.
+ */
 export default function ForgotPassword() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const routeState =
-        location.state as
+    const routeState = location.state as
         | ForgotPasswordRouteState
         | null;
 
@@ -57,20 +60,16 @@ export default function ForgotPassword() {
 
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-    async function handleSendCode(
-        event: SubmitEvent<HTMLFormElement>
-    ) {
+    //Validate the email and request a password reset code
+    async function handleSendCode(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const normalisedEmail =
-            email.trim().toLowerCase();
+        const normalisedEmail = email.trim().toLowerCase();
 
         setFormError("");
 
         if (!normalisedEmail) {
-            setFormError(
-                "Please enter your email address."
-            );
+            setFormError("Please enter your email address.");
 
             return;
         }
@@ -78,10 +77,8 @@ export default function ForgotPassword() {
         setIsLoading(true);
 
         try {
-            const result =
-                await sendPasswordResetCode(
-                    normalisedEmail
-                );
+            //send code to user
+            const result = await sendPasswordResetCode(normalisedEmail);
 
             setEmail(normalisedEmail);
 
@@ -89,7 +86,6 @@ export default function ForgotPassword() {
                 setShowSuccessModal(true);
                 return;
             }
-
 
             setStep("confirmation");
         } catch (error) {
@@ -106,47 +102,31 @@ export default function ForgotPassword() {
         }
     }
 
-    async function handleConfirmPassword(
-        event: SubmitEvent<HTMLFormElement>
-    ) {
+    //Validate the code and complete the password reset
+    async function handleConfirmPassword(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
 
         setFormError("");
 
         if (!confirmationCode.trim()) {
-            setFormError(
-                "Please enter your verification code."
-            );
-
+            setFormError("Please enter your verification code.");
             return;
         }
 
         if (!newPassword) {
-            setFormError(
-                "Please enter a new password."
-            );
-
+            setFormError("Please enter a new password.");
             return;
         }
 
-        if (
-            newPassword !== confirmPassword
-        ) {
-            setFormError(
-                "The passwords do not match."
-            );
-
+        if (newPassword !== confirmPassword) {
+            setFormError("The passwords do not match.");
             return;
         }
 
         setIsLoading(true);
 
         try {
-            await completePasswordReset({
-                email,
-                confirmationCode,
-                newPassword,
-            });
+            await completePasswordReset({email, confirmationCode, newPassword});
 
             try {
                 await signOut();
@@ -156,15 +136,13 @@ export default function ForgotPassword() {
 
             setShowSuccessModal(true);
         } catch (error) {
-
-            setFormError(
-                getPasswordResetError(error)
-            );
+            setFormError(getPasswordResetError(error));
         } finally {
             setIsLoading(false);
         }
     }
 
+    //Request another password reset verification code
     async function handleResendCode() {
         setFormError("");
         setIsLoading(true);
@@ -178,14 +156,13 @@ export default function ForgotPassword() {
                 error
             );
 
-            setFormError(
-                getPasswordResetError(error)
-            );
+            setFormError(getPasswordResetError(error));
         } finally {
             setIsLoading(false);
         }
     }
 
+    //Close the success modal and return to login
     function handleSuccessContinue() {
         setShowSuccessModal(false);
 
@@ -210,8 +187,6 @@ export default function ForgotPassword() {
                     {step === "email" ? (
                         <>
                             <div className="forgot-password-heading">
-
-
                                 <h1>Reset your password</h1>
                                 <p>
                                     Enter your account email and
@@ -234,11 +209,7 @@ export default function ForgotPassword() {
                                     id="reset-email"
                                     type="email"
                                     value={email}
-                                    onChange={(event) =>
-                                        setEmail(
-                                            event.target.value
-                                        )
-                                    }
+                                    onChange={(event) => setEmail(event.target.value)}
                                     autoComplete="email"
                                     placeholder="Enter your email address"
                                     required
@@ -259,9 +230,7 @@ export default function ForgotPassword() {
                                 >
                                     {isLoading ? (
                                         <>
-                                            <LoadingSpinner
-                                                size="small"
-                                            />
+                                            <LoadingSpinner size="small"/>
                                         </>
                                     ) : (
                                         "Send code"
@@ -285,9 +254,7 @@ export default function ForgotPassword() {
                             </div>
 
                             <form
-                                onSubmit={
-                                    handleConfirmPassword
-                                }
+                                onSubmit={ handleConfirmPassword }
                                 className="forgot-password-form"
                             >
                                 <label htmlFor="reset-code">
@@ -303,10 +270,7 @@ export default function ForgotPassword() {
                                     onChange={(event) =>
                                         setConfirmationCode(
                                             event.target.value
-                                                .replace(
-                                                    /\D/g,
-                                                    ""
-                                                )
+                                                .replace(/\D/g, "")
                                                 .slice(0, 6)
                                         )
                                     }
@@ -329,11 +293,7 @@ export default function ForgotPassword() {
                                         type="password"
                                         autoComplete="new-password"
                                         value={newPassword}
-                                        onChange={(event) =>
-                                            setNewPassword(
-                                                event.target.value
-                                            )
-                                        }
+                                        onChange={(event) => setNewPassword(event.target.value)}
                                         placeholder="Enter a new password"
                                         required
                                     />

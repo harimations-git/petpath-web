@@ -1,23 +1,11 @@
-import {
-    ArrowLeft,
-    Check,
-    ClipboardCheck,
-    ShieldCheck,
-    Trash2,
-    XCircle,
-} from "lucide-react";
-
+import { ArrowLeft, Check, ClipboardCheck, ShieldCheck, Trash2, XCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import Card from "../../../components/ui/Card";
 import CustomButton from "../../../components/ui/CustomButton";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
-
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
-
 import { routes } from "../../../constants/routes";
 import { formatDate, formatDisplayValue } from "../../../utils/listings/displayFormatting";
-
 import "./ViewListing.css";
 import ListingBasicsReviewSection from "../../../components/ui/admin/listings/details/ListingBasicReviewSection";
 import ListingPhotosReviewSection from "../../../components/ui/admin/listings/details/ListingPhotosReviewSection";
@@ -37,11 +25,16 @@ type ReviewModalType =
     | "delete"
     | null;
 
+/**
+* Displays the full details of a pet listing for admin review.
+* Handles approving, rejecting and deleting the listing.
+*/
 export default function ListingReview() {
     const navigate = useNavigate();
 
     const { listingId } = useParams<{ listingId: string; }>();
 
+    // Store which review action modal is currently open
     const [modalType, setModalType] = useState<ReviewModalType>(null);
 
     const [rejectionReason, setRejectionReason] = useState("");
@@ -68,28 +61,33 @@ export default function ListingReview() {
 
     const isProcessing = isReviewing || isDeleting;
 
+    //Return to the pending listings page
     function goBackToListings() {
         navigate(routes.admin.listings.pendingListings);
     }
 
+    //Open the approval confirmation modal
     function openApproveModal() {
         setModalType("approve");
         setRejectionReason("");
         setRejectionError("");
     }
 
+    //Open the rejection modal and clear any previous reason
     function openRejectModal() {
         setModalType("reject");
         setRejectionReason("");
         setRejectionError("");
     }
 
+    //Open the deletion confirmation modal
     function openDeleteModal() {
         setModalType("delete");
         setRejectionReason("");
         setRejectionError("");
     }
 
+    //Close the current modal unless an action is still processing
     function closeReviewModal() {
         if (isProcessing) {
             return;
@@ -100,6 +98,7 @@ export default function ListingReview() {
         setRejectionError("");
     }
 
+    //Approve the listing and return to the pending listings page
     async function confirmApproval() {
         const wasSuccessful = await approveListing();
 
@@ -111,6 +110,7 @@ export default function ListingReview() {
         goBackToListings();
     }
 
+    //Validate the rejection reason and reject the listing
     async function confirmRejection() {
         const reason = rejectionReason.trim();
 
@@ -130,9 +130,9 @@ export default function ListingReview() {
         goBackToListings();
     }
 
-    function handleRejectionReasonChange(
-        event: React.ChangeEvent<HTMLTextAreaElement>
-    ) {
+    
+    //Update the rejection reason and clear its error once valid
+    function handleRejectionReasonChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
         const value = event.target.value;
 
         setRejectionReason(value);
@@ -142,6 +142,7 @@ export default function ListingReview() {
         }
     }
 
+    //Permanently delete the listing and return to all listings
     async function confirmDeletion() {
         const wasSuccessful = await deleteListing();
 
@@ -189,9 +190,7 @@ export default function ListingReview() {
 
                         <button
                             type="button"
-                            onClick={() =>
-                                void retry()
-                            }
+                            onClick={() => void retry()}
                         >
                             Try again
                         </button>
@@ -284,6 +283,7 @@ export default function ListingReview() {
                     </p>
                 )}
             </div>
+            
             <InfoModal
                 visible={
                     modalType === "approve"

@@ -3,7 +3,8 @@ import { fetchAuthSession } from "aws-amplify/auth";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
- * GET Request retrieves all of the admin audit logs from the backend database
+ * Exports the admin audit logs as a CSV file.
+ * Retrieves the audit log export from the backend and downloads it in the browser.
  */
 export async function exportAdminAuditLogs() {
     if (!API_BASE_URL) {
@@ -70,8 +71,10 @@ export async function exportAdminAuditLogs() {
 
     document.body.appendChild(link);
 
+    //Trigger the browser download
     link.click();
 
+    //Remove the temporary link and release the Blob URL
     link.remove();
 
     URL.revokeObjectURL(downloadUrl);

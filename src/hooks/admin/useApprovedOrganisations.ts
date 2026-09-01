@@ -3,8 +3,10 @@ import { getApprovedOrganisations } from "../../services/admin/adminOrganisation
 import type { ApprovedOrganisation } from "../../types/admin/adminOrganisation";
 import type { SortOrder } from "../../types/filters";
 
-
-
+/**
+ * Manages the approved organisations page.
+ * Handles loading, pagination, searching, sorting and approval statistics.
+ */
 export function useApprovedOrganisations() {
     const [organisations, setOrganisations] = useState<ApprovedOrganisation[]>([]);
 
@@ -18,6 +20,7 @@ export function useApprovedOrganisations() {
 
     const [error, setError] = useState("");
 
+    //Load the first page of approved organisations
     const loadOrganisations =
         useCallback(async () => {
             setIsLoading(true);
@@ -47,10 +50,12 @@ export function useApprovedOrganisations() {
         document.title = "All Organisations | PetPath";
     }, []);
 
+    //Reload organisations when the page opens or the sort order changes
     useEffect(() => {
         void loadOrganisations();
     }, [loadOrganisations]);
 
+    //Load the next page of approved organisations
     const loadMore =
         useCallback(async () => {
             if (!nextToken || isLoadingMore) {
@@ -71,6 +76,7 @@ export function useApprovedOrganisations() {
                             )
                             );
 
+                        //Add or replace organisations returned in the next page
                         for (const organisation of result.organisations) {
                             organisationById.set(organisation.organisationId, organisation);
                         }
@@ -91,6 +97,7 @@ export function useApprovedOrganisations() {
             }
         }, [isLoadingMore, nextToken, sortOrder]);
 
+    //Filter the loaded organisations using the current search query
     const displayedOrganisations =
         useMemo(() => {
             const searchValue = searchQuery.trim().toLowerCase();
@@ -113,6 +120,7 @@ export function useApprovedOrganisations() {
             );
         }, [organisations, searchQuery]);
 
+    //Find the most recent organisation approval date
     const latestApprovedAt =
         useMemo(() => {
             const approvalDates =
@@ -123,7 +131,9 @@ export function useApprovedOrganisations() {
                     )
                     .filter(
                         (value): value is string => Boolean(value)
-                    ).sort(
+                    )
+                    // Sort dates from newest to oldest
+                    .sort(
                         (first, second) =>
                             new Date(second).getTime() - new Date(first).getTime()
                     );
@@ -134,8 +144,7 @@ export function useApprovedOrganisations() {
     return {
         displayedOrganisations,
 
-        approvedCount:
-            organisations.length,
+        approvedCount: organisations.length,
 
         latestApprovedAt,
 

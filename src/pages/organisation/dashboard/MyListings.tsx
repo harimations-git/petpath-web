@@ -1,18 +1,19 @@
 import { useNavigate } from "react-router-dom";
-
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 import OrganisationAccountMenu from "../../../components/ui/profile/OrganisationAccountMenu";
-
-
-
 import { routes } from "../../../constants/routes";
 
 import "./MyListings.css";
 import "./PageHeading.css";
+
 import MyListingsFilters from "../../../components/ui/listings/SearchFilters";
 import MyListingsResults from "../../../components/ui/listings/MyListingResults";
 import { useMyListings } from "../../../hooks/organisation/dashboard/useMyListings";
 
+/**
+ * Displays the organisation's pet listings.
+ * Handles filtering, pagination, availability updates and navigation to listing details.
+ */
 export default function MyListings() {
     const navigate = useNavigate();
 
@@ -90,76 +91,43 @@ export default function MyListings() {
             </header>
 
             <MyListingsFilters
-                searchQuery={
-                    searchQuery
-                }
-                onSearchChange={
-                    setSearchQuery
-                }
-                speciesFilter={
-                    speciesFilter
-                }
-                onSpeciesChange={
-                    setSpeciesFilter
-                }
-                listingTypeFilter={
-                    listingTypeFilter
-                }
-                onListingTypeChange={
-                    setListingTypeFilter
-                }
-                statusFilter={
-                    statusFilter
-                }
-                onStatusChange={
-                    setStatusFilter
-                }
-                sortOrder={
-                    sortOrder
-                }
-                onSortChange={
-                    setSortOrder
-                }
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+
+                speciesFilter={speciesFilter}
+                onSpeciesChange={setSpeciesFilter}
+
+                listingTypeFilter={listingTypeFilter}
+                onListingTypeChange={setListingTypeFilter}
+
+                statusFilter={statusFilter}
+                onStatusChange={setStatusFilter}
+
+                sortOrder={sortOrder}
+                onSortChange={setSortOrder}
             />
 
             <MyListingsResults
-                listings={
-                    filteredListings
-                }
-                totalLoadedListings={
-                    listings.length
-                }
-                isLoading={
-                    isLoadingListings
-                }
-                isLoadingMore={
-                    isLoadingMoreListings
-                }
+                listings={filteredListings}
+                totalLoadedListings={listings.length}
+                isLoading={isLoadingListings}
+                isLoadingMore={isLoadingMoreListings}
+
                 onAvailabilityChange={handleAvailabilityChange}
                 updatingAvailabilityId={updatingAvailabilityId}
-                isSearchingAllListings={
-                    isSearchingAllListings
-                }
-                error={
-                    listingsError
-                }
+                isSearchingAllListings={isSearchingAllListings}
+                error={listingsError}
+
                 hasMore={
                     hasMoreListings &&
                     !hasActiveFilters &&
                     filteredListings.length > 0
                 }
-                onRetry={
-                    loadListings
-                }
-                onLoadMore={
-                    loadMoreListings
-                }
+                onRetry={loadListings}
+                onLoadMore={loadMoreListings}
+
                 onViewListing={(listingId) =>
-                    navigate(
-                        routes.listings.viewListing(
-                            listingId
-                        )
-                    )
+                    navigate(routes.listings.viewListing(listingId))
                 }
             />
         </main>

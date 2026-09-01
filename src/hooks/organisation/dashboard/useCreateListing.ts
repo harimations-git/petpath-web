@@ -1,36 +1,16 @@
-import {
-    useMemo,
-    useState,
-    type SubmitEvent,
-} from "react";
-
+import { useMemo, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApprovedOrganisationRoute } from "./useApprovedOrganisationRoute";
 import { useOrganisationListings } from "../../../context/OrganisationListingsContext";
-
-import {
-    createFileMetadata,
-    createPetListing,
-    prepareListingUploads,
-    uploadPreparedListingFiles,
-} from "../../../services/listings/listingService";
-
+import { createFileMetadata, createPetListing, prepareListingUploads, uploadPreparedListingFiles } from "../../../services/listings/listingService";
 import { createEmptyAnimal } from "../../../utils/listings/createEmptyAnimal";
 import { getDomainFromUrl, normaliseUrl } from "../../../utils/listings/listingUrlUtils";
 import { routes } from "../../../constants/routes";
-
-import type {
-    AnimalSex,
-    AnimalType,
-    CreatePetListingRequest,
-    ListingAnimalCategory,
-    ListingAnimalForm,
-    ListingType,
-} from "../../../types/listing";
-
+import type { AnimalSex, AnimalType, CreatePetListingRequest, ListingAnimalCategory, ListingAnimalForm, ListingType } from "../../../types/listing";
 import type { MatchingProfileForm } from "../../../types/matchingProfile";
 import type { MicrochipStatus, NeuteredStatus, VaccinationStatus } from "../../../types/vetInformation";
 
+//Default matching form (empty values)
 const initialMatchingProfile:
     MatchingProfileForm = {
     petCost: "",
@@ -41,7 +21,10 @@ const initialMatchingProfile:
     homeType: "",
 };
 
-
+/**
+ * Manages the create listing form and submission process.
+ * Handles form state, validation, file uploads and listing creation.
+ */
 export function useCreateListing() {
     const navigate = useNavigate();
 
@@ -53,11 +36,7 @@ export function useCreateListing() {
         "Create Listing | PetPath"
     );
 
-    const {
-        refreshReviewUpdates
-    } = useOrganisationListings()
-
-    const { refreshListings } = useOrganisationListings();
+    const { refreshReviewUpdates, refreshListings } = useOrganisationListings()
 
     const [listingTitle, setListingTitle] = useState("");
     const [listingType, setListingType] = useState<ListingType>("individual");
@@ -88,6 +67,7 @@ export function useCreateListing() {
     const [formError, setFormError] = useState("");
     const [showModal, setShowModal] = useState(false);
 
+    //Build a readable location from the organisation profile
     const organisationLocation =
         useMemo(() => {
             return [
@@ -103,23 +83,22 @@ export function useCreateListing() {
         ]);
 
 
+    //Get the organisation's website domain for listing URL validation
     const organisationDomain =
         useMemo(() => {
             return getDomainFromUrl(
-                organisationProfile
-                    ?.websiteDomain ??
-                organisationProfile
-                    ?.websiteUrl ??
+                organisationProfile?.websiteDomain ??
+                organisationProfile?.websiteUrl ??
                 ""
             );
-        }, [
-            organisationProfile
-                ?.websiteDomain,
-            organisationProfile
-                ?.websiteUrl,
-        ]);
+        },
+            [
+                organisationProfile?.websiteDomain,
+                organisationProfile?.websiteUrl,
+            ]);
 
 
+    //Get the domain entered for the listing URL
     const listingUrlDomain =
         useMemo(() => {
             return getDomainFromUrl(
@@ -128,13 +107,15 @@ export function useCreateListing() {
         }, [listingUrl]);
 
 
+    //Check that the listing URL belongs to the organisation's website
     const listingUrlMatchesOrganisation =
         Boolean(organisationDomain) &&
         Boolean(listingUrlDomain) &&
-        organisationDomain ===
-        listingUrlDomain;
+        organisationDomain
+        === listingUrlDomain;
 
 
+    //Check whether all matching profile fields have been completed
     const matchingProfileComplete =
         Boolean(
             matchingProfile.petCost &&
@@ -146,6 +127,7 @@ export function useCreateListing() {
         );
 
 
+    //Check whether all health fields have been completed
     const healthProfileComplete =
         Boolean(vaccinationStatus) &&
         Boolean(microchipStatus) &&
@@ -153,51 +135,37 @@ export function useCreateListing() {
         veterinaryDocuments.length > 0;
 
 
-    function handleListingTypeChange(
-        newListingType: ListingType
-    ) {
+    //Update the form when switching between individual and group listings
+    function handleListingTypeChange(newListingType: ListingType) {
         setListingType(newListingType);
         setFormError("");
 
-        if (
-            newListingType ===
-            "individual"
-        ) {
+        if (newListingType === "individual") {
             setNumberOfAnimals(1);
 
             /*
              * Mixed is only valid for
              * group listings.
              */
-            if (
-                listingAnimalType ===
-                "mixed"
-            ) {
-                setListingAnimalType(
-                    "dog"
-                );
+            if (listingAnimalType === "mixed") {
+                setListingAnimalType("dog");
             }
 
+            //Keep only the first animal when changing to an individual listing
             setAnimals(
                 (currentAnimals) => {
-                    if (
-                        currentAnimals.length >
-                        0
-                    ) {
-                        return [
-                            currentAnimals[0],
-                        ];
+                    if (currentAnimals.length > 0) {
+                        return [currentAnimals[0]];
                     }
 
-                    return [
-                        createEmptyAnimal(),
-                    ];
+                    return [createEmptyAnimal()];
                 }
             );
 
             return;
         }
 
+        //Group listings start with at least two animals
         setNumberOfAnimals(2);
 
         setAnimals(
@@ -214,45 +182,29 @@ export function useCreateListing() {
         );
     }
 
+    //Update the number of animals in a group listing
+    function handleNumberOfAnimalsChange(requestedNumber: number) {
 
-    function handleNumberOfAnimalsChange(
-        requestedNumber: number
-    ) {
-        const safeNumber = Math.min(4, Math.max(2, requestedNumber)
-        );
+        //Keep group listings between two and four animals
+        const safeNumber = Math.min(4, Math.max(2, requestedNumber));
 
-        setNumberOfAnimals(
-            safeNumber
-        );
+        setNumberOfAnimals(safeNumber);
 
         setAnimals(
             (currentAnimals) => {
-                if (
-                    currentAnimals.length ===
-                    safeNumber
-                ) {
+                if (currentAnimals.length === safeNumber) {
                     return currentAnimals;
                 }
 
-                if (
-                    currentAnimals.length >
-                    safeNumber
-                ) {
-                    return currentAnimals.slice(
-                        0,
-                        safeNumber
-                    );
+                if (currentAnimals.length > safeNumber) {
+                    return currentAnimals.slice(0, safeNumber);
                 }
 
+                //Create additional empty animals when the number is increased
                 const animalsToAdd =
                     Array.from(
-                        {
-                            length:
-                                safeNumber -
-                                currentAnimals.length,
-                        },
-                        () =>
-                            createEmptyAnimal()
+                        { length: safeNumber - currentAnimals.length },
+                        () => createEmptyAnimal()
                     );
 
                 return [
@@ -263,40 +215,26 @@ export function useCreateListing() {
         );
     }
 
-    function updateAnimal(
-        animalId: string,
-        field: keyof ListingAnimalForm,
-        value: string
-    ) {
+    //Update a single field for one animal in the listing
+    function updateAnimal(animalId: string, field: keyof ListingAnimalForm, value: string) {
         setAnimals(
             (currentAnimals) =>
                 currentAnimals.map(
-                    (animal) =>
-                        animal.id ===
-                            animalId
-                            ? {
-                                ...animal,
-                                [field]:
-                                    value,
-                            }
-                            : animal
+                    (animal) => animal.id === animalId ? { ...animal, [field]: value } : animal
                 )
         );
     }
 
 
-    function handleAdoptionFeeChange(
-        value: string
-    ) {
-        const numbersOnly = value
-            .replace(/\D/g, "")
+    //Remove non-numeric characters from the adoption fee
+    function handleAdoptionFeeChange(value: string) {
+        const numbersOnly = value.replace(/\D/g, "")
 
-        setAdoptionFee(
-            numbersOnly
-        );
+        setAdoptionFee(numbersOnly);
     }
 
 
+    //Validate all required listing information before submission
     function validateForm() {
         if (!listingTitle.trim()) {
             return "Please enter a listing title.";
@@ -362,12 +300,14 @@ export function useCreateListing() {
     }
 
 
+    /**
+     * Builds the request sent to the backend using the completed
+     * form values and prepared file information.
+     */
     function buildListingRequest(
         listingId: string,
-        preparedPhotos:
-            CreatePetListingRequest["photos"],
-        preparedDocuments:
-            CreatePetListingRequest["veterinaryDocuments"]
+        preparedPhotos: CreatePetListingRequest["photos"],
+        preparedDocuments: CreatePetListingRequest["veterinaryDocuments"]
     ): CreatePetListingRequest {
         return {
             listingId,
@@ -383,10 +323,7 @@ export function useCreateListing() {
 
             description: description.trim(),
 
-            enquiryUrl:
-                normaliseUrl(
-                    listingUrl
-                ),
+            enquiryUrl: normaliseUrl(listingUrl),
 
             adoptionFee: Number(adoptionFee),
 
@@ -405,10 +342,7 @@ export function useCreateListing() {
 
             animals:
                 animals.map(
-                    (
-                        animal,
-                        index
-                    ) => ({
+                    (animal, index) => ({
                         animalId: animal.id,
                         name: animal.name.trim(),
 
@@ -425,19 +359,14 @@ export function useCreateListing() {
     }
 
 
-    async function handleSubmit(
-        event:
-            SubmitEvent<HTMLFormElement>
-    ) {
+    //Validate and submit the completed listing
+    async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const validationError =
-            validateForm();
+        const validationError = validateForm();
 
         if (validationError) {
-            setFormError(
-                validationError
-            );
+            setFormError(validationError);
 
             return;
         }
@@ -452,15 +381,8 @@ export function useCreateListing() {
              */
             const preparedUploads =
                 await prepareListingUploads({
-                    photos:
-                        createFileMetadata(
-                            listingPhotos
-                        ),
-
-                    documents:
-                        createFileMetadata(
-                            veterinaryDocuments
-                        ),
+                    photos: createFileMetadata(listingPhotos),
+                    documents: createFileMetadata(veterinaryDocuments),
                 });
 
             /*
@@ -474,11 +396,7 @@ export function useCreateListing() {
             });
 
             const preparedPhotos =
-                preparedUploads.photos.map(
-                    (
-                        photo,
-                        index
-                    ) => ({
+                preparedUploads.photos.map((photo, index) => ({
                         key: photo.key,
                         fileName: photo.fileName,
 
@@ -506,9 +424,7 @@ export function useCreateListing() {
                     preparedDocuments
                 );
 
-            await createPetListing(
-                listingRequest
-            );
+            await createPetListing(listingRequest);
 
             /*
              * Refresh the shared cache so the
@@ -519,10 +435,6 @@ export function useCreateListing() {
 
             setShowModal(true);
         } catch (error) {
-            console.error(
-                "Unable to create pet listing:",
-                error
-            );
 
             setFormError(
                 error instanceof Error
@@ -534,13 +446,11 @@ export function useCreateListing() {
         }
     }
 
-
+    // Close the success modal and return to the listing status page
     function handleModalContinue() {
         setShowModal(false);
 
-        navigate(
-            routes.home.status
-        );
+        navigate(routes.home.status);
     }
 
 

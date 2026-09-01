@@ -1,20 +1,19 @@
-import {
-    Search,
-    ShieldCheck,
-} from "lucide-react";
-
+import { Search,ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Card from "../../../components/ui/Card";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
 import { useApprovedListings } from "../../../hooks/admin/useApprovedListings";
 import { routes } from "../../../constants/routes";
-
 import "./PendingListings.css";
 import type { ApprovedListing } from "../../../types/admin/adminListing";
 import ApprovedListingCard from "../../../components/ui/admin/listings/details/pet_card/ApprovedListingCards";
 import CardList from "../../../components/ui/CardList";
 
+/**
+ * Displays all approved pet listings for admins.
+ * Handles searching, sorting, pagination and navigation to listing details.
+ */
 export default function ApprovedListings() {
     const navigate = useNavigate();
 
@@ -37,6 +36,7 @@ export default function ApprovedListings() {
         retry,
     } = useApprovedListings();
 
+    // Open the selected listing in the admin review/details page
     function handleViewListing(listing: ApprovedListing) {
         navigate(routes.admin.listings.listingReview(listing.listingId));
     }
@@ -78,9 +78,7 @@ export default function ApprovedListings() {
                                 value={searchQuery}
                                 placeholder="Search loaded listings"
                                 onChange={(event) =>
-                                    setSearchQuery(
-                                        event.target.value
-                                    )
+                                    setSearchQuery(event.target.value)
                                 }
                             />
                         </div>

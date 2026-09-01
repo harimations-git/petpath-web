@@ -7,6 +7,11 @@ type SpacerProps = {
   style?: CSSProperties;
 };
 
+/**
+ * UI Component that creates whitespace with a custom styling
+ * @param param0 
+ * @returns 
+ */
 export default function Spacer({
   height = 16,
   width = 0,

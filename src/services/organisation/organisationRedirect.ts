@@ -1,12 +1,11 @@
 import { routes } from "../../constants/routes";
+import type { OrganisationProfile } from "./organisationService";
 
-import type {
-  OrganisationProfile,
-} from "./organisationService";
-
-export function getRouteForOrganisation(
-  profile: OrganisationProfile
-) {
+/**
+ * Returns the correct portal route for an organisation
+ * based on its account status and profile completion.
+ */
+export function getRouteForOrganisation(profile: OrganisationProfile) {
   switch (profile.accountStatus) {
     case "pending":
       return routes.auth.accountReview;

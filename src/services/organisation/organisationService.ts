@@ -1,12 +1,25 @@
 import { fetchAuthSession } from "aws-amplify/auth";
 
+/**
+ * Service functions and types used to manage organisation profiles.
+ * Handles profile loading, updates, profile images and account deletion.
+ */
+
+// Possible review states for an organisation account
 export type OrganisationStatus = "pending" | "approved" | "rejected" | "suspended";
 
+/**
+ * Response returned when requesting a temporary profile image upload URL.
+ */
 type ProfileImageUploadUrlResponse = {
   uploadUrl: string;
   profileImageKey: string;
 };
 
+
+/**
+ * Stores the organisation profile returned by the backend.
+ */
 export type OrganisationProfile = {
   organisationId: string;
   email: string;
@@ -37,6 +50,9 @@ export type OrganisationProfile = {
   profileCompletedAt?: string;
 };
 
+/**
+ * Values required when completing an organisation profile.
+ */
 export type CompleteOrganisationProfileInput = {
   websiteUrl: string;
   websiteDomain: string;
@@ -53,6 +69,10 @@ export type CompleteOrganisationProfileInput = {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+
+/**
+ * Gets the current Cognito access token for authenticated API requests.
+ */
 export async function getAuthToken() {
   const session = await fetchAuthSession({ forceRefresh: true });
 
@@ -65,6 +85,10 @@ export async function getAuthToken() {
   return accessToken;
 }
 
+
+/**
+ * Retrieves the currently signed-in organisation's profile.
+ */
 export async function getCurrentOrganisationProfile() {
 
   if (!API_BASE_URL) {
@@ -89,6 +113,11 @@ export async function getCurrentOrganisationProfile() {
   return body.organisationProfile;
 }
 
+
+/**
+ * Saves the organisation's completed profile information.
+ * @param input Completed organisation profile values.
+ */
 export async function completeOrganisationProfile(
   input: CompleteOrganisationProfileInput
 ): Promise<OrganisationProfile> {
@@ -123,6 +152,11 @@ export async function completeOrganisationProfile(
   return body.organisationProfile;
 }
 
+
+/**
+ * Requests a temporary S3 upload URL for a profile image.
+ * @param file Image selected by the organisation.
+ */
 export async function getProfileImageUploadUrl(
   file: File
 ): Promise<ProfileImageUploadUrlResponse> {
@@ -157,12 +191,10 @@ export async function getProfileImageUploadUrl(
   return body;
 }
 
-
-
 /**
- * Function uploads the shelter user's profile picture
- * @param file 
- * @returns 
+ * Uploads an organisation profile image to S3.
+ * @param file Image selected by the organisation.
+ * @returns The S3 object key for the uploaded image.
  */
 export async function uploadOrganisationProfileImage(
   file: File
@@ -189,13 +221,12 @@ export async function uploadOrganisationProfileImage(
 }
 
 
-
 /**
- * Function verifies that the profile is complete and able to update it's profile picture
- * Returns the complete organisation profile
- * @param file 
- * @param currentProfile 
- * @returns 
+ * Updates an organisation's profile image while keeping
+ * the rest of its existing profile information.
+ * @param file New profile image.
+ * @param currentProfile Current organisation profile.
+ * @returns The updated organisation profile.
  */
 export async function updateOrganisationProfileImage(
   file: File,
@@ -227,7 +258,6 @@ export async function updateOrganisationProfileImage(
 
   return completeOrganisationProfile({
     websiteUrl: requiredValues.websiteUrl,
-
     websiteDomain: requiredValues.websiteDomain,
 
     profileImageKey,
@@ -235,15 +265,11 @@ export async function updateOrganisationProfileImage(
     description: currentProfile.description ?? "",
 
     addressLine1: requiredValues.addressLine1,
-
     addressLine2: currentProfile.addressLine2,
 
     townCity: requiredValues.townCity,
-
     county: currentProfile.county,
-
     postcode: requiredValues.postcode,
-
     country: requiredValues.country,
   });
 }
@@ -270,7 +296,7 @@ export async function updateOrganisationDescription(
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({description}),
+      body: JSON.stringify({ description }),
     }
   );
 
@@ -285,13 +311,13 @@ export async function updateOrganisationDescription(
 }
 
 /**
- * Deletes the users account and information (petlistings, profile, s3 files, cognito user)
+ * Permanently deletes the organisation account and its related data.
  */
 export async function deleteOrganisationAccount(): Promise<void> {
 
   if (!API_BASE_URL) {
-        throw new Error("API URL is not configured");
-    }
+    throw new Error("API URL is not configured");
+  }
 
   const token = await getAuthToken();
 
@@ -305,6 +331,8 @@ export async function deleteOrganisationAccount(): Promise<void> {
     }
   );
 
+  // Read the response as text because the endpoint may return
+  // either an empty body or a JSON error response
   const text = await response.text();
 
   let body: any = null;

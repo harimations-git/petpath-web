@@ -1,8 +1,4 @@
-import {
-    useEffect,
-    useState,
-} from "react";
-
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOrganisationProfile } from "../../../context/OrganisationProfileContext";
 import { useOrganisationProfileImage } from "./useOrganisationProfileImage";
@@ -10,6 +6,10 @@ import { deleteOrganisationAccount, updateOrganisationDescription } from "../../
 import { routes } from "../../../constants/routes";
 import { signOut } from "aws-amplify/auth";
 
+/**
+ * Manages the organisation settings page.
+ * Handles profile image updates, description editing and account deletion.
+ */
 export function useSettings() {
     const navigate = useNavigate();
 
@@ -85,6 +85,7 @@ export function useSettings() {
         setShowDeleteAccountModal(false);
     }
 
+    //toggles the account options menu
     function toggleAccountOptions() {
         setIsAccountOptionsOpen(
             (current) => !current
@@ -141,6 +142,7 @@ export function useSettings() {
         }
     }
 
+    //Handles own account deletion
     async function handleDeleteAccount() {
         setIsDeletingAccount(true);
 

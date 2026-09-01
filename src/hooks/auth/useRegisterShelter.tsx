@@ -1,14 +1,13 @@
-import {
-    useEffect,
-    useState,
-    type SubmitEvent,
-} from "react";
-
+import { useEffect, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut, signUp } from "aws-amplify/auth";
 import { routes } from "../../constants/routes";
 import { getSignUpErrorMessage, } from "../../utils/error/authErrorMessage";
 
+/**
+ * Manages the shelter registration form.
+ * Handles form state, validation, Cognito registration and navigation.
+ */
 export function useRegisterShelter() {
     const navigate = useNavigate();
 
@@ -32,6 +31,7 @@ export function useRegisterShelter() {
         navigate(-1);
     }
 
+    //Validate and submit the shelter registration form
     async function handleRegisterShelter(
         event: SubmitEvent<HTMLFormElement>
     ) {

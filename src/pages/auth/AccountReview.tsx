@@ -21,6 +21,11 @@ import { useBackButtonRedirect } from "../../hooks/organisation/dashboard/useBac
 import { getCurrentOrganisationProfile } from "../../services/organisation/organisationService";
 import { getRouteForOrganisation } from "../../services/organisation/organisationRedirect";
 
+
+/**
+ * Displays the organisation account review page.
+ * Regularly checks whether the organisation has been approved or rejected.
+ */
 export default function AccountReview() {
     useBackButtonRedirect(routes.auth.login);
 
@@ -33,6 +38,7 @@ export default function AccountReview() {
     useEffect(() => {
         let isMounted = true;
 
+        //Check whether the organisation's review status has changed
         async function checkAccountStatus() {
             try {
                 const organisationProfile = await getCurrentOrganisationProfile();
@@ -43,18 +49,19 @@ export default function AccountReview() {
                     return;
                 }
 
-                const nextRoute = getRouteForOrganisation(
-                    organisationProfile
-                );
+                //Determine where the organisation should go after review
+                const nextRoute = getRouteForOrganisation(organisationProfile);
 
                 navigate(nextRoute, { replace: true });
             } catch (error) {
                 if (!isMounted) return;
             }
         }
-
+    
+        //Check immediately when the page loads
         checkAccountStatus();
 
+        //Check again every 15 seconds for a review status change
         const intervalId = window.setInterval(() => {
             checkAccountStatus();
         }, 15000);

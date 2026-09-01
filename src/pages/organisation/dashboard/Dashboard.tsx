@@ -1,13 +1,4 @@
-import {
-    ArrowRight,
-    Building2,
-    ClipboardCheck,
-    Clock3,
-    HeartHandshake,
-    ShieldCheck,
-    Sparkles,
-} from "lucide-react";
-
+import { ArrowRight, Building2, ClipboardCheck, Clock3, HeartHandshake, ShieldCheck, Sparkles } from "lucide-react";
 import InfoModal from "../../../components/ui/InfoModal";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 import OrganisationAccountMenu from "../../../components/ui/profile/OrganisationAccountMenu";
@@ -15,13 +6,15 @@ import OrganisationAccountMenu from "../../../components/ui/profile/Organisation
 import DashboardStatistics from "../../../components/ui/dashboard/ListingStatistics";
 import DashboardQuickActions from "../../../components/ui/dashboard/QuickActions";
 
-import {
-    useDashboard,
-} from "../../../hooks/organisation/dashboard/useDashboard";
+import { useDashboard } from "../../../hooks/organisation/dashboard/useDashboard";
 
 import "./Dashboard.css";
 import "./PageHeading.css";
 
+/**
+ * Displays the organisation dashboard.
+ * Shows listing statistics, profile status and quick actions.
+ */
 export default function Dashboard() {
     const {
         organisationProfile,

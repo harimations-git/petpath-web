@@ -1,12 +1,12 @@
-import {
-    useCallback,
-    useEffect,
-    useState,
-} from "react";
-
+import { useCallback, useEffect, useState } from "react";
 import { getAdminDashboard } from "../../services/admin/adminDashboardService";
 import type { AdminDashboardData } from "../../types/admin/adminDashboard";
 
+
+/**
+ * Loads and manages the data displayed on the admin dashboard.
+ * Handles the initial load, manual refreshes and error states.
+ */
 export function useAdminDashboard() {
     const [dashboard, setDashboard] = useState<AdminDashboardData | null>(null);
 
@@ -15,6 +15,7 @@ export function useAdminDashboard() {
 
     const [error, setError] = useState("");
 
+    //Load the latest admin dashboard data
     const loadDashboard =
         useCallback(
             async (forceRefresh = false) => {
@@ -49,6 +50,7 @@ export function useAdminDashboard() {
         document.title = "Admin Dashboard | PetPath";
     }, []);
 
+    //Load dashboard data when the hook first runs
     useEffect(() => {
         void loadDashboard(true);
     }, [loadDashboard]);

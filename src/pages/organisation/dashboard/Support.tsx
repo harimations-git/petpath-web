@@ -1,22 +1,16 @@
-import {
-    ExternalLink,
-    FileText,
-    HelpCircle,
-    Mail,
-    ShieldCheck,
-} from "lucide-react";
-
+import { ExternalLink, FileText, HelpCircle, Mail, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-
 import OrganisationAccountMenu from "../../../components/ui/profile/OrganisationAccountMenu";
-
 import { routes } from "../../../constants/routes";
-
 import "./Support.css";
 import "./PageHeading.css";
 import Spacer from "../../../components/layout/Spacer";
 import { useEffect } from "react";
 
+/**
+ * Displays the organisation help centre.
+ * Provides support contact details and links to legal information.
+ */
 export default function Support() {
     useEffect(() => {
         document.title = "Help Centre | PetPath"

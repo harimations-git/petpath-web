@@ -1,7 +1,8 @@
-import type {
-    PetListingSummary,
-} from "../../types/listing";
+import type { PetListingSummary } from "../../types/listing";
 
+/**
+ * Stores the listing statistics displayed on the shelter dashboard.
+ */
 export type ListingStatistics = {
     activeListings: number;
     pendingReview: number;
@@ -10,10 +11,10 @@ export type ListingStatistics = {
 };
 
 /**
- * Returns the users listing statistics
+ * Calculates the listing statistics displayed on the shelter dashboard
  * e.g. active/pending/rehomed listings
- * @param listings 
- * @returns 
+ * @param listings
+ * @param reviewUpdates
  */
 export function getListingStatistics(
     listings: PetListingSummary[],
@@ -32,46 +33,37 @@ export function getListingStatistics(
             listing.availabilityStatus === "available"
     ).length;
 
+    //Count the total number of animals in pending listings
     const pendingReview = reviewUpdates.filter(
-        (listing) =>
-            listing.reviewStatus === "pending"
+        (listing) => listing.reviewStatus === "pending"
     ).length;
 
+    //Count the total number of animals in reserved listings
     const reservedPets = listings
         .filter(
-            (listing) =>
-                listing.availabilityStatus === "reserved"
+            (listing) => listing.availabilityStatus === "reserved"
         )
         .reduce(
-            (total, listing) =>
-                total + listing.numberOfAnimals,
+            (total, listing) => total + listing.numberOfAnimals,
             0
         );
 
+    //Find listings that were rehomed during the current month
     const rehomedThisMonth = listings
         .filter((listing) => {
-            if (
-                listing.availabilityStatus !==
-                "rehomed"
-            ) {
+            if (listing.availabilityStatus !== "rehomed") {
                 return false;
             }
 
-            const updatedDate =
-                new Date(listing.updatedAt);
+            const updatedDate = new Date(listing.updatedAt);
 
+            //Check that it was updated in the current month and year
             return (
-                updatedDate.getMonth() ===
-                    currentMonth &&
-                updatedDate.getFullYear() ===
-                    currentYear
+                updatedDate.getMonth() === currentMonth &&
+                updatedDate.getFullYear() === currentYear
             );
-        })
-        .reduce(
-            (total, listing) =>
-                total + listing.numberOfAnimals,
-            0
-        );
+            //Add together the number of animals in the rehomed listings
+        }).reduce((total, listing) => total + listing.numberOfAnimals, 0);
 
     return {
         activeListings,

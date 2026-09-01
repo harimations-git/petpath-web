@@ -3,13 +3,10 @@ import { deleteAdminOrganisation, getAdminOrganisationDetails } from "../../serv
 import type { PublicOrganisationProfile } from "../../types/admin/adminOrganisation";
 
 /**
- * Hook that manages the states when viewing an individual organisation profile page
- * @param organisationId 
- * @returns 
+ * Loads and manages an organisation profile for the admin view.
+ * Handles loading, deletion and error states.
  */
-export function useAdminOrganisationDetails(
-    organisationId?: string
-) {
+export function useAdminOrganisationDetails(organisationId?: string) {
     const [organisation, setOrganisation] = useState<PublicOrganisationProfile | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +15,7 @@ export function useAdminOrganisationDetails(
     const [isDeleting, setIsDeleting] = useState(false);
     const [deleteError, setDeleteError] = useState("");
 
-    //Function that loads the organisation
+    //Load the organisation details from the backend
     const loadOrganisation =
         useCallback(async () => {
             if (!organisationId) {

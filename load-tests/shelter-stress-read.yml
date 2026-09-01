@@ -1,3 +1,6 @@
+# Stress test for the shelter dashboard, gradually increasing read-only traffic
+# to the organisation profile and pet listings endpoints before sustaining a high load.
+
 config:
   target: "{{ $env.API_BASE_URL }}"
   phases:

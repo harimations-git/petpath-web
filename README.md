@@ -1,78 +1,139 @@
-# React + TypeScript + Vite
+# PetPath Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+PetPath is an adoption-first pet matching system designed to help prospective pet owners discover animals from verified rescue organisations that may be suitable for their lifestyle and location.
 
-Currently, two official plugins are available:
+This repository contains the PetPath web portal, developed using React and TypeScript. The web application is used by rescue organisations to manage their organisation profile and pet listings, and by administrators to review organisation registrations and submitted pet listings.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Pet matching and pet discovery are handled separately through the PetPath mobile application. The web portal is primarily intended for organisation, listing and administrative management.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Demo Login Details
 
-## Expanding the ESLint configuration
+Pre-configured organisation and administrator accounts are available for testing the web application.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+If access is necessary, please refer to the login details available via the comments in the submission.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The organisation account can be used to access the organisation portal and manage pet listings.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The administrator account can be used to access the administrative area and review organisations and submitted listings.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
 
+## Main Features
+
+### Rescue Organisation Portal
+
+The organisation portal includes:
+
+- Organisation registration and email verification
+- Manual organisation approval workflow
+- Organisation profile setup and management
+- Creation of pet listings
+- Editing existing pet listings
+- Animal information management
+- Pet suitability information
+- Photo and document uploads
+- Listing availability management
+- Submission of listings for administrative review
+- Organisation dashboard and listing statistics
+
+### Administrative Portal
+
+Administrators log in through the same web application but are provided with a separate role-protected interface.
+
+Administrative functionality includes:
+
+- Review of pending rescue organisation registrations
+- Organisation approval and rejection
+- Review of submitted pet listings
+- Listing approval and rejection
+- Viewing approved organisations
+- Viewing approved pet listings
+
+Organisation verification allows administrators to review the charity information supplied during registration before approving access to the organisation portal.
+
+---
+
+## Technologies
+
+- React
+- TypeScript
+- Vite
+- React Router
+- AWS Amplify
+- AWS Cognito
+- Amazon API Gateway
+- AWS Lambda
+- Amazon DynamoDB
+- Amazon S3
+
+The AWS services are accessed through the deployed PetPath backend APIs, with AWS Cognito used for authentication and role-based access.
+
+---
+
+## Running PetPath
+
+The web application can be run locally from the supplied source code.
+
+The GitHub repository is also available for reference:
+
+[PetPath Web GitHub Repository](https://github.com/harimations-git/petpath-web)
+
+### Requirements
+
+Ensure the following are installed:
+
+- Node.js
+- npm
+
+### Accessing and Running the Web Application
+
+The easiest way to access the deployed PetPath web application is to visit:
+
+[https://petpathapp.co.uk](https://petpathapp.co.uk)
+
+When prompted for website access, enter:
+
+- **Username:** `petpath`
+- **Password:** `petpathwebsite1`
+
+Once the site has loaded, use the demonstration login credentials provided in the submission comments to access either:
+
+- a rescue organisation account; or
+- an administrator account.
+
+These accounts can be used to demonstrate the organisation and administrative functionality of PetPath.
+
+### Running Locally
+
+Alternatively, the web application can be run locally from the supplied source code.
+
+1. Open a terminal in the `petpath-web` project folder.
+
+2. Install the project dependencies:
+
+```bash
+npm install
 ```
+3. Run the project:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
---Harry notes:
+```bash
 npm run dev
+```
+
+4. Open the displayed address in a web browser
+
+---
+
+## Organisation and Administrator Access
+
+PetPath uses role-based access to separate organisation and administrator functionality.
+
+Rescue organisation accounts can access organisation profile and pet listing management functionality.
+
+Administrator accounts can access the administrative interface used to review organisations and listings.
+
+Although both account types log in through the same web application, users are directed to the interface appropriate to their account permissions.
+
+---

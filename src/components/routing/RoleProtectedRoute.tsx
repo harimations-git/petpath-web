@@ -6,15 +6,17 @@ import LoadingSpinner from "../ui/LoadingSpinner";
 
 
 type RoleProtectedRouteProps = {
-    //Has to be a portal role, but not null
+    // Must be a valid portal role and cannot be null
     requiredRole: Exclude<PortalRole, null>;
 };
 
-export default function RoleProtectedRoute({
-    requiredRole,
-}: RoleProtectedRouteProps) {
+/**
+ * Protects routes that should only be accessible to a specific portal role.
+ * Redirects users to the correct portal if they do not have the required role.
+ */
+export default function RoleProtectedRoute({requiredRole}: RoleProtectedRouteProps) {
+    
     const [currentRole, setCurrentRole] = useState<PortalRole>(null);
-
     const [isCheckingRole, setIsCheckingRole] = useState(true);
 
     useEffect(() => {

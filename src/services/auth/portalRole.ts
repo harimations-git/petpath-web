@@ -1,6 +1,4 @@
-import {
-    fetchAuthSession,
-} from "aws-amplify/auth";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 // Determines if the user is an admin or regular user
 export type PortalRole =

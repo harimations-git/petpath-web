@@ -14,6 +14,11 @@ import { routes } from "../../constants/routes";
 import { Link } from "react-router-dom";
 import { useShelterLogin } from "../../hooks/auth/useShelterLogin";
 
+/**
+ * Displays the shelter login page, which can also be used by admins.
+ * Uses the login hook to manage authentication and form state.
+ * The interface is presented as a shelter login without advertising admin access.
+ */
 export default function ShelterLogin() {
   const {
         email,

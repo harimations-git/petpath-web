@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { confirmSignUp, resendSignUpCode, signIn, signOut } from "aws-amplify/auth";
 import { routes } from "../../constants/routes";
 
+/**
+ * Route state that can be passed into the email verification page.
+ */
 type VerifyEmailState = {
     email?: string;
     password?: string;
@@ -10,19 +13,29 @@ type VerifyEmailState = {
     fromLogin?: boolean;
 };
 
+// Cognito verification codes contain six digits
 const CODE_LENGTH = 6;
 
+/**
+ * Manages the shelter email verification flow.
+ * Handles code confirmation, resending codes and navigation after verification.
+ */
 export function useVerifyEmail() {
     const navigate = useNavigate();
-
-    //gets info like current route
     const location = useLocation();
-    //read th route state
+
+    //Read any verification details passed through the route state
     const state = (location.state ?? {}) as VerifyEmailState;
 
-    //get the email from route state first then do empty
+    /*
+     * Use the email from the route state when available,
+     * otherwise fall back to the value stored in session storage.
+     */
     const email = state.email ?? sessionStorage.getItem("pendingVerificationEmail") ?? "";
+
+     // Password may be available when arriving directly from registration or login
     const passwordForSignIn = state.password ?? "";
+
     const [verificationCode, setVerificationCode] = useState("");
 
     const [isLoading, setIsLoading] = useState(false);
@@ -34,14 +47,15 @@ export function useVerifyEmail() {
         document.title = "Verify Email | PetPath";
     }, []);
 
-    //navigate to login page
+    //Navigate to login page
     function goToLogin() {
         navigate(routes.auth.login);
     }
 
-    //go to account review page
+    //Send a newly verified shelter account to the manual review page
     function goToAccountReview() {
-        //no longer needed so remove it from session storage
+
+        //The stored email is no longer needed after verification
         sessionStorage.removeItem("pendingVerificationEmail");
 
         navigate(routes.auth.accountReview, {
@@ -53,8 +67,9 @@ export function useVerifyEmail() {
         });
     }
 
+    //Return the user to login when automatic sign-in is not possible
     function goToLoginAfterVerification() {
-        //no longer needed so remove it from session storage
+        
         sessionStorage.removeItem("pendingVerificationEmail");
 
         navigate(routes.auth.login, {
@@ -66,9 +81,8 @@ export function useVerifyEmail() {
         });
     }
 
-    async function handleVerifyEmail(
-        event: SubmitEvent<HTMLFormElement>
-    ) {
+    //Confirm the verification code and complete the verification flow
+    async function handleVerifyEmail(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
 
         setFormError("");
@@ -89,10 +103,7 @@ export function useVerifyEmail() {
         try {
             setIsLoading(true);
 
-            await confirmSignUp({
-                username: normalisedEmail,
-                confirmationCode: verificationCode,
-            });
+            await confirmSignUp({username: normalisedEmail, confirmationCode: verificationCode});
 
             /*
              * Clear any existing session first.
@@ -136,6 +147,7 @@ export function useVerifyEmail() {
         }
     }
 
+    //Request a new verification code from Cognito
     async function handleResendCode() {
         setFormError("");
         setSuccessMessage("");

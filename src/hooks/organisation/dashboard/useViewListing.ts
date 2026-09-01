@@ -1,32 +1,20 @@
-import {
-    useEffect,
-    useState,
-    type SubmitEvent,
-} from "react";
-
+import { useEffect, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateListing } from "./useCreateListing";
-
-import {
-    deleteOrganisationListing,
-    getOrganisationListing,
-    updateOrganisationListing,
-} from "../../../services/listings/listingService";
-
+import { deleteOrganisationListing, getOrganisationListing, updateOrganisationListing } from "../../../services/listings/listingService";
 import { useOrganisationListings } from "../../../context/OrganisationListingsContext";
 import { routes } from "../../../constants/routes";
-import type { ExistingListingDocument, ExistingListingPhoto} from "../../../types/listing";
+import type { ExistingListingDocument, ExistingListingPhoto } from "../../../types/listing";
 
 /**
- * Hook containing the logic used for the View listing page
- * @param listingId 
- * @returns 
+ * Manages the organisation's view/edit listing page.
+ * Handles loading listing data, editing, saving changes and deletion.
  */
 export function useViewListing(listingId?: string) {
     const navigate = useNavigate();
     const form = useCreateListing();
 
-    const {refreshListings, refreshReviewUpdates} = useOrganisationListings();
+    const { refreshListings, refreshReviewUpdates } = useOrganisationListings();
 
     const [isLoadingListing, setIsLoadingListing] = useState(true);
     const [listingError, setListingError] = useState("");
@@ -49,16 +37,17 @@ export function useViewListing(listingId?: string) {
         document.title = "View Listing | PetPath"
     })
 
-    //auto fills the pet listing form from real data
+    /*
+    * Load the existing listing and populate the shared
+    * listing form with the saved values.
+    */
     useEffect(() => {
         let cancelled = false;
 
         //get listing
         async function loadListing() {
             if (!listingId) {
-                setListingError(
-                    "Missing listing ID."
-                );
+                setListingError("Missing listing ID.");
                 setIsLoadingListing(false);
                 return;
             }
@@ -121,15 +110,12 @@ export function useViewListing(listingId?: string) {
 
 
     //removes one of the original photos
-    function removeExistingPhoto(
-        photoKey: string
-    ) {
+    function removeExistingPhoto(photoKey: string) {
         //removes the photo from the visible existing photo list
         setExistingPhotos(
             (currentPhotos) =>
                 currentPhotos.filter(
-                    (photo) =>
-                        photo.key !== photoKey
+                    (photo) => photo.key !== photoKey
                 )
         );
 
@@ -146,16 +132,10 @@ export function useViewListing(listingId?: string) {
     }
 
     //same as setRemovedPhotoKeys but for documents
-    function removeExistingDocument(
-        documentKey: string
-    ) {
+    function removeExistingDocument(documentKey: string) {
         setExistingDocuments(
             (currentDocuments) =>
-                currentDocuments.filter(
-                    (document) =>
-                        document.key !==
-                        documentKey
-                )
+                currentDocuments.filter((document) => document.key !== documentKey)
         );
 
         setRemovedDocumentKeys(
@@ -172,9 +152,7 @@ export function useViewListing(listingId?: string) {
     }
 
     //save the edited listing
-    async function handleSubmit(
-        event: SubmitEvent<HTMLFormElement>
-    ) {
+    async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
 
         if (!listingId) {
@@ -239,9 +217,7 @@ export function useViewListing(listingId?: string) {
     function handleModalContinue() {
         setShowModal(false);
 
-        navigate(
-            routes.home.status
-        );
+        navigate(routes.home.status);
     }
     //open and closing delete controls
     function toggleListingOptions() {
@@ -250,11 +226,13 @@ export function useViewListing(listingId?: string) {
         );
     }
 
+    //opens the delete listing info modal
     function openDeleteListingModal() {
         setIsDeleteListingOptionOpen(false);
         setShowDeleteListingModal(true);
     }
 
+    //closes the delete listing info modal
     function closeDeleteListingModal() {
         if (isDeletingListing) {
             return;

@@ -1,38 +1,24 @@
-import {
-    useCallback,
-    useEffect,
-    useState,
-} from "react";
-
-import {
-    updateOrganisationProfileImage,
-    type OrganisationProfile,
-} from "../../../services/organisation/organisationService";
-
+import { useCallback, useEffect, useState } from "react";
+import { updateOrganisationProfileImage, type OrganisationProfile } from "../../../services/organisation/organisationService";
 import { validateImageFile } from "../../../utils/imageValidation";
 
 type UseOrganisationProfileImageProps = {
     organisationProfile: OrganisationProfile | null;
-
-    updateCachedOrganisationProfile: (
-        profile: OrganisationProfile
-    ) => void;
-
-    refreshOrganisationProfile: () =>
-        Promise<OrganisationProfile | null>;
+    updateCachedOrganisationProfile: (profile: OrganisationProfile) => void;
+    refreshOrganisationProfile: () => Promise<OrganisationProfile | null>;
 };
 
+
 /**
- * This hook handles the changing of an user's profile picture.
- * It also updates the locally caches organisation profile after the upload
- * @param param0 
- * @returns 
+ * Manages updating an organisation's profile image.
+ * Handles validation, image preview, uploading and profile cache updates.
  */
 export function useOrganisationProfileImage({
     organisationProfile,
     updateCachedOrganisationProfile,
     refreshOrganisationProfile,
 }: UseOrganisationProfileImageProps) {
+
     const [profileImagePreview, setProfileImagePreview] = useState("");
     const [isUploadingProfileImage, setIsUploadingProfileImage] = useState(false);
     const [profileImageError, setProfileImageError] = useState("");
@@ -66,28 +52,19 @@ export function useOrganisationProfileImage({
             }
 
             //create local browser url for the selected file
-            const temporaryPreviewUrl =
-                URL.createObjectURL(file);
+            const temporaryPreviewUrl = URL.createObjectURL(file);
 
-            setProfileImagePreview(
-                temporaryPreviewUrl
-            );
+            setProfileImagePreview(temporaryPreviewUrl);
 
             setIsUploadingProfileImage(true);
 
             try {
 
                 //upload profile pic
-                const updatedProfile =
-                    await updateOrganisationProfileImage(
-                        file,
-                        organisationProfile
-                    );
+                const updatedProfile = await updateOrganisationProfileImage(file, organisationProfile);
 
                 //update cached profile
-                updateCachedOrganisationProfile(
-                    updatedProfile
-                );
+                updateCachedOrganisationProfile(updatedProfile);
 
                 //fetch the newest profile from backend
                 await refreshOrganisationProfile();
@@ -95,12 +72,7 @@ export function useOrganisationProfileImage({
                 //remove temp preview. We have the real backend image now
                 setProfileImagePreview("");
             } catch (error) {
-                console.error(
-                    "Unable to update profile image:",
-                    error
-                );
-
-                
+  
                 setProfileImagePreview("");
 
                 setProfileImageError(
@@ -110,9 +82,7 @@ export function useOrganisationProfileImage({
                 );
             } finally {
                 //releases temporary browser url from memory
-                URL.revokeObjectURL(
-                    temporaryPreviewUrl
-                );
+                URL.revokeObjectURL(temporaryPreviewUrl);
 
                 setIsUploadingProfileImage(false);
             }
@@ -130,11 +100,7 @@ export function useOrganisationProfileImage({
      */
     useEffect(() => {
         return () => {
-            if (
-                profileImagePreview.startsWith(
-                    "blob:"
-                )
-            ) {
+            if (profileImagePreview.startsWith("blob:")) { //stands for Binary Large Object
                 URL.revokeObjectURL(
                     profileImagePreview
                 );
@@ -142,6 +108,7 @@ export function useOrganisationProfileImage({
         };
     }, [profileImagePreview]);
 
+    //Clear errors
     function clearProfileImageError() {
         setProfileImageError("");
     }
@@ -151,6 +118,6 @@ export function useOrganisationProfileImage({
         profileImageError,
         isUploadingProfileImage,
         changeProfileImage,
-        clearProfileImageError, //get rid of any errors
+        clearProfileImageError, 
     };
 }

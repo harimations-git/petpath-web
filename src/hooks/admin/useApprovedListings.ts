@@ -4,9 +4,8 @@ import type { ApprovedListing } from "../../types/admin/adminListing";
 import type { SortOrder } from "../../types/filters";
 
 /**
- * Hook that manages the Approved listing page state and functions. 
- * Handles listing stats, loading more results and viewing the page
- * @returns 
+ * Manages the approved listings page.
+ * Handles loading, pagination, searching, sorting and listing statistics.
  */
 export function useApprovedListings() {
     const [listings, setListings] = useState<ApprovedListing[]>([]);
@@ -21,6 +20,7 @@ export function useApprovedListings() {
 
     const [error, setError] = useState("");
 
+    //Load the first page of approved listings
     const loadListings =
         useCallback(async () => {
             setIsLoading(true);
@@ -70,6 +70,7 @@ export function useApprovedListings() {
             try {
                 const result = await getApprovedListings({ sortOrder, nextToken });
 
+                //Use a map to avoid duplicate listings
                 setListings(
                     (currentListings) => {
                         const listingById =
@@ -78,6 +79,7 @@ export function useApprovedListings() {
                             )
                             );
 
+                        //Add or replace listings returned in the next page
                         for (const listing of result.listings) {
                             listingById.set(listing.listingId, listing);
                         }
@@ -148,6 +150,7 @@ export function useApprovedListings() {
             [listings]
         );
 
+    //Get the number of rehomed pets
     const rehomedCount =
         useMemo(
             () =>

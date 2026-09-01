@@ -1,22 +1,17 @@
 import { ArrowLeft, Building2, Trash2 } from "lucide-react";
-
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import Card from "../../../components/ui/Card";
 import CustomButton from "../../../components/ui/CustomButton";
 import InfoModal from "../../../components/ui/InfoModal";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
-
 import AdminAccountMenu from "../../../components/ui/admin/profile/AdminAccountMenu";
-
 import OrganisationProfileSummary from "../../../components/ui/admin/organisations/details/OrganisationProfileSummary";
 import OrganisationAboutSection from "../../../components/ui/admin/organisations/details/OrganisationAboutSection";
 import OrganisationInformationSection from "../../../components/ui/admin/organisations/details/OrganisationInformationSection";
 import OrganisationLocationSection from "../../../components/ui/admin/organisations/details/OrganisationLocationSection";
 import OrganisationWebsiteSection from "../../../components/ui/admin/organisations/details/OrganisationWebsiteSection";
 import OrganisationAccountActions from "../../../components/ui/admin/organisations/details/OrganisationAccountActions";
-
 import { useAdminOrganisationDetails } from "../../../hooks/admin/useAdminOrganisationDetails";
 import { formatLocation } from "../../../utils/listings/displayFormatting";
 import { routes } from "../../../constants/routes";
@@ -24,7 +19,10 @@ import { routes } from "../../../constants/routes";
 import "./ViewOrganisation.css";
 import "../../organisation/dashboard/PageHeading.css";
 
-
+/**
+ * Displays an organisation's full account details for admins.
+ * Handles loading the profile and permanently deleting the organisation account.
+ */
 export default function ViewOrganisation() {
     const navigate = useNavigate();
 

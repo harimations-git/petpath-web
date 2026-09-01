@@ -1,5 +1,4 @@
-//Types used in the veterinary health information
-
+// Types used for veterinary health information
 export type VaccinationStatus =
     | ""
     | "up_to_date"

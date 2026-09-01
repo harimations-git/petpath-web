@@ -1,9 +1,4 @@
-import {
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
-
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOrganisationProfile } from "../../../context/OrganisationProfileContext";
 import { useOrganisationListings } from "../../../context/OrganisationListingsContext";
@@ -15,10 +10,14 @@ type ReviewStatusFilter =
     | "approved"
     | "rejected";
 
+/**
+ * Manages the organisation's listing review updates page.
+ * Handles loading, filtering, sorting and review statistics.
+ */
 export function useStatusUpdates() {
     const navigate = useNavigate();
 
-    const {organisationProfile, isLoadingProfile, profileError} = useOrganisationProfile();
+    const { organisationProfile, isLoadingProfile, profileError } = useOrganisationProfile();
 
     const {
         reviewUpdates,
@@ -33,6 +32,7 @@ export function useStatusUpdates() {
     const [reviewStatusFilter, setReviewStatusFilter] = useState<ReviewStatusFilter>("all");
     const [sortOrder, setSortOrder] = useState("newest");
 
+    //Set the page title and redirect organisations that are not approved
     useEffect(() => {
         document.title = "Review Updates | PetPath";
 
@@ -51,7 +51,7 @@ export function useStatusUpdates() {
             return;
         }
 
-        if (organisationProfile.accountStatus !=="approved") {
+        if (organisationProfile.accountStatus !== "approved") {
             navigate(
                 routes.auth.login,
                 {
@@ -64,29 +64,26 @@ export function useStatusUpdates() {
         navigate,
     ]);
 
+    //Load review updates once the organisation has been approved
     useEffect(() => {
-        if (
-            !organisationProfile ||
-            organisationProfile.accountStatus !==
-            "approved"
-        ) {
+        if (!organisationProfile || organisationProfile.accountStatus !== "approved") {
             return;
         }
 
         void loadReviewUpdates();
-    }, [
-        organisationProfile,
-        loadReviewUpdates,
-    ]);
+    }, [organisationProfile, loadReviewUpdates]);
 
+    //Filter and sort the review updates displayed on the page
     const filteredUpdates =
         useMemo(() => {
             const normalisedSearch =
                 searchQuery.trim().toLowerCase();
 
-            function getReviewPriority(
-                listing: typeof reviewUpdates[number]
-            ) {
+            /*
+            * Give each review status a priority so rejected listings
+            * appear first, followed by pending and approved listings.
+            */
+            function getReviewPriority(listing: typeof reviewUpdates[number]) {
                 if (listing.reviewStatus === "rejected") {
                     return 0;
                 }
@@ -155,18 +152,14 @@ export function useStatusUpdates() {
                             return first.title.localeCompare(
                                 second.title,
                                 undefined,
-                                {
-                                    sensitivity: "base",
-                                }
+                                {sensitivity: "base"}
                             );
 
                         case "name-desc":
                             return second.title.localeCompare(
                                 first.title,
                                 undefined,
-                                {
-                                    sensitivity: "base",
-                                }
+                                {sensitivity: "base"}
                             );
 
                         case "newest":
@@ -182,6 +175,7 @@ export function useStatusUpdates() {
             sortOrder,
         ]);
 
+    //Count listings in each review status
     const statistics =
         useMemo(() => {
             return {
@@ -214,11 +208,9 @@ export function useStatusUpdates() {
         updates: reviewUpdates,
         filteredUpdates,
 
-        isLoadingUpdates:
-            isLoadingReviewUpdates,
+        isLoadingUpdates: isLoadingReviewUpdates,
 
-        updatesError:
-            reviewUpdatesError,
+        updatesError: reviewUpdatesError,
 
         statistics,
         refreshReviewUpdates,

@@ -1,7 +1,7 @@
 /**
  * Used to check if a file has already been added
  * @param file Creates a string using the file name/size and lastModified
- * @returns something like "dog-photo.webp-245632-1783428912000"
+ * @returns e.g. "dog-photo.webp-245632-1783428912000"
  * 
  */
 export function getFileKey(file: File){
@@ -11,7 +11,7 @@ export function getFileKey(file: File){
 /**
  * Converts bytes into kilobytes or megabytes. Useful to display a readable size
  * @param sizeInBytes 
- * @returns something like 847 KB or 3.2 MB
+ * @returns e.g. 847 KB or 3.2 MB
  */
 export function formatFileSize(sizeInBytes: number){
     if(sizeInBytes < 1024 * 1024){ //files smaller than a MB

@@ -40,7 +40,6 @@ export function clearAdminDashboardCache() {
 
 /*
  * Returns the admin dashboard data.
- *
  */
 export async function getAdminDashboard(
     forceRefresh = false

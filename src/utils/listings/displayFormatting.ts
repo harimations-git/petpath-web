@@ -1,7 +1,6 @@
 /**
  * Function turns an iso date into a readable format
  * @param dateValue 
- * @returns 
  */
 export function formatDate(
     dateValue: string
@@ -24,7 +23,6 @@ export function formatDate(
 /**
  * Function displays the oldest listing's date in a readable format
  * @param dateValue 
- * @returns 
  */
 export function formatOldestWaiting(
     dateValue: string | null
@@ -54,11 +52,8 @@ export function formatOldestWaiting(
  * Function turns text like
  * c_at into Cat
  * @param animalType 
- * @returns 
  */
-export function formatDisplayValue(
-    animalType: string
-) {
+export function formatDisplayValue(animalType: string) {
     return animalType
         .replaceAll("_", " ")
         .replace(/\b\w/g, (letter) =>
@@ -133,14 +128,19 @@ export function formatAdoptionFee(adoptionFee?: number | string | null) {
  * @param values 
  * @returns 
  */
-export function formatLocation(
-    values: Array<string | undefined>
-) {
+export function formatLocation(values: Array<string | undefined>) {
     const location = values.filter(Boolean).join(", ");
-
     return location || "Not provided";
 }
 
+/**
+ * Formats a matching profile value into a readable value for display.
+ * Handles missing values, arrays and boolean values.
+ * e.g. 
+ * true -> "yes"
+ * ["dogs", "small_animals"] -> "Dogs, Small Animals"
+ * @param value
+ */
 export function formatMatchingValue(
     value: string | string[] | number | boolean | null | undefined
 ) {

@@ -12,8 +12,7 @@ import type {
 
 import { getAuthToken } from "../organisation/organisationService";
 
-const API_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /*
 * Gets the basic info about a file that is sent to the Lambda

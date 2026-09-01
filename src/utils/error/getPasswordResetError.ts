@@ -1,3 +1,7 @@
+/**
+ * Turns AWS error messages into readable user friendly messages
+ * @param error 
+ */
 export function getPasswordResetError(
     error: unknown
 ): string {

@@ -1,5 +1,4 @@
 //Types for the dropdown options when creating a pet listing
-
 export type PetCost =
     | ""
     | "low"

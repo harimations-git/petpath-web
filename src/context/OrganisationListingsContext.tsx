@@ -1,20 +1,6 @@
-import {
-    createContext,
-    useCallback,
-    useContext,
-    useMemo,
-    useState,
-    type ReactNode,
-} from "react";
-
-import {
-    getOrganisationListings, getReviewUpdates
-} from "../services/listings/listingService";
-
-import type {
-    GetOrganisationListingsResponse,
-    PetListingSummary,
-} from "../types/listing";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { getOrganisationListings, getReviewUpdates } from "../services/listings/listingService";
+import type { GetOrganisationListingsResponse, PetListingSummary } from "../types/listing";
 
 type OrganisationListingsContextValue = {
     listings: PetListingSummary[];
@@ -52,7 +38,6 @@ const OrganisationListingsContext =
     >(null);
 
 const LISTINGS_PAGE_SIZE = 12;
-
 const CACHE_DURATION = 5 * 60 * 1000;
 const REVIEW_UPDATES_CACHE_DURATION = 2 * 60 * 1000;
 

@@ -18,7 +18,10 @@ import "../dashboard/PageHeading.css";
 import DeleteListingOption from "../../../components/ui/listings/delete/DeleteListingOption";
 import { useViewListing } from "../../../hooks/organisation/dashboard/useViewListing";
 
-
+/**
+ * Displays an organisation's existing pet listing.
+ * Allows the listing to be edited, resubmitted for review or deleted.
+ */
 export default function ViewListing() {
     //get listing id from search params
     const { listingId } = useParams<{ listingId: string; }>();
@@ -77,57 +80,29 @@ export default function ViewListing() {
                 onSubmit={form.handleSubmit}
             >
                 <ListingBasicsSection
-                    listingTitle={
-                        form.listingTitle
-                    }
-                    onListingTitleChange={
-                        form.setListingTitle
-                    }
-                    listingType={
-                        form.listingType
-                    }
-                    onListingTypeChange={
-                        form.handleListingTypeChange
-                    }
-                    listingAnimalType={
-                        form.listingAnimalType
-                    }
-                    onAnimalTypeChange={
-                        form.setListingAnimalType
-                    }
-                    numberOfAnimals={
-                        form.numberOfAnimals
-                    }
-                    onNumberOfAnimalsChange={
-                        form.handleNumberOfAnimalsChange
-                    }
-                    description={
-                        form.description
-                    }
-                    onDescriptionChange={
-                        form.setDescription
-                    }
-                    listingUrl={
-                        form.listingUrl
-                    }
-                    onListingUrlChange={
-                        form.setListingUrl
-                    }
-                    listingUrlMatchesOrganisation={
-                        form.listingUrlMatchesOrganisation
-                    }
-                    organisationDomain={
-                        form.organisationDomain
-                    }
-                    adoptionFee={
-                        form.adoptionFee
-                    }
-                    onAdoptionFeeChange={
-                        form.handleAdoptionFeeChange
-                    }
-                    organisationLocation={
-                        form.organisationLocation
-                    }
+                    listingTitle={form.listingTitle}
+                    onListingTitleChange={form.setListingTitle}
+
+                    listingType={form.listingType}
+                    onListingTypeChange={form.handleListingTypeChange}
+                    listingAnimalType={form.listingAnimalType}
+                    onAnimalTypeChange={form.setListingAnimalType}
+
+                    numberOfAnimals={form.numberOfAnimals}
+                    onNumberOfAnimalsChange={form.handleNumberOfAnimalsChange}
+
+                    description={form.description}
+                    onDescriptionChange={form.setDescription}
+
+                    listingUrl={form.listingUrl}
+                    onListingUrlChange={form.setListingUrl}
+                    listingUrlMatchesOrganisation={form.listingUrlMatchesOrganisation}
+                    organisationDomain={form.organisationDomain}
+
+                    adoptionFee={form.adoptionFee}
+                    onAdoptionFeeChange={form.handleAdoptionFeeChange}
+
+                    organisationLocation={form.organisationLocation}
                 />
 
                 <ListingPhotoUpload
@@ -142,60 +117,32 @@ export default function ViewListing() {
 
                 <AnimalDetailsSection
                     animals={form.animals}
-                    listingType={form.listingType
-                    }
-                    onAnimalChange={
-                        form.updateAnimal
-                    }
+                    listingType={form.listingType}
+                    onAnimalChange={form.updateAnimal}
                 />
 
                 <MatchingProfileSection
-                    value={
-                        form.matchingProfile
-                    }
-                    onChange={
-                        form.setMatchingProfile
-                    }
+                    value={form.matchingProfile}
+                    onChange={form.setMatchingProfile}
                     sectionNumber={4}
                 />
 
                 <HealthCareSection
-                    vaccinationStatus={
-                        form.vaccinationStatus
-                    }
-                    microchipStatus={
-                        form.microchipStatus
-                    }
-                    neuteredStatus={
-                        form.neuteredStatus
-                    }
-                    healthNotes={
-                        form.healthNotes
-                    }
-                    documents={
-                        form.veterinaryDocuments
-                    }
-                    existingDocuments={
-                        form.existingDocuments
-                    }
-                    onRemoveExistingDocument={
-                        form.removeExistingDocument
-                    }
-                    onVaccinationChange={
-                        form.setVaccinationStatus
-                    }
-                    onMicrochipChange={
-                        form.setMicrochipStatus
-                    }
-                    onNeuteredChange={
-                        form.setNeuteredStatus
-                    }
-                    onHealthNotesChange={
-                        form.setHealthNotes
-                    }
-                    onDocumentsChange={
-                        form.setVeterinaryDocuments
-                    }
+                    vaccinationStatus={form.vaccinationStatus}
+                    microchipStatus={form.microchipStatus}
+                    neuteredStatus={form.neuteredStatus}
+                    healthNotes={form.healthNotes}
+
+                    documents={form.veterinaryDocuments}
+                    existingDocuments={form.existingDocuments}
+                    onRemoveExistingDocument={form.removeExistingDocument}
+
+                    onVaccinationChange={form.setVaccinationStatus}
+                    onMicrochipChange={form.setMicrochipStatus}
+                    onNeuteredChange={form.setNeuteredStatus}
+                    onHealthNotesChange={form.setHealthNotes}
+
+                    onDocumentsChange={form.setVeterinaryDocuments}
                 />
 
                 {form.formError && (
@@ -217,9 +164,7 @@ export default function ViewListing() {
                     }
                     type="submit"
                     className="create-listing-continue"
-                    disabled={
-                        form.isSubmitting
-                    }
+                    disabled={form.isSubmitting}
                 />
             </form>
 
@@ -229,12 +174,8 @@ export default function ViewListing() {
                 message="Your changes have been saved! The listing is now being reviewed by our PetPath team before it appears publicly."
                 icon={Shield}
                 buttonText="Continue"
-                onClose={
-                    form.handleModalContinue
-                }
-                onConfirm={
-                    form.handleModalContinue
-                }
+                onClose={form.handleModalContinue}
+                onConfirm={form.handleModalContinue}
             />
         </main>
     );

@@ -1,7 +1,6 @@
-import type {
-    FilterOption,
-} from "../../components/ui/filters/FilterDropdown";
+import type { FilterOption } from "../../components/ui/filters/FilterDropdown";
 
+//Species options used to filter pet listings
 export const speciesFilterOptions: FilterOption[] = [
     {
         label: "All Species",
@@ -33,6 +32,7 @@ export const speciesFilterOptions: FilterOption[] = [
     }
 ];
 
+//Listing type options used to filter pet listings
 export const listingTypeFilterOptions: FilterOption[] = [
     {
         label: "All listings",
@@ -48,6 +48,7 @@ export const listingTypeFilterOptions: FilterOption[] = [
     }
 ];
 
+//Availability status options used to filter pet listings
 export const statusFilterOptions: FilterOption[] = [
     {
         label: "All Statuses",
@@ -67,6 +68,7 @@ export const statusFilterOptions: FilterOption[] = [
     },
 ];
 
+//Options used to control how pet listings are sorted
 export const sortFilterOptions: FilterOption[] = [
     {
         label: "Newest First",
@@ -86,6 +88,7 @@ export const sortFilterOptions: FilterOption[] = [
     },
 ];
 
+//Review status options used to filter listing review updates
 export const reviewStatusFilterOptions = [
     {
         label: "All updates",
